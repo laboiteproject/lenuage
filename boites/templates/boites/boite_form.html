@@ -1,0 +1,18 @@
+{% extends "site_base.html" %}
+
+{% load account_tags %}
+{% load i18n %}
+{% load bootstrap %}
+
+{% block head_title %}{% trans "Boîte" %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4">
+            <form action="" method="post">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">{% trans "Modifier" %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

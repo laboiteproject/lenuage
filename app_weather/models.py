@@ -15,22 +15,22 @@ from app_weather import settings
 class AppWeather(App):
     city_name = models.CharField(_(u"Ville"), help_text=_(u"Veuillez saisir la ville où se trouve votre boîte"), max_length=64, default=_(u"Paris"))
 
-    temperature_now = models.DecimalField(_(u"Température actuelle"), max_digits=5, decimal_places=2, null=True)
+    temperature_now = models.PositiveSmallIntegerField(_(u"Température actuelle"), null=True)
     humidity_now = models.PositiveSmallIntegerField(_(u"Humidité actuelle"), null=True)
 
     ICON_CHOICES = (
-        ("0", "Temps clair"),
-        ("1", "Nuages"),
-        ("2", "Pluie"),
-        ("3", "Brouillard"),
-        ("4", "Neige"),
+        (0, "Temps clair"),
+        (1, "Nuages"),
+        (2, "Pluie"),
+        (3, "Brouillard"),
+        (4, "Neige"),
     )
-    icon_now = models.CharField(_(u"Icône"), max_length=1, choices=ICON_CHOICES, default="1")
+    icon_now = models.PositiveSmallIntegerField(_(u"Icône"), choices=ICON_CHOICES, default=1)
 
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.last_modified <= timezone.now() - timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            if self.temperature_now is None or timezone.now() >= self.last_modified + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
                 # pyowm examples : https://github.com/csparpa/pyowm#examples
                 owm = pyowm.OWM(settings.OWM_APIKEY)
 

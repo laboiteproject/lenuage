@@ -13,9 +13,10 @@ import uuid
 
 @python_2_unicode_compatible
 class Boite(models.Model):
-    id = models.CharField(_(u"Clé d'API"), primary_key=True, default=str(uuid.uuid4)[:8], max_length=8, editable=False)
     name = models.CharField(_(u"Nom"), help_text=_(u"Veuillez saisir un nom pour votre boîte"), max_length=32, default=_(u"Ma boîte"))
     user = models.ForeignKey(User, verbose_name = _(u"Utilisateur"))
+
+    api_key = models.CharField(_(u"Clé d'API"), default=str(uuid.uuid4())[:8], max_length=8)
 
     created_date = models.DateTimeField(_(u"Date de création"), auto_now_add=True)
     last_activity = models.DateTimeField(_(u"Dernière activité"), auto_now = True)
