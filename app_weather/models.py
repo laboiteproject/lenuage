@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from django.db import models
 
@@ -30,7 +29,7 @@ class AppWeather(App):
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.temperature_now is None or timezone.now() >= self.last_modified + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            if self.temperature_now is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
                 # pyowm examples : https://github.com/csparpa/pyowm#examples
                 owm = pyowm.OWM(settings.OWM_APIKEY)
 

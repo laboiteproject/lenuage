@@ -140,8 +140,11 @@ INSTALLED_APPS = [
     # project
     "laboite",
     "boites",
+
+    # laboite apps
     "app_time",
-    "app_weather"
+    "app_weather",
+    "app_parcel",
 ]
 
 # A sample logging configuration. The only tangible logging

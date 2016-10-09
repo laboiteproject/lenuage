@@ -50,7 +50,7 @@ class App(models.Model):
     enabled = models.BooleanField(_(u"App activée ?"), help_text=_(u"Indique si cette app est activée sur votre boîte"), default=True)
 
     created_date = models.DateTimeField(_(u"Date de création"), auto_now_add=True)
-    last_modified = models.DateTimeField(_(u"Dernière modification"), auto_now = True)
+    last_activity = models.DateTimeField(_(u"Dernière activité"), auto_now = True)
 
     def get_app_dictionary(self):
         pass

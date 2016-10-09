@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 class AppTimeConfig(AppConfig):
     name = 'app_time'
-    verbose_name = "App : Temps"
+    verbose_name = 'App : Temps'

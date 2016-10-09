@@ -7,4 +7,4 @@ from django.apps import AppConfig
 
 class AppWeatherConfig(AppConfig):
     name = 'app_weather'
-    verbose_name = "App : Météo"
+    verbose_name = 'App : Météo'
