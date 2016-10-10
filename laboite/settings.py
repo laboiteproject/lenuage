@@ -145,6 +145,7 @@ INSTALLED_APPS = [
     "app_time",
     "app_weather",
     "app_parcel",
+    "app_tasks",
 ]
 
 # A sample logging configuration. The only tangible logging

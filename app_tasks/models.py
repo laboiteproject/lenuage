@@ -1,5 +1,7 @@
-from __future__ import unicode_literals
+# coding: utf-8
 
+from __future__ import unicode_literals
+from django.utils.translation import ugettext as _
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
@@ -10,40 +12,24 @@ from app_tasks import settings
 class AppTasks(App):
     asana_personal_access_token = models.CharField(_(u"Clé d'API Asana "), help_text=_(u"Veuillez indiquer votre clé d'API personnelle Asana (Personal Access Token)"), max_length=64, default=None, null=True)
 
-    parcel_carrier = models.CharField(_(u"Transporteur"), help_text=_(u"Veuillez indiquer le transporteur de votre colis"), max_length=16, default="chronopost", choices=WEBOOB_MODULES_CHOICES)
-
-    WEBOOB_PARCEL_STATUS_CHOICES = (
-        (0, "Inconnu"),
-        (1, "Traitement"),
-        (2, "En transit"),
-        (3, "Livré"),
-    )
-    status = models.PositiveSmallIntegerField(_(u"Statut"), choices=WEBOOB_PARCEL_STATUS_CHOICES, default=None, null=True)
-    arrival = models.DateTimeField(_(u"Date de livraison"), null=True, default=None)
-    url = models.URLField(_(u"Lien vers le site du transporteur"), default=None, null=True)
+    # from https://asana.com/developers/api-reference/tasks
+    name = models.CharField(_(u"Nom de la prochaine tâche"), max_length=128, default=None, null=True)
+    tasks = models.PositiveSmallIntegerField(_(u"Nombre de tâches à traiter"), default=None, null=True)
 
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.status is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
-                # Weboob 1.2 example http://dev.weboob.org/
-                weboob = Weboob()
-                weboob.load_backends(CapParcel)
-                for backend in list(weboob.iter_backends()):
-                    if backend.name == self.parcel_carrier:
-                        parcel = backend.get_parcel_tracking(self.parcel)
-                        parcel_dict = parcel.to_dict()
-                        self.status = parcel_dict['status']
-                        if parcel_dict['arrival'] == 'Not loaded':
-                            self.arrival = None
-                        else:
-                            pass
-                            #parcel_dict['arrival']
-                        self.url = parcel_dict['url']
-                        self.save()
+            if self.name is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+                # bullshit value since I got a Connection reset by peer today
+                #client = asana.Client.access_token("0/32bf71e2de8bb225be896e7a13111fbe")
+                #workspaces = client.workspaces.find_all()
 
-        return {'parcel': self.parcel, 'parcel_carrier' : self.parcel_carrier, 'status': self.status, 'arrival': self.arrival}
+                self.name = "vérifier les div de la page Le MOOC en un coup d'oeil"
+                self.tasks = 4
+                self.save()
+
+        return {'name': self.name, 'tasks' : self.tasks}
 
     class Meta:
-        verbose_name = _("Configuration : colis")
-        verbose_name_plural = _("Configurations : colis")
+        verbose_name = _("Configuration : tâches")
+        verbose_name_plural = _("Configurations : tâches")

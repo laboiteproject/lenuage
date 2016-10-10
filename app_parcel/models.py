@@ -33,8 +33,9 @@ class AppParcel(App):
         (2, "En transit"),
         (3, "Livré"),
     )
-    status = models.PositiveSmallIntegerField(_(u"Statut"), choices=WEBOOB_PARCEL_STATUS_CHOICES, default=None, null=True)
     arrival = models.DateTimeField(_(u"Date de livraison"), null=True, default=None)
+    status = models.PositiveSmallIntegerField(_(u"Statut"), choices=WEBOOB_PARCEL_STATUS_CHOICES, default=None, null=True)
+    info = models.CharField(_(u"Informations"), max_length=64, null=True, blank=True)
     url = models.URLField(_(u"Lien vers le site du transporteur"), default=None, null=True)
 
     def get_app_dictionary(self):
@@ -55,9 +56,10 @@ class AppParcel(App):
                             pass
                             #parcel_dict['arrival']
                         self.url = parcel_dict['url']
+                        self.info = parcel_dict['info']
                         self.save()
 
-        return {'parcel': self.parcel, 'parcel_carrier' : self.parcel_carrier, 'status': self.status, 'arrival': self.arrival}
+        return {'parcel': self.parcel, 'parcel_carrier' : self.parcel_carrier, 'arrival': self.arrival, 'status': self.status, 'info':self.info}
 
     class Meta:
         verbose_name = _("Configuration : colis")
