@@ -40,8 +40,6 @@ def boxStringToArray(dataS):
     
     return retval
 
-
-
 def queryTimes(start, dest):
 
     RESPONSE_KEY = "        cacheResponse"
@@ -92,12 +90,11 @@ def queryTimes(start, dest):
     for traj in infobox[0][11][0]:
     	info = traj[0]
     	name = info[0]
+        name = name.replace('"', '')
     	dist = info[1][1]
 	if len(info[6][0]) == 2:
         	duration_s, duration = info[6][0]
-                retval[name] = duration_s
-	if len(info[6][3]) == 2:
-	    baseDuration_s, baseDuration = info[6][3]
+                retval[name] = int(duration_s)
 
     return retval
 
