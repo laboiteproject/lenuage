@@ -5,17 +5,18 @@ Django web app of the laboîte project http://laboite.cc/help
 
 Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 `pyenv`) and the following packages are installed :
-pytz
-jsonfield
-django-openid-auth
-libxslt1-dev
-python3-dev
-zlib1g-dev
-libjpeg-dev
+* pytz
+* jsonfield
+* django-openid-auth
+* libxslt1-dev
+* python3-dev
+* zlib1g-dev
+* libjpeg-dev
 
-for exemple on linux distributions, use :
+For exemple on linux distributions, use:
+```
 apt-get install pytz jsonfield django-openid-auth libxslt1-dev python3-dev zlib1g-dev libjpeg-dev
-
+```
 
 ```
 pip install -r requirements.txt
