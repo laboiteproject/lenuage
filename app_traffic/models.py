@@ -71,7 +71,7 @@ def queryTimes(start, dest):
     #Request
     buf = StringIO()
     c = pycurl.Curl()
-    c.setopt(c.URL, url)
+    c.setopt(c.URL, url.encode('utf-8'))
     c.setopt(pycurl.WRITEFUNCTION, lambda x: None)
     c.setopt(c.WRITEDATA, buf)
     
