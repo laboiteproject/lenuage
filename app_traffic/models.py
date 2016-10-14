@@ -7,9 +7,9 @@ from StringIO import StringIO
 
 from boites.models import Boite, App
 
-RESP_KEY = "        cacheResponse"
     
-def strToArray(dataS):
+#Parse the google map infobox string, made of inbricked bracket arrays
+def boxStringToArray(dataS):
     retval = []
     curVal = ""
     ind = 0
@@ -25,7 +25,7 @@ def strToArray(dataS):
     				opened -= 1
     			closingInd += 1
     
-    		retval.append(strToArray(dataS[ind+1:closingInd + 1])) 
+    		retval.append(boxStringToArray(dataS[ind+1:closingInd + 1])) 
     		ind = closingInd 
     	elif char == ',':
     		if len(curVal) > 0:
@@ -44,16 +44,31 @@ def strToArray(dataS):
 
 def queryTimes(start, dest):
 
-    retval = {}
+    RESPONSE_KEY = "        cacheResponse"
 
-    url =  "https://www.google.com/maps/dir/"
-    url += "?saddr="
-    url += start.replace(' ', '+')
-    url += "&daddr="
-    url += dest.replace(' ', '+')
-    url += "&dg=dbrw&newdg=1"
+    retval = {}
     boxedData = ""
+
+    #Remove spaces in addresses
+    start = start.replace(' ', '+')
+    dest = dest.replace(' ', '+')
+
     
+    #Format the target URL
+    base_url = "https://www.google.com/maps/dir/?"
+    source_address_key = "saddr="
+    destination_address_key = "daddr="
+    end_parameters = "&dg=dbrw&newdg=1"
+
+    url =  base_url
+    url += source_address_key
+    url += start
+    url += "&"
+    url += destination_address_key
+    url += dest
+    url += end_parameters
+    
+    #Request
     buf = StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url)
@@ -65,13 +80,16 @@ def queryTimes(start, dest):
     
     body = buf.getvalue()
 
+    # Parse the response, and extract the code correponding to the info box
     for line in body.splitlines():
-    	if RESP_KEY in line:
+    	if RESPONSE_KEY in line:
     		boxedData = line[line.index('['):]
+                break
+   
+    # Convert that string to an array
+    infobox = boxStringToArray(boxedData)
     
-    trafficVals = strToArray(boxedData)
-    
-    for traj in trafficVals[0][11][0]:
+    for traj in infobox[0][11][0]:
     	info = traj[0]
     	name = info[0]
     	dist = info[1][1]
@@ -81,7 +99,6 @@ def queryTimes(start, dest):
 	if len(info[6][3]) == 2:
 	    baseDuration_s, baseDuration = info[6][3]
 
-
     return retval
 
 
@@ -89,14 +106,14 @@ class AppTraffic(App):
     start = models.CharField(_(u"Starting Point"), max_length = 1024,  null=True, default=None)
     dest = models.CharField(_(u"Destination"), max_length = 1024,null=True, default=None)
     trajectory_name = models.CharField((u"Itineray Name"), max_length = 128,null=True, default=None)
-    trip_duration = models.PositiveSmallIntegerField((u"Duration"), max_length = 128,null=True, default=None)
+    trip_duration = models.PositiveSmallIntegerField((u"Duration"),null=True, default=None)
 
     def get_app_dictionary(self):
 
         if self.enabled:
             durations = queryTimes(self.start, self.dest)
                 
-            self.trajectory_name = min(durations, key = lambda x : durations[x]) #checkformt s ?
+            self.trajectory_name = min(durations, key = lambda x : durations[x])
             self.trip_duration = durations[self.trajectory_name]
 
             self.save()
