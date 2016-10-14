@@ -111,7 +111,7 @@ class AppTraffic(App):
             durations = queryTimes(self.start, self.dest)
                 
             self.trajectory_name = min(durations, key = lambda x : durations[x])
-            self.trip_duration = durations[self.trajectory_name]
+            self.trip_duration = durations[self.trajectory_name] / 60
 
             self.save()
 
