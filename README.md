@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bgaultier/laboitepro.svg?branch=master)](https://travis-ci.org/bgaultier/laboitepro)
+
 # laboîte
 Django web app of the laboîte project http://laboite.cc/help
 
