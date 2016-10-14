@@ -32,8 +32,11 @@ class Boite(models.Model):
         apps_dict = {}
         for app in apps.get_models():
             if str(app._meta.app_label).startswith('app'):
-                app_dict = app.objects.get(boite = self).get_app_dictionary()
-                apps_dict = dict(apps_dict, **app_dict)
+                try:
+                    app_dict = app.objects.get(boite = self).get_app_dictionary()
+                    apps_dict = dict(apps_dict, **app_dict)
+                except app.DoesNotExist:
+                    pass
 
         return apps_dict
 
