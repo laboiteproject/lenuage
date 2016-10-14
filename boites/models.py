@@ -31,12 +31,12 @@ class Boite(models.Model):
     def get_apps_dictionary(self):
         apps_dict = {}
         for app in apps.get_models():
-            if str(app._meta.app_label).startswith('app'):
-                try:
-                    app_dict = app.objects.get(boite = self).get_app_dictionary()
-                    apps_dict = dict(apps_dict, **app_dict)
-                except app.DoesNotExist:
-                    pass
+            app_name = str(app._meta.app_label)
+            if app_name.startswith('app'):
+                applications = app.objects.filter(boite = self)
+                dicts = [a.get_app_dictionary() for a in applications]
+                if dicts:
+                    apps_dict[app_name] = dicts
 
         return apps_dict
 
@@ -56,7 +56,8 @@ class App(models.Model):
     last_activity = models.DateTimeField(_(u"Dernière activité"), auto_now = True)
 
     def get_app_dictionary(self):
-        pass
+        # Child classes need to implement this.
+        raise NotImplementedError
 
     class Meta:
         abstract = True
