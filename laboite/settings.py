@@ -147,6 +147,7 @@ INSTALLED_APPS = [
     "app_parcel",
     "app_tasks",
     "app_traffic",
+    "app_depute",
 ]
 
 # A sample logging configuration. The only tangible logging

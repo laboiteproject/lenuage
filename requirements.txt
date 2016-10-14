@@ -10,3 +10,4 @@ requests==2.9.2
 pycurl>=7.43.0
 
 git+git://git.symlink.me/pub/weboob/stable.git
+BeautifulSoup
