@@ -11,12 +11,13 @@ from datetime import timedelta
 
 import uuid
 
+
 @python_2_unicode_compatible
 class Boite(models.Model):
     name = models.CharField(_(u"Nom"), help_text=_(u"Veuillez saisir un nom pour votre boîte"), max_length=32, default=_(u"Ma boîte"))
     user = models.ForeignKey(User, verbose_name = _(u"Utilisateur"))
 
-    api_key = models.CharField(_(u"Clé d'API"), default=str(uuid.uuid4())[:8], max_length=8)
+    api_key = models.CharField(_(u"Clé d'API"), max_length=36, unique=True)
 
     created_date = models.DateTimeField(_(u"Date de création"), auto_now_add=True)
     last_activity = models.DateTimeField(_(u"Dernière activité"), auto_now = True)
@@ -24,6 +25,11 @@ class Boite(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.api_key:
+            self.api_key = uuid.uuid4()
+        return super(Boite, self).save(*args, **kwargs)
 
     def belongs_to(self, user):
         return user == self.user

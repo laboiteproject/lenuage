@@ -73,6 +73,20 @@ def test_get_apps_dictionnary_duplicated_apps(parcel):
     }
 
 
+def test_boite_api_key(admin_user):
+    """Make sure the api_key is properly set."""
+    boite = Boite(name="test boite", user=admin_user)
+    # Before saving the boite, no api_key is generated.
+    assert boite.api_key == ''
+    # One the boite is saved, an api_key is generated.
+    boite.save()
+    api_key = boite.api_key
+    assert api_key
+    # Any subsequent saves won't overwrite the generated api_key.
+    boite.save()
+    assert boite.api_key == api_key
+
+
 def test_get_app_dictionnary_base_app(boite):
     app = App(boite=boite)
     with pytest.raises(NotImplementedError):
