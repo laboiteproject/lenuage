@@ -1,6 +1,6 @@
 import pytest
 
-from boites.models import Boite
+from boites.models import App, Boite
 from app_parcel.models import AppParcel
 
 
@@ -71,3 +71,10 @@ def test_get_apps_dictionnary_duplicated_apps(parcel):
             },
         ]
     }
+
+
+def test_get_app_dictionnary_base_app(boite):
+    app = App(boite=boite)
+    with pytest.raises(NotImplementedError):
+        # The App base class should not be used.
+        app.get_app_dictionary()
