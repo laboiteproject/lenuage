@@ -30,13 +30,12 @@ class Boite(models.Model):
 
     def get_apps_dictionary(self):
         apps_dict = {}
-        for app in apps.get_models():
-            app_name = str(app._meta.app_label)
-            if app_name.startswith('app'):
-                applications = app.objects.filter(boite = self)
+        for model in apps.get_models():
+            if issubclass(model, App):
+                applications = model.objects.filter(boite=self)
                 dicts = [a.get_app_dictionary() for a in applications]
                 if dicts:
-                    apps_dict[app_name] = dicts
+                    apps_dict[model._meta.app_label] = dicts
 
         return apps_dict
 
