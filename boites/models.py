@@ -40,7 +40,7 @@ class Boite(models.Model):
             if issubclass(model, App):
                 applications = model.objects.filter(boite=self)
                 dicts = [a.get_app_dictionary() for a in applications]
-                if dicts:
+                if any(dicts):  # Any entry for this application has data?
                     apps_dict[model._meta.app_label] = dicts
 
         return apps_dict

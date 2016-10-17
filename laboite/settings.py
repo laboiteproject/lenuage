@@ -151,6 +151,7 @@ INSTALLED_APPS = [
     "app_traffic",
     "app_alarm",
     "app_bikes",
+    "app_metro_status",
 ]
 
 # A sample logging configuration. The only tangible logging
