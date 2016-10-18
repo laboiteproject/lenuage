@@ -5,3 +5,4 @@ from django.apps import AppConfig
 
 class AppTrafficConfig(AppConfig):
     name = 'app_traffic'
+    verbose_name = 'App : Traffic'
