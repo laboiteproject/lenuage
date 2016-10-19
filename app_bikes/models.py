@@ -14,7 +14,7 @@ from . import providers, settings
 
 class AppBikes(App):
     provider = models.CharField(_('Fournisseur de données'), help_text=_('Choisissez le service de vélos désiré'), choices=providers.get_providers(), max_length=64)
-    id_station = models.CharField(_('Identifiant station'), help_text=_('Choisissez la station dont vous voulez obtenir les informations'), max_length=64)
+    id_station = models.CharField(_('Station'), help_text=_('Choisissez la station dont vous voulez obtenir les informations'), max_length=64)
     station = models.TextField(_('Nom station'))
     slots = models.PositiveIntegerField(_('Nombre de places totales'), null=True)
     bikes = models.PositiveIntegerField(_('Nombre de vélos disponibles'), null=True)

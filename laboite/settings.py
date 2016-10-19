@@ -119,6 +119,8 @@ ROOT_URLCONF = "laboite.urls"
 WSGI_APPLICATION = "laboite.wsgi.application"
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
