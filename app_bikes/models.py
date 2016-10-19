@@ -13,11 +13,11 @@ from . import providers, settings
 
 
 class AppBikes(App):
-    provider = models.CharField(_(u'Fournisseur de données'), help_text=_('Choisissez le service de vélos désiré'), choices=providers.get_providers(), max_length=64)
-    station = models.TextField(_(u'Station'), help_text=_(u'Choisissez la station dont vous voulez obtenir les informations'))
-    nb_stands = models.PositiveIntegerField(_(u'Nombre de places totales'), null=True)
-    nb_available = models.PositiveIntegerField(_(u'Nombre de vélos disponibles'), null=True)
-    status = models.NullBooleanField(_(u'En fonctionnement ?'), null=True)
+    provider = models.CharField(_('Fournisseur de données'), help_text=_('Choisissez le service de vélos désiré'), choices=providers.get_providers(), max_length=64)
+    station = models.TextField(_('Station'), help_text=_('Choisissez la station dont vous voulez obtenir les informations'))
+    nb_stands = models.PositiveIntegerField(_('Nombre de places totales'), null=True)
+    nb_available = models.PositiveIntegerField(_('Nombre de vélos disponibles'), null=True)
+    status = models.NullBooleanField(_('En fonctionnement ?'), null=True)
 
     def get_provider_class(self):
         return providers.get_provider(self.provider)
@@ -37,3 +37,7 @@ class AppBikes(App):
             'nb_available': self.nb_available,
             'status': self.status
         }
+
+    class Meta:
+        verbose_name = _('Configuration : vélos')
+        verbose_name_plural = _('Configurations : vélos')
