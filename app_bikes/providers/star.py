@@ -15,21 +15,26 @@ class StarProvider(base.BaseProvider):
     nice_name = _(u'Star - Rennes')
 
     @classmethod
-    def get_stations(cls):
+    def get_stations(cls, nom):
         # Use a facet to get only name for all stations
         req = requests.get(cls.STAR_API_BASE_URL, params={'dataset': 'vls-stations-etat-tr',
-                                                          'rows': 0,
-                                                          'facet': 'nom',
+                                                          'q': 'nom:{}'.format(nom),
+                                                          'fields': 'idstation,nom',
                                                           'apikey': settings.STAR_API_KEY})
         if not req.ok:
             return ()
+        data = req.json()
+        if not data.get('nhits', 0):
+            # No matching data found
+            return ()
 
-        return [(item['name'], item['name']) for item in req.json().get('facet_groups', [{}])[0].get('facets', ())]
+        return [(item['idstation'], item['name']) for item in data.get('records', [])]
 
     @classmethod
-    def get_station_infos(cls, station_name):
+    def get_station_infos(cls, station_id):
         req = requests.get(cls.STAR_API_BASE_URL, params={'dataset': 'vls-stations-etat-tr',
-                                                          'q': 'nom:"{}"'.format(station_name),
+                                                          'q': 'idstation:"{}"'.format(station_id),
+                                                          'fields': 'nom,nombreemplacementsactuels,nombrevelosdisponibles,etat',
                                                           'apikey': settings.STAR_API_KEY})
         if not req.ok:
             return
@@ -39,7 +44,8 @@ class StarProvider(base.BaseProvider):
             return
         data = data['records'][0]['fields']
         return {
-            'nb_stands': data['nombreemplacementsactuels'],
-            'nb_available': data['nombrevelosdisponibles'],
+            'station': data['nom'],
+            'slots': data['nombreemplacementsactuels'],
+            'bikes': data['nombrevelosdisponibles'],
             'status': data['etat'] == u'En fonctionnement'
         }
