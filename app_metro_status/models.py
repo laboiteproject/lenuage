@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from __future__ import unicode_literals
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
@@ -30,7 +30,9 @@ class AppMetroStatus(App):
         if timezone.now() <= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
             return maybe_json(self.failures)
 
-        response = requests.get(settings.STAR_API_URL)
+        response = requests.get(
+            settings.STAR_API_URL,
+            params=settings.STAR_API_PARAMS)
         if not response.status_code == 200:
             return maybe_json(self.failures)
 

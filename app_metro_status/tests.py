@@ -112,7 +112,8 @@ def test_not_enabled():
 
 
 def test_no_data_failed_request(monkeypatch):
-    monkeypatch.setattr(requests, 'get', lambda url: MockRequest(500, ""))
+    monkeypatch.setattr(
+        requests, 'get', lambda url, params: MockRequest(500, ""))
     model = AppMetroStatus(last_activity=PAST, failures="")
     assert model.get_app_dictionary() is None
 
@@ -121,7 +122,7 @@ def test_no_data_successful_request_no_failure(monkeypatch):
     monkeypatch.setattr(
         requests,
         'get',
-        lambda url: MockRequest(200, json.loads(NO_FAILURE)))
+        lambda url, params: MockRequest(200, json.loads(NO_FAILURE)))
     model = AppMetroStatus(last_activity=PAST, failures="")
     assert model.get_app_dictionary() is None
 
@@ -129,7 +130,7 @@ def test_no_data_successful_request_with_failure(monkeypatch):
     monkeypatch.setattr(
         requests,
         'get',
-        lambda url: MockRequest(200, json.loads(WITH_FAILURE)))
+        lambda url, params: MockRequest(200, json.loads(WITH_FAILURE)))
     # Prevent the model from saving to the DB, we don't need it for tests.
     monkeypatch.setattr(AppMetroStatus, 'save', lambda self: True)
     model = AppMetroStatus(last_activity=PAST, failures="")
