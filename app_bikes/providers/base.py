@@ -1,5 +1,5 @@
 class BaseProvider(object):
-    nice_name = 'BaseProvider'
+    verbose_name = 'BaseProvider'
 
     @classmethod
     def get_stations(cls):

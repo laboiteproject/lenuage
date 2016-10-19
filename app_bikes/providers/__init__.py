@@ -13,7 +13,7 @@ def get_provider(key):
 
 
 def get_providers():
-    ret = [(key, cls.nice_name) for key, cls in PROVIDERS.iteritems()]
+    ret = [(key, cls.verbose_name) for key, cls in PROVIDERS.iteritems()]
     ret.sort(key=operator.itemgetter(1))
     return ret
 
