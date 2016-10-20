@@ -6,5 +6,5 @@ class BaseProvider(object):
         raise NotImplementedError()
 
     @classmethod
-    def get_station_infos(cls, station_name):
+    def get_station_infos(cls, station_name_or_id):
         raise NotImplementedError()

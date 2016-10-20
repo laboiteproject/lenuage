@@ -18,10 +18,15 @@ class StarProvider(base.BaseProvider):
     @classmethod
     def get_stations(cls, query):
         # Use a facet to get only name for all stations
+        if query.isdigit():
+            query = 'nom:{query} OR idstation:{query}'.format(query=query)
+        else:
+            # As idstation is an int in the DB it raises an error otherwise
+            query = 'nom:{}'.format(query)
         req = requests.get(cls.STAR_API_BASE_URL, params={'apikey': settings.STAR_API_KEY,
                                                           'dataset': 'vls-stations-etat-tr',
                                                           'fields': 'idstation,nom',
-                                                          'q': 'nom:{}'.format(query),
+                                                          'q': query,
                                                           'sort': 'nom',
                                                           'timezone': timezone.get_current_timezone_name()})
         if not req.ok:
