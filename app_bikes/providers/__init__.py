@@ -1,10 +1,12 @@
 import operator
 
 from .star import StarProvider
+from .velib import VelibProvider
 
 
 PROVIDERS = {
-    'star': StarProvider
+    'star': StarProvider,
+    'velib': VelibProvider
 }
 
 

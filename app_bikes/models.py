@@ -20,9 +20,6 @@ class AppBikes(App):
     bikes = models.PositiveIntegerField(_('Nombre de vélos disponibles'), null=True)
     status = models.NullBooleanField(_('En fonctionnement ?'), null=True)
 
-    def get_provider_class(self):
-        return providers.get_provider(self.provider)
-
     def get_app_dictionary(self):
         if self.enabled:
             if timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):

@@ -10,7 +10,7 @@ class StationAutoComplete(autocomplete.Select2ListView):
     def get_list(self):
         provider = get_provider(self.forwarded['provider'])
         if provider is not None:
-            return get_provider('star').get_stations(self.q)
+            return provider.get_stations(self.q)
         return ()
 
     def get(self, request, *args, **kwargs):

@@ -9,15 +9,12 @@ from .. import settings
 
 
 class StarProvider(base.BaseProvider):
-    STAR_API_BASE_URL = "https://data.explore.star.fr/api/records/1.0/search"
-
-    STAR_API_URL = "{}search?dataset=vls-stations-etat-tr&facet=nom&apikey={}".format(STAR_API_BASE_URL, settings.STAR_API_KEY)
+    STAR_API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
 
     verbose_name = _L(u'Star - Rennes')
 
     @classmethod
     def get_stations(cls, query):
-        # Use a facet to get only name for all stations
         if query.isdigit():
             query = 'nom:{query} OR idstation:{query}'.format(query=query)
         else:
