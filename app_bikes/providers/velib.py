@@ -20,7 +20,8 @@ class VelibProvider(base.BaseProvider):
         else:
             # As idstation is an int in the DB it raises an error otherwise
             query = 'name:{}'.format(query)
-        req = requests.get(cls.VELIB_BASE_URL, params={'dataset': 'stations-velib-disponibilites-en-temps-reel',
+        req = requests.get(cls.VELIB_BASE_URL, params={'apikey': settings.VELIB_API_KEY,
+                                                       'dataset': 'stations-velib-disponibilites-en-temps-reel',
                                                        'fields': 'number,name',
                                                        'q': query,
                                                        #'sort': 'name',  Seems to create an error 2016-10-21
@@ -36,7 +37,8 @@ class VelibProvider(base.BaseProvider):
 
     @classmethod
     def get_station_infos(cls, station_id):
-        req = requests.get(cls.VELIB_BASE_URL, params={'dataset': 'stations-velib-disponibilites-en-temps-reel',
+        req = requests.get(cls.VELIB_BASE_URL, params={'apikey': settings.VELIB_API_KEY,
+                                                       'dataset': 'stations-velib-disponibilites-en-temps-reel',
                                                        'fields': 'name,bike_stands,available_bikes,status',
                                                        'q': 'number:"{}"'.format(station_id),
                                                        'timezone': timezone.get_current_timezone_name()})
