@@ -107,14 +107,14 @@ class MockRequest():
 
 
 def test_not_enabled():
-    model = AppMetroStatus(last_activity=PAST)
+    model = AppMetroStatus(last_activity=PAST, created_date=PAST)
     assert model.get_app_dictionary() is None
 
 
 def test_no_data_failed_request(monkeypatch):
     monkeypatch.setattr(
         requests, 'get', lambda url, params: MockRequest(500, ""))
-    model = AppMetroStatus(last_activity=PAST, failures="")
+    model = AppMetroStatus(last_activity=PAST, created_date=PAST, failures="")
     assert model.get_app_dictionary() is None
 
 
@@ -123,7 +123,7 @@ def test_no_data_successful_request_no_failure(monkeypatch):
         requests,
         'get',
         lambda url, params: MockRequest(200, json.loads(NO_FAILURE)))
-    model = AppMetroStatus(last_activity=PAST, failures="")
+    model = AppMetroStatus(last_activity=PAST, created_date=PAST, failures="")
     assert model.get_app_dictionary() is None
 
 def test_no_data_successful_request_with_failure(monkeypatch):
@@ -133,6 +133,21 @@ def test_no_data_successful_request_with_failure(monkeypatch):
         lambda url, params: MockRequest(200, json.loads(WITH_FAILURE)))
     # Prevent the model from saving to the DB, we don't need it for tests.
     monkeypatch.setattr(AppMetroStatus, 'save', lambda self: True)
-    model = AppMetroStatus(last_activity=PAST, failures="")
+    model = AppMetroStatus(last_activity=PAST, created_date=PAST, failures="")
     assert model.get_app_dictionary() == [
         {'end_failure': None, 'line_name': 'a'}]
+
+
+def test_should_update():
+    # Last activity was more than <delay> ago: update.
+    model = AppMetroStatus(last_activity=PAST, created_date=PAST, failures="")
+    assert model.should_update()
+
+    # Last activity was not far ago, don't update.
+    now = timezone.now()
+    model = AppMetroStatus(last_activity=now, created_date=PAST, failures="")
+    assert not model.should_update()
+
+    # Last activity was not far ago, but was just created: update.
+    model = AppMetroStatus(last_activity=now, created_date=now, failures="")
+    assert model.should_update()

@@ -22,12 +22,24 @@ def maybe_json(json_data):
 class AppMetroStatus(App):
     failures = models.TextField(_(u'Pannes'))
 
+    def should_update(self):
+        """Only update if the app was just created for this box, or if the last
+        update was more than VALUES_UPDATE_INTERVAL minutes ago."""
+        update_at = (
+            self.last_activity +
+            timedelta(minutes=settings.VALUES_UPDATE_INTERVAL))
+        approx_creation_time = self.created_date + timedelta(seconds=10)
+        now = timezone.now()
+        return (
+            now <= approx_creation_time  # Just created.
+            or now >= update_at)  # Updated long ago enough.
+
     def get_app_dictionary(self):
         if not self.enabled:
             return
 
         # we want to update every VALUES_UPDATE_INTERVAL minutes
-        if timezone.now() <= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+        if not self.should_update():
             return maybe_json(self.failures)
 
         response = requests.get(
