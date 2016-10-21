@@ -21,13 +21,18 @@ class AppBikes(App):
     status = models.NullBooleanField(_L('En fonctionnement ?'), null=True)
 
     def get_app_dictionary(self):
-        if self.enabled:
-            if timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
-                cls = providers.get_provider(self.provider)
-                data = cls.get_station_infos(self.id_station)
-                for field in ('station', 'slots', 'bikes', 'status'):
-                    setattr(self, field, data[field])
-                self.save()
+        if not self.enabled:
+            return None
+
+        if timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            cls = providers.get_provider(self.provider)
+            data = cls.get_station_infos(self.id_station)
+            if data is None:
+                return None
+
+            for field in ('station', 'slots', 'bikes', 'status'):
+                setattr(self, field, data[field])
+            self.save()
         return {
             'provider': self.provider,
             'station': self.station,
@@ -37,5 +42,5 @@ class AppBikes(App):
         }
 
     class Meta:
-        verbose_name = _('Configuration : vélos')
-        verbose_name_plural = _('Configurations : vélos')
+        verbose_name = _L('Configuration : vélos')
+        verbose_name_plural = _L('Configurations : vélos')

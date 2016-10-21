@@ -43,11 +43,11 @@ class VelibProvider(base.BaseProvider):
                                                        'q': 'number:"{}"'.format(station_id),
                                                        'timezone': timezone.get_current_timezone_name()})
         if not req.ok:
-            return
+            return None
         data = req.json()
         if not data.get('nhits', 0):
             # No matching data found
-            return
+            return None
         data = data['records'][0]['fields']
         return {
             'station': data['name'],
