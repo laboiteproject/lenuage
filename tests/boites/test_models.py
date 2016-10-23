@@ -22,7 +22,7 @@ def parcel(boite):
     yield parcel
 
 
-def test_get_app_dictionnary(parcel):
+def test_get_app_dictionary(parcel):
     assert parcel.get_app_dictionary() == {
         "arrival": None,
         "info": None,
@@ -32,7 +32,7 @@ def test_get_app_dictionnary(parcel):
     }
 
 
-def test_get_apps_dictionnary_single_app(parcel):
+def test_get_apps_dictionary_single_app(parcel):
     assert parcel.boite.get_apps_dictionary() == {
         "app_parcel": [
             {
@@ -46,7 +46,7 @@ def test_get_apps_dictionnary_single_app(parcel):
     }
 
 
-def test_get_apps_dictionnary_duplicated_apps(parcel):
+def test_get_apps_dictionary_duplicated_apps(parcel):
     parcel2 = parcel
     parcel2.id = None
     parcel2.save()  # Hack: save parcel2 as a new instance.
@@ -87,7 +87,7 @@ def test_boite_api_key(admin_user):
     assert boite.api_key == api_key
 
 
-def test_get_app_dictionnary_base_app(boite):
+def test_get_app_dictionary_base_app(boite):
     app = App(boite=boite)
     with pytest.raises(NotImplementedError):
         # The App base class should not be used.
