@@ -19,7 +19,8 @@ class BikeModelForm(forms.ModelForm):
         widgets = {
             'id_station': autocomplete.ListSelect2(url='station-autocomplete',
                                                    forward=('provider',),
-                                                   attrs={'data-allow-clear': 'false'})
+                                                   attrs={'data-allow-clear': 'false',
+                                                          'data-minimum-input-length': 2})
         }
 
     class Media:
