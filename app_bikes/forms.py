@@ -10,9 +10,9 @@ class BikeModelForm(forms.ModelForm):
             self.fields['id_station'].widget.choices = ((self.instance.id_station, self.instance.station),)
 
     def validate_unique(self):
+        """If the form had an error and a station was chosen, we need to setup the widget choices to the previously selected value for the autocomplete to display it properly"""
         super(BikeModelForm, self).validate_unique()
         if self.errors and 'id_station' in self.data:
-            # A station was chosen, reinit choices with it
             self.fields['id_station'].widget.choices = ((self.cleaned_data['id_station'], self.data['station']),)
 
     class Meta:
