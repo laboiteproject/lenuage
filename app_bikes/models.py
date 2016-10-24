@@ -25,8 +25,8 @@ class AppBikes(App):
             return None
 
         if timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
-            cls = providers.get_provider(self.provider)
-            data = cls.get_station_infos(self.id_station)
+            provider_class = providers.get_provider(self.provider)
+            data = provider_class.get_station_infos(self.id_station)
             if data is None:
                 return None
 
