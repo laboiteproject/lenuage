@@ -23,7 +23,9 @@ class AppBikes(App):
     def should_update(self):
         if self.last_activity is None:
             return True
-        return timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL)
+        now = timezone.now()
+        return any((now - self.created_date <= timedelta(seconds=10),  # Object was created less than 10 seconds ago
+                    now >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL)))  # Delay has passed
 
     def get_app_dictionary(self):
         if not self.enabled:

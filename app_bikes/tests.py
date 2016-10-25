@@ -59,6 +59,8 @@ def test_should_update():
     assert model.should_update()
     model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=None)
     assert model.should_update()
+    model = AppBikes(created_date=timezone.now(), last_activity=timezone.now())
+    assert model.should_update()
     model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=timezone.now() - timedelta(hours=1))
     assert model.should_update()
 
