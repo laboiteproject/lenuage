@@ -13,7 +13,12 @@ class BikeModelForm(forms.ModelForm):
         """If the form had an error and a station was chosen, we need to setup the widget choices to the previously selected value for the autocomplete to display it properly"""
         super(BikeModelForm, self).validate_unique()
         if self.errors and 'id_station' in self.data:
-            self.fields['id_station'].widget.choices = ((self.cleaned_data['id_station'], self.data['station']),)
+            station_name = ''
+            if self.data['station']:  # Station was selected through autocomplete before posting and the value was set
+                station_name = self.data['station']
+            elif self.instance is not None:  # Get it from the instance
+                station_name = self.instance.station
+            self.fields['id_station'].widget.choices = ((self.cleaned_data['id_station'], station_name),)
 
     class Meta:
         widgets = {
