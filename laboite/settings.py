@@ -150,6 +150,7 @@ INSTALLED_APPS = [
     "app_tasks",
     "app_traffic",
     "app_alarm",
+    "app_bus",
     "app_bikes",
 ]
 
