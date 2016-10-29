@@ -54,8 +54,24 @@ def _get_station_infos(provider_name):
 
 
 # Common
+def test_should_update():
+    model = AppBikes(created_date=timezone.now(), last_activity=None)
+    assert model.should_update()
+    model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=None)
+    assert model.should_update()
+    model = AppBikes(created_date=timezone.now(), last_activity=timezone.now())
+    assert model.should_update()
+    model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=timezone.now() - timedelta(hours=1))
+    assert model.should_update()
+
+    model = AppBikes(created_date=timezone.now() - timedelta(seconds=30), last_activity=timezone.now())
+    assert not model.should_update()
+    model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=timezone.now())
+    assert not model.should_update()
+
+
 def test_not_enabled():
-    model = AppBikes(last_activity=PAST, enabled=False)
+    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=False)
     assert model.get_app_dictionary() is None
 
 
@@ -72,7 +88,7 @@ def test_search_results_ko_star(monkeypatch):
 
 def test_station_infos_ok_star(monkeypatch):
     _patch_ok(monkeypatch, STAR_STATION_INFOS)
-    model = AppBikes(last_activity=PAST, enabled=True, provider='star')
+    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='star')
     assert model.get_app_dictionary() == {'provider': 'star',
                                           'station': 'Place Hoche',
                                           'slots': 24,
@@ -82,7 +98,7 @@ def test_station_infos_ok_star(monkeypatch):
 
 def test_station_infos_ko_star(monkeypatch):
     _patch_ko(monkeypatch)
-    model = AppBikes(last_activity=PAST, enabled=True, provider='star')
+    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='star')
     assert model.get_app_dictionary() is None
 
 
@@ -99,7 +115,7 @@ def test_search_results_ko_velib(monkeypatch):
 
 def test_station_infos_ok_velib(monkeypatch):
     _patch_ok(monkeypatch, VELIB_STATION_INFOS)
-    model = AppBikes(last_activity=PAST, enabled=True, provider='velib')
+    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='velib')
     assert model.get_app_dictionary() == {'provider': 'velib',
                                           'station': '08020 - METRO ROME',
                                           'slots': 44,
@@ -109,5 +125,5 @@ def test_station_infos_ok_velib(monkeypatch):
 
 def test_station_infos_ko_velib(monkeypatch):
     _patch_ko(monkeypatch)
-    model = AppBikes(last_activity=PAST, enabled=True, provider='velib')
+    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='velib')
     assert model.get_app_dictionary() is None

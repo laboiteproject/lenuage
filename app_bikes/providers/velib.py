@@ -18,7 +18,7 @@ class VelibProvider(base.BaseProvider):
         if query.isdigit():
             query = 'name:{query} OR number:{query}'.format(query=query)
         else:
-            # As number is an int in the API it raises an error otherwise
+            # Querying number with a string value raises an error, we remove this field
             query = 'name:{}'.format(query)
         req = requests.get(cls.VELIB_BASE_URL, params={'apikey': settings.VELIB_API_KEY,
                                                        'dataset': 'stations-velib-disponibilites-en-temps-reel',

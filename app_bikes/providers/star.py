@@ -18,7 +18,7 @@ class StarProvider(base.BaseProvider):
         if query.isdigit():
             query = 'nom:{query} OR idstation:{query}'.format(query=query)
         else:
-            # As idstation is an int in the API it raises an error otherwise
+            # Querying idstation with a string value raises an error, we remove this field
             query = 'nom:{}'.format(query)
         req = requests.get(cls.STAR_API_BASE_URL, params={'apikey': settings.STAR_API_KEY,
                                                           'dataset': 'vls-stations-etat-tr',
