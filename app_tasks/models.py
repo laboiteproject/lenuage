@@ -9,8 +9,11 @@ from datetime import timedelta
 from boites.models import Boite, App
 from app_tasks import settings
 
+import asana
+
 class AppTasks(App):
     asana_personal_access_token = models.CharField(_(u"Clé d'API Asana "), help_text=_(u"Veuillez indiquer votre clé d'API personnelle Asana (Personal Access Token)"), max_length=64, default=None, null=True)
+    asana_project_id = models.PositiveIntegerField(_(u"Identifiant projet Asana"), help_text=_(u"Veuillez indiquer l'identifiant du projet Asana dans lequel vous souhaitez travailler"), default=None, null=True)
 
     # from https://asana.com/developers/api-reference/tasks
     name = models.CharField(_(u"Nom de la prochaine tâche"), max_length=128, default=None, null=True)
@@ -20,12 +23,21 @@ class AppTasks(App):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
             if self.name is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
-                # bullshit value since I got a Connection reset by peer today
-                #client = asana.Client.access_token("0/32bf71e2de8bb225be896e7a13111fbe")
-                #workspaces = client.workspaces.find_all()
+                client = asana.Client.access_token(self.asana_personal_access_token)
+                me = client.users.me()
 
-                self.name = "vérifier les div de la page Le MOOC en un coup d'oeil"
-                self.tasks = 4
+                tasks = client.tasks.find_all({'project': self.asana_project_id, 'opt_fields' : 'due_on, completed, name, assignee'})
+                uncompleted_tasks = 0
+                self.name = None
+
+                for task in tasks:
+                    if task['completed'] is False and task['assignee'] is not None:
+                        if task['assignee']['id'] == me['id']:
+                            uncompleted_tasks += 1
+                            if uncompleted_tasks == 1:
+                                self.name = task['name']
+
+                self.tasks = uncompleted_tasks
                 self.save()
 
         return {'name': self.name, 'tasks' : self.tasks}
