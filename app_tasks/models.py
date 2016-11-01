@@ -12,7 +12,7 @@ from app_tasks import settings
 import asana
 
 class AppTasks(App):
-    asana_personal_access_token = models.CharField(_(u"Clé d'API Asana "), help_text=_(u"Veuillez indiquer votre clé d'API personnelle Asana (Personal Access Token)"), max_length=64, default=None, null=True)
+    asana_personal_access_token = models.CharField(_(u"Clé d'API Asana"), help_text=_(u"Veuillez indiquer votre clé d'API personnelle Asana (Personal Access Token)"), max_length=64, default=None, null=True)
     asana_project_id = models.PositiveIntegerField(_(u"Identifiant projet Asana"), help_text=_(u"Veuillez indiquer l'identifiant du projet Asana dans lequel vous souhaitez travailler"), default=None, null=True)
 
     # from https://asana.com/developers/api-reference/tasks
