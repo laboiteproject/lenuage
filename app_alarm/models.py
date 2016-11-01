@@ -59,9 +59,8 @@ class AppAlarm(App):
 
 
     def get_app_dictionary(self):
-
-
-        return {'alarm': self.heure+":"+self.minutes,}
+        if self.enabled:
+            return {'alarm': self.heure+":"+self.minutes,}
 
     class Meta:
         verbose_name = _("Configuration : alarm")

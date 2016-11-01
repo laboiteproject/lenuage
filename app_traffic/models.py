@@ -7,7 +7,7 @@ from StringIO import StringIO
 
 from boites.models import Boite, App
 
-    
+
 #Parse the google map infobox string, made of inbricked bracket arrays
 def boxStringToArray(dataS):
     retval = []
@@ -24,9 +24,9 @@ def boxStringToArray(dataS):
     			elif dataS[closingInd] == ']':
     				opened -= 1
     			closingInd += 1
-    
-    		retval.append(boxStringToArray(dataS[ind+1:closingInd + 1])) 
-    		ind = closingInd 
+
+    		retval.append(boxStringToArray(dataS[ind+1:closingInd + 1]))
+    		ind = closingInd
     	elif char == ',':
     		if len(curVal) > 0:
     			retval.append(curVal)
@@ -34,10 +34,10 @@ def boxStringToArray(dataS):
     	elif char != ']':
     		curVal += char
         ind += 1
-    
+
     if len(curVal) > 0:
         retval.append(curVal)
-    
+
     return retval
 
 def queryTimes(start, dest):
@@ -51,7 +51,7 @@ def queryTimes(start, dest):
     start = start.replace(' ', '+')
     dest = dest.replace(' ', '+')
 
-    
+
     #Format the target URL
     base_url = "https://www.google.com/maps/dir/?"
     source_address_key = "saddr="
@@ -65,17 +65,17 @@ def queryTimes(start, dest):
     url += destination_address_key
     url += dest
     url += end_parameters
-    
+
     #Request
     buf = StringIO()
     c = pycurl.Curl()
     c.setopt(c.URL, url.encode('utf-8'))
     c.setopt(pycurl.WRITEFUNCTION, lambda x: None)
     c.setopt(c.WRITEDATA, buf)
-    
+
     c.perform()
     c.close()
-    
+
     body = buf.getvalue()
 
     # Parse the response, and extract the code correponding to the info box
@@ -83,10 +83,10 @@ def queryTimes(start, dest):
     	if RESPONSE_KEY in line:
     		boxedData = line[line.index('['):]
                 break
-   
+
     # Convert that string to an array
     infobox = boxStringToArray(boxedData)
-    
+
     for traj in infobox[0][11][0]:
     	info = traj[0]
     	name = info[0]
@@ -109,13 +109,13 @@ class AppTraffic(App):
 
         if self.enabled:
             durations = queryTimes(self.start, self.dest)
-                
+
             self.trajectory_name = min(durations, key = lambda x : durations[x])
             self.trip_duration = durations[self.trajectory_name] / 60
 
             self.save()
 
-        return {'start': self.start, 'dest' : self.dest, 'trajectory_name':self.trajectory_name, 'trip_duration':self.trip_duration}
+            return {'start': self.start, 'dest' : self.dest, 'trajectory_name':self.trajectory_name, 'trip_duration':self.trip_duration}
 
     class Meta:
         verbose_name = _("Configuration : traffic")

@@ -40,7 +40,7 @@ class AppTasks(App):
                 self.tasks = uncompleted_tasks
                 self.save()
 
-        return {'name': self.name, 'tasks' : self.tasks}
+            return {'name': self.name, 'tasks' : self.tasks}
 
     class Meta:
         verbose_name = _("Configuration : tâches")

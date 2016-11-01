@@ -47,7 +47,7 @@ class AppWeather(App):
 
                 self.save()
 
-        return {'temperature_now': self.temperature_now, 'humidity_now' : self.humidity_now, 'icon_now': self.icon_now}
+            return {'temperature_now': self.temperature_now, 'humidity_now' : self.humidity_now, 'icon_now': self.icon_now}
 
     def convert_owm_icon(self, owm_icon):
         # clouds

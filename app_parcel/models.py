@@ -59,7 +59,7 @@ class AppParcel(App):
                         self.info = parcel_dict['info']
                         self.save()
 
-        return {'parcel': self.parcel, 'parcel_carrier' : self.parcel_carrier, 'arrival': self.arrival, 'status': self.status, 'info':self.info}
+            return {'parcel': self.parcel, 'parcel_carrier' : self.parcel_carrier, 'arrival': self.arrival, 'status': self.status, 'info':self.info}
 
     class Meta:
         verbose_name = _("Configuration : colis")

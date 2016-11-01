@@ -42,7 +42,7 @@ class AppBus(App):
                 self.departure1 = departure.seconds/60
                 self.save()
 
-        return {'route0' : self.route0, 'departure0': self.departure0, 'route1': self.route1, 'departure1':self.departure1}
+            return {'route0' : self.route0, 'departure0': self.departure0, 'route1': self.route1, 'departure1':self.departure1}
 
     class Meta:
         verbose_name = _("Configuration : bus")

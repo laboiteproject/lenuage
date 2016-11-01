@@ -451,17 +451,18 @@ class AppTime(App):
     tz = models.CharField(_(u"Fuseau horaire"), help_text=_(u"Veuillez saisir un fuseau horaire pour votre boîte"), max_length=32, default=_(u"Europe/Paris"), choices=TZ_CHOICES)
 
     def get_app_dictionary(self):
-        time_fmt = '%H:%M'
-        date_fmt = '%d/%m/%y'
-        tz = pytz.timezone(self.tz)
-        now = timezone.now()
-        now = now.replace(tzinfo=pytz.utc).astimezone(tz=tz)
+        if self.enabled:
+            time_fmt = '%H:%M'
+            date_fmt = '%d/%m/%y'
+            tz = pytz.timezone(self.tz)
+            now = timezone.now()
+            now = now.replace(tzinfo=pytz.utc).astimezone(tz=tz)
 
-        self.time = now.strftime(time_fmt)
-        self.date = now.strftime(date_fmt)
-        self.save()
+            self.time = now.strftime(time_fmt)
+            self.date = now.strftime(date_fmt)
+            self.save()
 
-        return {'time': self.time, 'date' : self.date}
+            return {'time': self.time, 'date' : self.date}
 
     class Meta:
         verbose_name = _("Configuration : temps")
