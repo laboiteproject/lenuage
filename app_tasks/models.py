@@ -22,7 +22,7 @@ class AppTasks(App):
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.name is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            if self.last_activity is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
                 client = asana.Client.access_token(self.asana_personal_access_token)
                 me = client.users.me()
 

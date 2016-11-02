@@ -24,7 +24,7 @@ class AppBus(App):
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.stop is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            if self.last_activity is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
                 url = 'https://data.explore.star.fr/api/records/1.0/search?dataset=tco-bus-circulation-passages-tr&rows=2&apikey=d55230a97e137bd4b073009462489f85d6486c1c242fb43db3d152a7&sort=-depart&refine.idarret='
                 url += str(self.stop)
 

@@ -106,7 +106,6 @@ class AppTraffic(App):
     trip_duration = models.PositiveSmallIntegerField((u"Duration"),null=True, default=None)
 
     def get_app_dictionary(self):
-
         if self.enabled:
             durations = queryTimes(self.start, self.dest)
 

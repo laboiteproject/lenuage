@@ -26,7 +26,7 @@ class AppCalendar(App):
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.dtstart is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            if self.last_activity is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
                 now = timezone.now()
                 today = now.replace(hour = 0, minute=0)
                 tonight = now.replace(hour = 23, minute=59)
@@ -54,7 +54,7 @@ class AppCalendar(App):
                             self.summary = str(event.get('summary'))
                             self.save()
 
-        return {'dtstart': self.dtstart, 'summary' : self.summary}
+            return {'dtstart': self.dtstart, 'summary' : self.summary}
 
     class Meta:
         verbose_name = _("Configuration : calendrier")

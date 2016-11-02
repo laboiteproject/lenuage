@@ -152,6 +152,8 @@ INSTALLED_APPS = [
     "app_alarm",
     "app_bus",
     "app_bikes",
+    "app_calendar",
+    "app_messages",
 ]
 
 # A sample logging configuration. The only tangible logging
