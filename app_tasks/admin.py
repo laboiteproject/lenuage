@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import AppTasks
-from .forms import TaskModelForm
+
 
 class AppTasksAdmin(admin.ModelAdmin):
     readonly_fields = ('name', 'tasks', 'created_date', 'last_activity')
