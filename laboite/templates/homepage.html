@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block head_title %}pinax-project-account{% endblock %}
+{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }}{% endif %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
 

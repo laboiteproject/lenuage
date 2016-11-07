@@ -4,7 +4,7 @@
         "model": "sites.site",
         "fields": {
             "domain": "localhost:8000",
-            "name": "laboite.pro [localhost]"
+            "name": "laboîte"
         }
     },
     {
@@ -12,7 +12,7 @@
         "model": "sites.site",
         "fields": {
             "domain": "laboite.pro",
-            "name": "laboite.pro"
+            "name": "laboîte"
         }
     }
 ]

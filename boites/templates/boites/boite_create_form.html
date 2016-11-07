@@ -1,0 +1,25 @@
+{% extends "theme_bootstrap/subnav_base.html" %}
+
+{% load i18n %}
+{% load bootstrap %}
+
+{% block body_class %}boite boite-create{% endblock %}
+
+{% block head_title %}{% trans "Ajouter boîte" %}{% endblock %}
+
+{% block body_base %}
+    <section id="content_body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <form method="POST" action="{% url 'boites:create' %}">
+                        <legend>{% trans "Ajouter boîte" %}</legend>
+                        {% csrf_token %}
+                        {{ form|bootstrap }}
+                        <button class="btn btn-primary" type="submit">{% trans "Créer" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -128,6 +128,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
 
     # theme
     "bootstrapform",
@@ -138,6 +139,7 @@ INSTALLED_APPS = [
     "pinax.eventlog",
     "pinax.webanalytics",
     "social.apps.django_app.default",
+    "django_gravatar",
 
     # project
     "laboite",

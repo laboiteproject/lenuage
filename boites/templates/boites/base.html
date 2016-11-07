@@ -1,0 +1,22 @@
+{% extends "theme_bootstrap/subnav_base.html" %}
+
+{% load i18n %}
+
+{% block body_class %}boite{% endblock %}
+
+{% block subnav %}
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>{% trans "Actions" %}</strong></div>
+    <div class="list-group">
+        <a class="list-group-item boite-update" href="{% url 'boites:update' object.id %}">
+            {% trans "Confuguration de votre boîte" %}
+        </a>
+        <a class="list-group-item boite-api_key" href="{% url 'boites:generate' object.id %}">
+            {% trans "Générer une nouvelle clé d'API" %}
+        </a>
+        <a class="list-group-item boite-delete" href="{% url 'boites:delete' object.id %}">
+            {% trans "Supprimer la boîte" %}
+        </a>
+    </div>
+</div>
+{% endblock %}

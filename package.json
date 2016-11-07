@@ -1,18 +1,18 @@
 {
   "repository": {
     "type": "git",
-    "url": "https://github.com/pinax/pinax-project"
+    "url": "git+https://github.com/pinax/pinax-project.git"
   },
   "scripts": {
     "build": "NODE_PATH=. ./node_modules/.bin/gulp release",
     "watch": "NODE_PATH=. ./node_modules/.bin/gulp",
     "lint": "NODE_PATH=. ./node_modules/.bin/gulp xo",
-    "test": "./node_modules/.bin/gulp test"
+    "test": "gulp test"
   },
-  "license": "",
+  "license": "AGPL-3.0",
   "dependencies": {
     "bootstrap": "^3.3.6",
-    "font-awesome": "^4.5.0",
+    "font-awesome": "^4.7.0",
     "jquery": "^2.1.4"
   },
   "babel": {
@@ -82,7 +82,7 @@
     "browserify-hmr": "^0.3.1",
     "del": "^2.2.0",
     "fs": "0.0.2",
-    "gulp": "gulpjs/gulp#4.0",
+    "gulp": "github:gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-cleanup": "^1.0.0",
     "gulp-compile-handlebars": "^0.6.1",
@@ -97,5 +97,17 @@
     "gulp-xo": "^0.7.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
-  }
+  },
+  "name": "laboite",
+  "description": "[![Build Status](https://api.travis-ci.org/laboiteproject/laboite-backend.svg?branch=master)](https://travis-ci.org/laboiteproject/laboite-backend)",
+  "bugs": {
+    "url": "https://github.com/pinax/pinax-project/issues"
+  },
+  "homepage": "https://github.com/pinax/pinax-project#readme",
+  "version": "1.0.0",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "author": "Baptiste Gaultier"
 }

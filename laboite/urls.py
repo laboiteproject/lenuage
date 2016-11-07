@@ -12,7 +12,7 @@ urlpatterns = [
     url(r"^account/", include("account.urls")),
     url(r"^account/social/accounts/$", TemplateView.as_view(template_name="account/social.html"), name="account_social_accounts"),
     url(r"^account/social/", include("social.apps.django_app.urls", namespace="social")),
-    url(r'^boites/', include('boites.urls')),
+    url(r'^boites/', include('boites.urls', namespace="boites")),
     url(r'^app_bikes/', include('app_bikes.urls')),
 ]
 

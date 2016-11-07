@@ -1,17 +1,72 @@
-{% extends "site_base.html" %}
+{% extends "boites/base.html" %}
 
-{% load account_tags %}
 {% load i18n %}
 {% load bootstrap %}
+{% load humanize %}
 
-{% block head_title %}{% trans "Boîte" %}{% endblock %}
+{% block body_class %}boite boite-update{% endblock %}
+
+{% block head_title %}{{ object.name }}{% endblock %}
 
 {% block body %}
     <div class="row">
-        <div class="col-md-4">
-            <form action="" method="post">{% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">{% trans "Modifier" %}</button>
+        <div class="col-md-5">
+            <form method="POST" action="{% url 'boites:update' object.id %}">
+                <legend>{{ object.name }}</legend>
+                {% csrf_token %}
+                {{ form|bootstrap }}
+                <div class="form-group">
+                    <label class="control-label" for="id_api_key">{{ api_key.verbose_name }}</label>
+                    <div class=" ">
+                        <div class="input-group">
+                            <input disabled class="form-control" id="id_{{ api_key.name}}" maxlength="36" name="{{ api_key.name}}" value="{{ boite.api_key }}" type="text">
+                            <span class="input-group-btn">
+                              <a href="{% url 'boites:generate' object.id %}" class="btn btn-info"><i class="fa fa-refresh"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="id_{{ last_activity.name }}">{{ last_activity.verbose_name }}</label>
+                            <div class=" ">
+                                <p class="text-muted">{{ boite.last_activity|naturaltime }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="id_{{ last_connection.name }}">{{ last_connection.verbose_name }}</label>
+                            <div class=" ">
+                                <p class="text-muted">{{ boite.last_connection }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#apiModal">{% trans "Voir le JSON" %}</button><br/><br/>
+                <div class="modal fade" id="apiModal" tabindex="-1" role="dialog" aria-labelledby="apiModalLabel">
+                	<div class="modal-dialog" role="document">
+                		<div class="modal-content">
+                			<div class="modal-header">
+                				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                				<h4 class="modal-title" id="apiModalLabel">{% trans "JSON envoyé à" %} {{ object.name }}</h4>
+                			</div>
+                			<div class="modal-body">
+                                <p>
+                                    {% trans "Vous trouverez ci-dessous le json envoyé à votre boîte :" %}
+                                </p>
+                				{{ pretty_json_html }}
+                			</div>
+                			<div class="modal-footer">
+                				<button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Fermer" %}</button>
+                			</div>
+                		</div>
+                	</div>
+                </div>
+                <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
             </form>
         </div>
     </div>
