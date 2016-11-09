@@ -12,6 +12,8 @@ Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 * python2.7-dev (depending on your version)
 * zlib1g-dev
 * libjpeg-dev
+* libcurl4-gnutls-dev
+* libgnutls28-dev
 
 For exemple on linux distributions, use:
 ```
