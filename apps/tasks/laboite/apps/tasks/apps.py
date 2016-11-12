@@ -5,5 +5,5 @@ from django.apps import AppConfig
 
 
 class AppTasksConfig(AppConfig):
-    name = 'app_tasks'
+    name = label = 'laboite.apps.tasks'
     verbose_name = 'App : Tâches'

@@ -152,9 +152,9 @@ INSTALLED_APPS = [
     "laboite.apps.calendar",
     "laboite.apps.messages",
     "laboite.apps.parcel",
+    "laboite.apps.tasks",
     "app_time",
     "app_weather",
-    "app_tasks",
     "app_traffic",
 ]
 

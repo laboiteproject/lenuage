@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 from boites.models import Boite, App
-from app_tasks import settings
+from . import settings
 
 import asana
 
