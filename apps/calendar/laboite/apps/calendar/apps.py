@@ -5,5 +5,5 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class AppCalendarConfig(AppConfig):
-    name = 'app_calendar'
+    name = 'laboite.apps.calendar'
     verbose_name = _('App : calendrier')
