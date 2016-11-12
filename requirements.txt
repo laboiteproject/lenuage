@@ -13,7 +13,7 @@ pycurl>=7.43.0
 icalendar>=3.10
 asana==0.5.1
 
-git+git://git.symlink.me/pub/weboob/stable.git
+#git+git://git.symlink.me/pub/weboob/stable.git
 
 
 pytest==3.0.3
@@ -21,3 +21,5 @@ pytest-cache==1.0
 pytest-django==3.0.0
 pytest-sugar==0.7.1
 pytest-watch==4.1.0
+
+-e apps/alarm

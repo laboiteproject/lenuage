@@ -4,5 +4,5 @@ from django.apps import AppConfig
 
 
 class AppAlarmConfig(AppConfig):
-    name = 'app_alarm'
+    name = 'laboite.apps.alarm'
     verbose_name = 'App : Alarmes'

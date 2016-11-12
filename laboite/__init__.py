@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+__import__('pkg_resources').declare_namespace(__name__)
 
 __about__ = """
 In addition to what is provided by the "zero" project, this project

@@ -146,12 +146,12 @@ INSTALLED_APPS = [
     "boites",
 
     # laboite apps
+    "laboite.apps.alarm",
     "app_time",
     "app_weather",
     "app_parcel",
     "app_tasks",
     "app_traffic",
-    "app_alarm",
     "app_bus",
     "app_bikes",
     "app_calendar",
