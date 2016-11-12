@@ -1,2 +1,0 @@
-laboite
-laboite.apps
