@@ -4,5 +4,5 @@ from django.apps import AppConfig
 
 
 class AppTrafficConfig(AppConfig):
-    name = 'app_traffic'
+    name = label = 'laboite.apps.traffic'
     verbose_name = 'App : Traffic'

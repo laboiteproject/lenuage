@@ -30,3 +30,4 @@ pytest-watch==4.1.0
 -e apps/parcel
 -e apps/tasks
 -e apps/time
+-e apps/traffic

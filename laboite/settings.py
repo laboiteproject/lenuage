@@ -154,8 +154,8 @@ INSTALLED_APPS = [
     "laboite.apps.parcel",
     "laboite.apps.tasks",
     "laboite.apps.time",
+    "laboite.apps.traffic",
     "app_weather",
-    "app_traffic",
 ]
 
 # A sample logging configuration. The only tangible logging
