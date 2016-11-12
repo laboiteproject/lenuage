@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('alarm', '0001_initial'),
+        ('laboite.apps.alarm', '0001_initial'),
     ]
 
     operations = [

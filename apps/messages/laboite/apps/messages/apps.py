@@ -4,5 +4,5 @@ from django.apps import AppConfig
 
 
 class AppMessagesConfig(AppConfig):
-    name = 'app_messages'
+    name = label = 'laboite.apps.messages'
     verbose_name = 'App : Message'
