@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 from boites.models import Boite, App
-from app_parcel import settings
+from . import settings
 
 from weboob.core import Weboob
 from weboob.capabilities.parcel import CapParcel
