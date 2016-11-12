@@ -9,7 +9,7 @@ from datetime import timedelta
 import pyowm
 
 from boites.models import Boite, App
-from app_weather import settings
+from . import settings
 
 class AppWeather(App):
     city_name = models.CharField(_(u"Ville"), help_text=_(u"Veuillez saisir la ville où se trouve votre boîte"), max_length=64, default=_(u"Paris"))
