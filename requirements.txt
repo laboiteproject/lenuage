@@ -23,3 +23,4 @@ pytest-sugar==0.7.1
 pytest-watch==4.1.0
 
 -e apps/alarm
+-e apps/bikes

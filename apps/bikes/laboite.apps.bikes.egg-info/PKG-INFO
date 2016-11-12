@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: laboite.apps.bikes
+Version: 0.1
+Summary: Bikes availability in your nearest stations in Rennes and Paris
+Home-page: https://www.laboite.cc/
+Author: LaBoîteProject team
+Author-email: support@laboite.cc
+License: AGPL v3
+Description: Get bikes availabilty in your prefered stations in Rennes or Paris on LaBoîte.
+        
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
