@@ -4,5 +4,5 @@ from django.apps import AppConfig
 
 
 class AppBusConfig(AppConfig):
-    name = 'app_bus'
+    name = 'laboite.apps.bus'
     verbose_name = 'App : Bus'

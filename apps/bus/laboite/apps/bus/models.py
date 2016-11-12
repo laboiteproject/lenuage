@@ -8,7 +8,7 @@ from datetime import timedelta
 from django.db import models
 
 from boites.models import Boite, App
-from app_bus import settings
+from . import settings
 
 import requests
 
