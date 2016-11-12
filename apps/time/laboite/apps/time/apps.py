@@ -4,5 +4,5 @@ from django.apps import AppConfig
 
 
 class AppTimeConfig(AppConfig):
-    name = 'app_time'
+    name = label = 'laboite.apps.time'
     verbose_name = 'App : Temps'

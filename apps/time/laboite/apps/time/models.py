@@ -8,7 +8,7 @@ from django.db import models
 import pytz
 
 from boites.models import Boite, App
-from app_time import settings
+from . import settings
 
 class AppTime(App):
     time = models.CharField(_(u"Heure"), max_length=6, null=True, default=None)

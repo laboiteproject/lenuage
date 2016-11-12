@@ -29,3 +29,4 @@ pytest-watch==4.1.0
 -e apps/messages
 -e apps/parcel
 -e apps/tasks
+-e apps/time
