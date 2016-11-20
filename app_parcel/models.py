@@ -41,7 +41,7 @@ class AppParcel(App):
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.last_activity is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            if self.status != 3 or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
                 # Weboob 1.2 example http://dev.weboob.org/
                 weboob = Weboob()
                 weboob.load_backends(CapParcel)

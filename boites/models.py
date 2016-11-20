@@ -5,11 +5,15 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.apps import apps
 from datetime import timedelta
 
 import uuid
+import StringIO
+import qrcode
 
 
 @python_2_unicode_compatible
@@ -18,6 +22,8 @@ class Boite(models.Model):
     user = models.ForeignKey(User, verbose_name = _(u"Utilisateur"))
 
     api_key = models.CharField(_(u"Clé d'API"), max_length=36, unique=True)
+
+    qrcode = models.ImageField(_(u"QR code"), upload_to='boites')
 
     created_date = models.DateTimeField(_(u"Date de création"), auto_now_add=True)
     last_activity = models.DateTimeField(_(u"Dernière activité"), auto_now = True)
@@ -28,8 +34,27 @@ class Boite(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.api_key:
-            self.api_key = uuid.uuid4()
+            self.generate_api_key()
         return super(Boite, self).save(*args, **kwargs)
+
+    def generate_api_key(self):
+        self.api_key = uuid.uuid4()
+        self.generate_qrcode()
+
+    def generate_qrcode(self):
+        url = 'http://'
+        url += str(Site.objects.get_current())
+        url += '/boites/redirect/'
+        url += str(self.api_key)
+        img = qrcode.make(url)
+
+        buffer = StringIO.StringIO()
+        img.save(buffer)
+
+        filename = 'qrcode-%s.png' % str(self.api_key)
+        file_buffer = filebuffer = InMemoryUploadedFile(
+            buffer, None, filename, 'image/png', buffer.len, None)
+        self.qrcode.save(filename, filebuffer)
 
     def belongs_to(self, user):
         return user == self.user

@@ -1,6 +1,7 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
 
-from .views import StationAutoComplete
+from .views import StationAutoComplete, AppBikesUpdateView
 
 
 urlpatterns = [
@@ -9,4 +10,5 @@ urlpatterns = [
         StationAutoComplete.as_view(),
         name='station-autocomplete',
     ),
+    url(r"^(?P<pk>\d+)/$", login_required(AppBikesUpdateView.as_view()), name="update"),
 ]

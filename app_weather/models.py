@@ -42,7 +42,6 @@ class AppWeather(App):
 
                 self.temperature_now = temperatures['temp']
                 self.humidity_now = weather.get_humidity()
-                print weather.get_weather_icon_name()
                 self.icon_now = self.convert_owm_icon(weather.get_weather_icon_name())
 
                 self.save()

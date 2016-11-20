@@ -8,13 +8,16 @@
 <div class="panel panel-default">
     <div class="panel-heading"><strong>{% trans "Actions" %}</strong></div>
     <div class="list-group">
-        <a class="list-group-item boite-update" href="{% url 'boites:update' object.id %}">
-            {% trans "Confuguration de votre boîte" %}
+        <a class="list-group-item boite-update" href="{% url 'boites:update' boite_id %}">
+            {% trans "Configurer votre boîte" %}
         </a>
-        <a class="list-group-item boite-api_key" href="{% url 'boites:generate' object.id %}">
+        <a class="list-group-item boite-api_key" href="{% url 'boites:generate' boite_id %}">
             {% trans "Générer une nouvelle clé d'API" %}
         </a>
-        <a class="list-group-item boite-delete" href="{% url 'boites:delete' object.id %}">
+        <a class="list-group-item boite-apps" href="{% url 'boites:update' boite_id %}">
+            {% trans "Configurer vos apps" %}
+        </a>
+        <a class="list-group-item boite-delete" href="{% url 'boites:delete' boite_id %}">
             {% trans "Supprimer la boîte" %}
         </a>
     </div>
