@@ -39,13 +39,11 @@
                         <div class="form-group">
                             <label class="control-label" for="id_{{ last_connection.name }}">{{ last_connection.verbose_name }}</label>
                             <div class=" ">
-                                <p class="text-muted">{{ boite.last_connection }}</p>
+                                <p class="text-muted">{{ boite.last_connection|default_if_none:_("Jamais") }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
                 <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#apiModal">{% trans "Voir le JSON" %}</button><br/><br/>
                 <div class="modal fade" id="apiModal" tabindex="-1" role="dialog" aria-labelledby="apiModalLabel">
                 	<div class="modal-dialog" role="document">
@@ -69,5 +67,29 @@
                 <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
             </form>
         </div>
+        {% if apps %}
+            <div class="col-md-7">
+                <legend>Apps</legend>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Nom" %}</th>
+                            <th style="text-align: right;">{% trans "Actions" %}</th>
+                          </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in apps %}
+                            <tr{% if app.pk %} class="success"{% endif %}>
+                                <td>{{ app.verbose_name }} {{ app.model }}</td>
+                                <td style="text-align: right;">
+                                    <a href="{{ app.app_label }}/{{ app.pk }}/" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                    <a href="{% url 'boites:delete' boite.id %}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

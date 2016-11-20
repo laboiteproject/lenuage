@@ -14,7 +14,7 @@
                     <thead>
                         <tr>
                             <th>{% trans "Nom" %}</th>
-                            <th>{% trans "Nombre d'apps activées" %}</th>
+                            <th>{% trans "Nombre d'apps configurées" %}</th>
                             <th>{% trans "Clé d'API" %}</th>
                             <th>{% trans "Connectée ?" %}</th>
                             <th>{% trans "Actions" %}</th>
@@ -27,7 +27,11 @@
                                 <td><span class="badge">{{ boite.get_apps_dictionary|length }}</span></td>
                                 <td><code><a style="text-decoration:none;" href="/boites/{{ boite.api_key }}">{{ boite.api_key|truncatechars:9 }}</a></code></td>
                                 <td style ="color: {% if boite.was_active_recently %}#18bc9c{% else %}#e74c3c{% endif %};"><i class="fa fa-circle"></i></td>
-                                <td><a href="{% url 'boites:update' boite.id %}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a> <a href="{% url 'boites:delete' boite.id %}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a></td>
+                                <td>
+                                    <a href="{% url 'boites:update' boite.id %}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                    <button id ="popover{{ boite.id }}" class="btn btn-info btn-xs" data-container="body" data-toggle="popover" data-content=""><i class="fa fa-qrcode"></i></button>
+                                    <a href="{% url 'boites:delete' boite.id %}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -38,4 +42,21 @@
             </a>
         </div>
     </section>
+{% endblock %}
+{% block extra_body %}
+{% if boite_list %}
+        {% for boite in boite_list %}
+            <script type="text/javascript">
+                var img{{ boite.id }} = '<div>';
+                img{{ boite.id }} += '<img src="{{ boite.qrcode.url }}" alt="{% trans "QRCode de" %} {{ boite.name }}" width=128 />';
+                img{{ boite.id }} += '</div>';
+                $('#popover{{ boite.id }}').popover({
+                    trigger: "hover",
+                    html: true,
+                    content: img{{ boite.id }},
+                    placement:'top'
+                });
+            </script>
+        {% endfor %}
+{% endif %}
 {% endblock %}
