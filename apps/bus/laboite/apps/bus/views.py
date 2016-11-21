@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from django.views.generic.edit import UpdateView
 
 from .models import AppBus
+
 
 class AppBusUpdateView(UpdateView):
     model = AppBus
@@ -14,5 +14,4 @@ class AppBusUpdateView(UpdateView):
         verbose_name = self.object._meta.verbose_name.title()
         context['verbose_name'] = verbose_name
         context['boite_id'] = self.kwargs.get('boite_pk')
-
         return context

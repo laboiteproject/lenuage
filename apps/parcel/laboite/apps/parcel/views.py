@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from django.views.generic.edit import UpdateView
 
 from .models import AppParcel
+
 
 class AppParcelUpdateView(UpdateView):
     model = AppParcel
