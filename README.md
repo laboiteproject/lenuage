@@ -9,15 +9,18 @@ Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 `pyenv`) and the following packages are installed :
 
 * libxslt1-dev
+* libxml2-dev
 * python2.7-dev (depending on your version)
 * zlib1g-dev
 * libjpeg-dev
-* libcurl4-gnutls-dev
+* libgif-dev
+* libpng12-dev
+* libcurl4-openssl-dev
 * libgnutls28-dev
 
 For exemple on linux distributions, use:
 ```
-apt-get install libxslt1-dev python2.7-dev zlib1g-dev libjpeg-dev libcurl4-openssl-dev
+apt-get install libxslt1-dev libxml2-dev python2.7-dev zlib1g-dev libjpeg-dev lbgif-dev libgif4 libpng12-dev ibcurl4-openssl-dev libgnutls28-dev
 ```
 
 ```

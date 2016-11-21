@@ -12,6 +12,7 @@ pycurl>=7.43.0
 icalendar>=3.10
 asana==0.5.1
 qrcode==5.3
+Pygments==2.1.3
 
 git+git://git.symlink.me/pub/weboob/stable.git
 
