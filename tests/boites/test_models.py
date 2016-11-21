@@ -1,7 +1,7 @@
 import pytest
 
 from boites.models import App, Boite
-from app_parcel.models import AppParcel
+from laboite.apps.parcel.models import AppParcel
 
 
 @pytest.fixture
@@ -34,7 +34,7 @@ def test_get_app_dictionary(parcel):
 
 def test_get_apps_dictionary_single_app(parcel):
     assert parcel.boite.get_apps_dictionary() == {
-        "app_parcel": [
+        "laboite.apps.parcel": [
             {
                 "arrival": None,
                 "info": None,
@@ -54,7 +54,7 @@ def test_get_apps_dictionary_duplicated_apps(parcel):
     parcel2.parcel_carrier = "gls"
     parcel2.save()
     assert parcel.boite.get_apps_dictionary() == {
-        "app_parcel": [
+        "laboite.apps.parcel": [
             {
                 "arrival": None,
                 "info": None,

@@ -21,3 +21,14 @@ pytest-cache==1.0
 pytest-django==3.0.0
 pytest-sugar==0.7.1
 pytest-watch==4.1.0
+
+-e apps/alarm
+-e apps/bikes
+-e apps/bus
+-e apps/calendar
+-e apps/messages
+-e apps/parcel
+-e apps/tasks
+-e apps/time
+-e apps/traffic
+-e apps/weather

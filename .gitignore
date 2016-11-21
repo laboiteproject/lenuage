@@ -5,3 +5,4 @@ dev.db
 site_media/
 .DS_Store
 *.sqlite3
+*.egg-info
