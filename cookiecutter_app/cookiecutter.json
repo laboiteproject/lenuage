@@ -1,0 +1,5 @@
+{
+    "app_name": "lowercase_no_spaces",
+    "app_model_name": "CamelCaseNoSpaces",
+    "app_verbose_name": "Some verbose name"
+}
