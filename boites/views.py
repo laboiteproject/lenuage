@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.http import JsonResponse
@@ -5,7 +7,9 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.apps import apps
 
 from .models import Boite, App
@@ -105,7 +109,7 @@ class BoiteCreateView(CreateView):
     model = Boite
     fields = ['name']
     template_name_suffix = '_create_form'
-    success_message = "%(name)s was created successfully"
+    success_message = _(u"%(name)s a bien été créé !")
 
     success_url = reverse_lazy('boites:list')
 

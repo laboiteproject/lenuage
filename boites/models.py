@@ -63,7 +63,7 @@ class Boite(models.Model):
         apps_dict = {}
         for model in apps.get_models():
             if issubclass(model, App):
-                applications = model.objects.filter(boite=self)
+                applications = model.objects.filter(boite=self, enabled=True)
                 dicts = [a.get_app_dictionary() for a in applications]
                 if dicts:
                     apps_dict[model._meta.app_label] = dicts
