@@ -105,7 +105,7 @@ class BoiteDeleteView(DeleteView):
 
         return context
 
-class BoiteCreateView(CreateView):
+class BoiteCreateView(SuccessMessageMixin, CreateView):
     model = Boite
     fields = ['name']
     template_name_suffix = '_create_form'
