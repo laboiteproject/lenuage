@@ -82,7 +82,7 @@
                             <tr{% if app.pk %} class="success"{% endif %}>
                                 <td>{{ app.verbose_name }} {{ app.model }}</td>
                                 <td style="text-align: right;">
-                                    <a href="{{ app.app_label }}/{{ app.pk }}/" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                    <a href="app_{{ app.app_label|slice:"13:" }}/{{ app.pk }}/" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
                                     <a href="{% url 'boites:delete' boite.id %}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                                 </td>
                             </tr>
