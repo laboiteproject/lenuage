@@ -82,8 +82,12 @@
                             <tr{% if app.pk %} class="success"{% endif %}>
                                 <td>{{ app.verbose_name }} {{ app.model }}</td>
                                 <td style="text-align: right;">
-                                    <a href="app_{{ app.app_label|slice:"13:" }}/{{ app.pk }}/" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                                    <a href="{% url 'boites:delete' boite.id %}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                                    {% if app.pk %}
+                                    <a href="apps/{{ app.app_label|slice:"13:" }}/{{ app.pk }}/" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                    <a href="apps/{{ app.app_label|slice:"13:" }}/{{ app.pk }}/delete/" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                                    {% else %}
+                                    <a href="apps/{{ app.app_label|slice:"13:" }}/create/" class="btn btn-success btn-xs"><i class="fa fa-plus-circle"></i></a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

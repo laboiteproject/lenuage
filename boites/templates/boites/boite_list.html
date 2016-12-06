@@ -8,6 +8,7 @@
 {% block body_base %}
     <section id="content_body">
         <div class="container">
+            {% include "_messages.html" %}
             <h2>{% trans "Mes boîtes" %}</h2>
             {% if boite_list %}
                 <table class="table table-striped table-hover">

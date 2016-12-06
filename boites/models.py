@@ -78,7 +78,7 @@ class Boite(models.Model):
     was_active_recently.short_description = _(u"Connectée ?")
 
 class App(models.Model):
-    boite = models.ForeignKey(Boite, verbose_name = _(u"Boîte"))
+    boite = models.OneToOneField(Boite, verbose_name = _(u"Boîte"))
 
     enabled = models.BooleanField(_(u"App activée ?"), help_text=_(u"Indique si cette app est activée sur votre boîte"), default=True)
 
