@@ -5,7 +5,7 @@ from .models import AppCalendar
 
 class AppCalendarUpdateView(UpdateView):
     model = AppCalendar
-    fields = ['ics_url']
+    fields = ['ics_url',  'enabled']
 
     success_url = '../../'
 

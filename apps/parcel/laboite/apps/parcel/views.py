@@ -5,7 +5,7 @@ from .models import AppParcel
 
 class AppParcelUpdateView(UpdateView):
     model = AppParcel
-    fields = ['parcel', 'parcel_carrier']
+    fields = ['parcel', 'parcel_carrier', 'enabled']
 
     success_url = '../../'
 

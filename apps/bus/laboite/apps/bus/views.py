@@ -5,7 +5,7 @@ from .models import AppBus
 
 class AppBusUpdateView(UpdateView):
     model = AppBus
-    fields = ['stop']
+    fields = ['stop', 'enabled']
 
     success_url = '../../'
 

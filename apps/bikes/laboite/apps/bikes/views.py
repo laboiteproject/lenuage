@@ -21,7 +21,7 @@ class StationAutoComplete(autocomplete.Select2ListView):
 
 class AppBikesUpdateView(UpdateView):
     model = AppBikes
-    fields = ['id_station']
+    fields = ['id_station', 'enabled']
 
     success_url = '../../'
 

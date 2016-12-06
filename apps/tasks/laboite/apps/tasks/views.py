@@ -5,7 +5,7 @@ from .models import AppTasks
 
 class AppTasksUpdateView(UpdateView):
     model = AppTasks
-    fields = ['asana_personal_access_token', 'asana_project_id']
+    fields = ['asana_personal_access_token', 'asana_project_id', 'enabled']
 
     success_url = '../../'
 

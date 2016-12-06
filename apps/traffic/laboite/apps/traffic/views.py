@@ -5,7 +5,7 @@ from .models import AppTraffic
 
 class AppTrafficUpdateView(UpdateView):
     model = AppTraffic
-    fields = ['start', 'dest']
+    fields = ['start', 'dest', 'enabled']
 
     success_url = '../../'
 

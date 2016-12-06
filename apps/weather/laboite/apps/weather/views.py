@@ -5,7 +5,7 @@ from .models import AppWeather
 
 class AppWeatherUpdateView(UpdateView):
     model = AppWeather
-    fields = ['city_name']
+    fields = ['city_name', 'enabled']
 
     success_url = '../../'
 
