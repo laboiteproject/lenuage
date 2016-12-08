@@ -79,7 +79,7 @@
                     </thead>
                     <tbody>
                         {% for app in apps %}
-                            <tr{% if app.pk %} class="success"{% endif %}>
+                            <tr{% if app.pk and app.enabled %} class="success"{% elif app.pk and not app.enabled %} class="warning"{% endif %}>
                                 <td>{{ app.verbose_name }} {{ app.model }}</td>
                                 <td style="text-align: right;">
                                     {% if app.pk %}

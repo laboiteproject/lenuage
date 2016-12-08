@@ -15,8 +15,6 @@ class AppMessagesUpdateView(SuccessMessageMixin, UpdateView):
     fields = ['message', 'enabled']
     success_message = _(u"App modifiée avec succès !")
 
-    success_url = '../../../'
-
     def get_context_data(self, **kwargs):
         context = super(AppMessagesUpdateView, self).get_context_data(**kwargs)
         verbose_name = self.object._meta.verbose_name.title()
@@ -24,6 +22,9 @@ class AppMessagesUpdateView(SuccessMessageMixin, UpdateView):
         context['boite_id'] = self.kwargs.get('boite_pk')
 
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
 
 class AppMessagesCreateView(SuccessMessageMixin, CreateView):
     model = AppMessages

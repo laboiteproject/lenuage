@@ -82,12 +82,14 @@ class BoiteUpdateView(UpdateView):
             if issubclass(model, App):
                 app_instances = model.objects.filter(boite=self.object)
                 pk = None
+                enabled = None
                 if app_instances:
                     first_app = app_instances.first()
                     pk = first_app.pk
+                    enabled = first_app.enabled
 
                 verbose_name =  model._meta.verbose_name.title()
-                apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'app_label': model._meta.app_label})
+                apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label})
 
         context['apps'] = apps_list
 
