@@ -7,5 +7,5 @@ urlpatterns = [
     url(r"^create/$", login_required(AppBusCreateView.as_view()), name="create"),
     url(r"^(?P<pk>\d+)/$", login_required(AppBusUpdateView.as_view()), name="update"),
     url(r"^(?P<pk>\d+)/delete/$", login_required(AppBusDeleteView.as_view()), name="delete"),
-    url(r"^(?P<pk>\d+)/stops/$", BusStopAutocomplete.as_view(), name="busstop-autocomplete"),
+    url(r"^stops/$", BusStopAutocomplete.as_view(), name="stop-autocomplete"),
 ]

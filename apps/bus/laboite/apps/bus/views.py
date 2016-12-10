@@ -10,12 +10,14 @@ from django.urls import reverse_lazy
 from dal.autocomplete import Select2ListView
 
 from .models import AppBus
+from .forms import AppBusForm
 from boites.models import Boite
+
 
 
 class AppBusUpdateView(UpdateView):
     model = AppBus
-    fields = ['stop', 'enabled']
+    form_class = AppBusForm
 
     def get_context_data(self, **kwargs):
         context = super(AppBusUpdateView, self).get_context_data(**kwargs)
