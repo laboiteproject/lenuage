@@ -1,5 +1,5 @@
 {% extends "boites/base.html" %}
-
+{% load static %}
 {% load i18n %}
 {% load bootstrap %}
 {% load humanize %}
@@ -19,4 +19,9 @@
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block footer %}
+    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    {{ form.media }}
 {% endblock %}

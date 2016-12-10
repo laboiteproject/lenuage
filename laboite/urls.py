@@ -14,6 +14,7 @@ urlpatterns = [
     url(r"^account/social/", include("social.apps.django_app.urls", namespace="social")),
     url(r'^boites/', include('boites.urls', namespace="boites")),
     url(r'^apps/bikes/', include('laboite.apps.bikes.urls')),
+    url(r'^apps/bus/', include('laboite.apps.bus.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

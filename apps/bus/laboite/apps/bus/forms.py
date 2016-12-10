@@ -9,5 +9,5 @@ class AppBusForm(forms.ModelForm):
         model = AppBus
         fields = ['stop', 'stop_name', 'enabled']
         widgets = {
-            'stop_name': autocomplete.ModelSelect2(url="stop-autocomplete")
+            'stop_name': autocomplete.ListSelect2(url="stop-autocomplete")
         }
