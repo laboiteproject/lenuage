@@ -20,7 +20,7 @@ Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 
 For exemple on linux distributions, use:
 ```
-apt-get install libxslt1-dev libxml2-dev python2.7-dev zlib1g-dev libjpeg-dev lbgif-dev libgif4 libpng12-dev ibcurl4-openssl-dev libgnutls28-dev
+apt-get install libxslt1-dev libxml2-dev python2.7-dev zlib1g-dev libjpeg-dev libgif-dev libgif4 libpng12-dev libcurl4-openssl-dev libgnutls28-dev
 ```
 
 ```
