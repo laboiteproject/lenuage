@@ -85,3 +85,51 @@ def test_should_update():
     # Wait for it to expire
     time.sleep(2)
     assert app.should_update()
+
+
+def test_get_data():
+    ret = {'key': 'value'}
+
+    class FailingApp(App):
+        class Meta:
+            app_label = 'failing app'
+
+        def _get_data(self):
+            return ret
+
+        def update_data(self):
+            raise ValueError('shit happens')
+
+        def save(self):
+            pass
+
+    class ValidApp(App):
+        class Meta:
+            app_label = 'valid app'
+
+        def _get_data(self):
+            return ret
+
+        def update_data(self):
+            return True
+
+        def save(self):
+            pass
+
+    app = FailingApp()
+    app.enabled = True
+    app.last_activity = None
+    assert app.get_data() is None
+    app.last_activity = timezone.now()
+    assert app.get_data() == ret
+    assert app.get_app_dictionary() is None
+
+    app = ValidApp()
+    app.enabled = True
+    app.last_activity = timezone.now()
+    assert app.get_data() == ret
+    assert app.get_app_dictionary() == ret
+
+    app.enabled = False
+    assert app.get_data() is None
+    assert app.get_app_dictionary() is None
