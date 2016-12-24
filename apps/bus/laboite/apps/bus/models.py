@@ -12,6 +12,7 @@ from . import settings
 
 import requests
 
+
 class AppBus(App):
     stop = models.PositiveSmallIntegerField(_(u"Arrêt"), help_text=_(u"Veuillez saisir l'identifiant Timeo de votre arrêt de bus"), default=None, null=True)
 
