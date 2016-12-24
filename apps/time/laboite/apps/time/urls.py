@@ -1,7 +1,8 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
 from .views import AppTimeUpdateView, AppTimeCreateView, AppTimeDeleteView
+
 
 urlpatterns = [
     url(r"^create/$", login_required(AppTimeCreateView.as_view()), name="create"),
