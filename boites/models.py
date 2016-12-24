@@ -68,9 +68,9 @@ class Boite(models.Model):
         for model in apps.get_models():
             if issubclass(model, App):
                 applications = model.objects.filter(boite=self, enabled=True)
-                dicts = [a.get_app_dictionary() for a in applications]
+                dicts = filter(lambda r: r is not None, [a.get_app_dictionary() for a in applications])
                 if dicts:
-                    apps_dict[model._meta.app_label] = dicts
+                    apps_dict[model.get_label()] = dicts
         self.last_activity = timezone.now()
         self.save()
         return apps_dict
@@ -92,6 +92,10 @@ class App(models.Model):
     enabled = models.BooleanField(_('App activée ?'), help_text=_('Indique si cette app est activée sur votre boîte'), default=True)
     last_activity = models.DateTimeField(_('Dernière activité'), null=True)
 
+    @classmethod
+    def get_label(cls):
+        return cls._meta.app_label
+
     def should_update(self):
         """Is stored data outdated?
         If UPDATE_INTERVAL is None, we should update it everytime.
@@ -107,11 +111,12 @@ class App(models.Model):
         pass
 
     def _get_data(self):
+        """Must be implemented in subclasses, will return a dict from stored data"""
         raise NotImplementedError
 
     def get_data(self):
-        """Convert stored data to dict, None if there is an error"""
-        if self.last_activity is None:
+        """Convert stored data to dict, None if there was an error or if the app is disabled"""
+        if self.last_activity is None or not self.enabled:
             return None
         return self._get_data()
 
@@ -121,7 +126,7 @@ class App(models.Model):
                 self.update_data()
                 self.last_activity = timezone.now()
             except:
-                logger.exception('App {} data retrieval failed'.format(self._meta.app_label))
+                logger.exception('App {} data retrieval failed'.format(self.get_label()))
                 self.last_activity = None
             self.save()
         return self.get_data()
