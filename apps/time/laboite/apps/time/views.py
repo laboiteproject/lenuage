@@ -1,5 +1,5 @@
 # coding: utf-8
-
+from __future__ import unicode_literals
 from django.shortcuts import get_object_or_404
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 from .models import AppTime
 from boites.models import Boite
 
+
 class AppTimeUpdateView(UpdateView):
     model = AppTime
     fields = ['tz', 'enabled']
@@ -19,21 +20,20 @@ class AppTimeUpdateView(UpdateView):
         verbose_name = self.object._meta.verbose_name.title()
         context['verbose_name'] = verbose_name
         context['boite_id'] = self.kwargs.get('boite_pk')
-
         return context
 
     def get_success_url(self):
         return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
 
+
 class AppTimeCreateView(SuccessMessageMixin, CreateView):
     model = AppTime
     fields = ['tz']
-    success_message = _(u"App a bien été créée !")
+    success_message = _('App a bien été créée !')
 
     def get_context_data(self, **kwargs):
         context = super(AppTimeCreateView, self).get_context_data(**kwargs)
         context['boite_id'] = self.kwargs.get('boite_pk')
-
         return context
 
     def get_success_url(self):
@@ -45,15 +45,15 @@ class AppTimeCreateView(SuccessMessageMixin, CreateView):
         form.save()
         return super(AppTimeCreateView, self).form_valid(form)
 
+
 class AppTimeDeleteView(DeleteView):
     model = AppTime
 
     def get_context_data(self, **kwargs):
         context = super(AppTimeDeleteView, self).get_context_data(**kwargs)
         context['boite_id'] = self.kwargs.get('boite_pk')
-
         return context
 
     def get_success_url(self):
-        messages.error(self.request, _(u"App supprimée !"))
+        messages.error(self.request, _('App supprimée !'))
         return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
