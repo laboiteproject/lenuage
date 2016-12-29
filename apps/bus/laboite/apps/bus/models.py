@@ -15,9 +15,6 @@ import requests
 
 class AppBus(App):
     stop = models.PositiveSmallIntegerField(_(u"Arrêt"), help_text=_(u"Veuillez saisir l'identifiant Timeo de votre arrêt de bus"), default=None, null=True)
-
-    stop_name = models.TextField(_(u"Nom de l'arrêt"), default='')
-
     route0 = models.CharField(_(u"Prochain bus"), max_length=4, default=None, null=True)
     departure0 = models.PositiveSmallIntegerField(_(u"Dans"), default=None, null=True)
 
@@ -33,32 +30,33 @@ class AppBus(App):
                 url += '&sort=-depart&q=idarret='
                 url += str(self.stop)
 
-                r = requests.get(url)
-
-                now = timezone.now()
-
-                records = list(r.json()['records'])
-
                 self.route0 = None
                 self.departure0 = None
                 self.route1 = None
                 self.departure1 = None
 
-                try:
-                    self.route0 = records[0]['fields']['nomcourtligne']
-                    departure = dateparse.parse_datetime(records[0]['fields']['depart']) - now
-                    self.departure0 = departure.seconds/60
-                except IndexError:
-                    self.route0 = None
-                    self.departure0 = None
+                r = requests.get(url)
 
-                try:
-                    self.route1 = records[1]['fields']['nomcourtligne']
-                    departure = dateparse.parse_datetime(records[1]['fields']['depart']) - now
-                    self.departure1 = departure.seconds/60
-                except IndexError:
-                    self.route1 = None
-                    self.departure1 = None
+                now = timezone.now()
+                records = r.json().get('records')
+                if records:
+                    records = list(records)
+
+                    try:
+                        self.route0 = records[0]['fields']['nomcourtligne']
+                        departure = dateparse.parse_datetime(records[0]['fields']['depart']) - now
+                        self.departure0 = departure.seconds/60
+                    except IndexError:
+                        self.route0 = None
+                        self.departure0 = None
+
+                    try:
+                        self.route1 = records[1]['fields']['nomcourtligne']
+                        departure = dateparse.parse_datetime(records[1]['fields']['depart']) - now
+                        self.departure1 = departure.seconds/60
+                    except IndexError:
+                        self.route1 = None
+                        self.departure1 = None
 
                 self.save()
 

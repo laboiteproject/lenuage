@@ -7,7 +7,7 @@ from .models import AppBus
 class AppBusForm(forms.ModelForm):
     class Meta:
         model = AppBus
-        fields = ['stop', 'stop_name', 'enabled']
+        fields = ['stop', 'enabled']
         widgets = {
-            'stop_name': autocomplete.ListSelect2(url="stop-autocomplete")
+            'stop': autocomplete.ListSelect2(url="stop-autocomplete"),
         }

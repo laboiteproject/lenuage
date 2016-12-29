@@ -6,6 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
+from django.http import HttpResponse
 
 from dal.autocomplete import Select2ListView
 
@@ -13,6 +14,10 @@ from .models import AppBus
 from .forms import AppBusForm
 from boites.models import Boite
 
+import requests
+import json
+
+from . import settings
 
 
 class AppBusUpdateView(UpdateView):
@@ -64,5 +69,21 @@ class AppBusDeleteView(DeleteView):
         return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
 
 class BusStopAutocomplete(Select2ListView):
-    def get_list(self):
-        return ['France', 'Fiji', 'Finland', 'Switzerland']
+    def get(self, request, *args, **kwargs):
+        directions = []
+
+        if self.q:
+            url = "https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-bus-circulation-passages-tr&apikey="
+            url += settings.STAR_API_KEY
+            url += "&q="
+            url += self.q
+
+            r = requests.get(url)
+
+            records = list(r.json()['records'])
+            for record in records:
+                destination = _(u"Arrêt") + " " + record['fields']['nomarret'] + " (" + record['fields']['nomcourtligne'] + " direction " + record['fields']['destination'] + ")"
+                direction = {'id' :record['fields']['idarret'], 'text':destination}
+                directions.append(direction)
+
+        return HttpResponse(json.dumps({"results" : directions}))
