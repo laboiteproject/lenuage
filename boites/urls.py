@@ -20,6 +20,8 @@ urlpatterns = [
     url(r"^(?P<pk>\d+)/$", login_required(BoiteUpdateView.as_view()), name="update"),
     url(r"^(?P<pk>\d+)/delete/$", login_required(BoiteDeleteView.as_view()), name="delete"),
     url(r"^(?P<pk>\d+)/generate/$", login_required(generate_api_key), name="generate"),
+    # Apps
+    url(r"^(?P<boite_pk>\d+)/apps/alarm/", include('laboite.apps.alarm.urls', namespace="apps_alarm")),
     url(r"^(?P<boite_pk>\d+)/apps/bus/", include('laboite.apps.bus.urls', namespace="apps_bus")),
     url(r"^(?P<boite_pk>\d+)/apps/bikes/", include('laboite.apps.bikes.urls', namespace="app_bikes")),
     url(r"^(?P<boite_pk>\d+)/apps/time/", include('laboite.apps.time.urls', namespace="app_time")),
