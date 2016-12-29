@@ -51,7 +51,7 @@ class AppCalendar(App):
                             dtstart = datetime.fromordinal(dtstart.toordinal())
                         dtstart = dtstart.replace(tzinfo = pytz.timezone('UTC'))
                         if dtstart > today and dtstart > now and dtstart < tonight:
-                            self.dtstart = dtstart.astimezone(pytz.timezone(settings.TIME_ZONE)).strftime("%H:%M")
+                            self.dtstart = dtstart.astimezone(pytz.timezone('Europe/Paris')).strftime("%H:%M")
                             self.summary = str(event.get('summary'))
                             self.save()
 
