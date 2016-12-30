@@ -1,6 +1,8 @@
 from dal import autocomplete
 from django import forms
 
+from .models import AppBikes
+
 
 class BikeModelForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -21,6 +23,8 @@ class BikeModelForm(forms.ModelForm):
             self.fields['id_station'].widget.choices = ((self.cleaned_data['id_station'], station_name),)
 
     class Meta:
+        model = AppBikes
+        fields = ('provider', 'id_station', 'enabled')
         widgets = {
             'id_station': autocomplete.ListSelect2(url='station-autocomplete',
                                                    forward=('provider',),
@@ -29,4 +33,4 @@ class BikeModelForm(forms.ModelForm):
         }
 
     class Media:
-        js = ('js/admin_form.js',)
+        js = ('js/form.js',)

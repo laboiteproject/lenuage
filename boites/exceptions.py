@@ -1,0 +1,2 @@
+class ExternalWebserviceError(Exception):
+    pass
