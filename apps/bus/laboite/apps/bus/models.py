@@ -15,7 +15,6 @@ import requests
 
 class AppBus(App):
     stop = models.PositiveSmallIntegerField(_(u"Arrêt"), help_text=_(u"Veuillez saisir l'identifiant Timeo de votre arrêt de bus"), default=None, null=True)
-
     route0 = models.CharField(_(u"Prochain bus"), max_length=4, default=None, null=True)
     departure0 = models.PositiveSmallIntegerField(_(u"Dans"), default=None, null=True)
 
