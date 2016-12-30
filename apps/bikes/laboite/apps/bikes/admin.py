@@ -9,8 +9,6 @@ class AppBikesAdmin(admin.ModelAdmin):
 
     list_display = ('boite', 'enabled', 'station', 'bikes',  'slots', 'status', 'get_app_dictionary', 'created_date', 'last_activity')
 
-    exclude = ('station',)
-
     form = BikeModelForm
 
 

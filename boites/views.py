@@ -140,7 +140,7 @@ class AppCreateView(SuccessMessageMixin, CreateView):
         form.instance.boite = boite
         form.save()
         return super(AppCreateView, self).form_valid(form)
-    
+
 
 class AppUpdateView(UpdateView):
     template_name = 'apps/app_form.html'

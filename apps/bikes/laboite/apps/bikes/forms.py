@@ -24,8 +24,9 @@ class BikeModelForm(forms.ModelForm):
 
     class Meta:
         model = AppBikes
-        fields = ('provider', 'id_station', 'enabled')
+        fields = ('provider', 'id_station', 'station', 'enabled')
         widgets = {
+            'station': forms.HiddenInput(),
             'id_station': autocomplete.ListSelect2(url='station-autocomplete',
                                                    forward=('provider',),
                                                    attrs={'data-allow-clear': 'false',
