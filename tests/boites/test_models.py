@@ -46,33 +46,6 @@ def test_get_apps_dictionary_single_app(parcel):
     }
 
 
-def test_get_apps_dictionary_duplicated_apps(parcel):
-    parcel2 = parcel
-    parcel2.id = None
-    parcel2.save()  # Hack: save parcel2 as a new instance.
-    parcel2.parcel = "another parcel to track"
-    parcel2.parcel_carrier = "gls"
-    parcel2.save()
-    assert parcel.boite.get_apps_dictionary() == {
-        "laboite.apps.parcel": [
-            {
-                "arrival": None,
-                "info": None,
-                "parcel": "parcel to track",
-                "status": None,
-                "parcel_carrier": "chronopost",
-            },
-            {
-                "arrival": None,
-                "info": None,
-                "parcel": "another parcel to track",
-                "status": None,
-                "parcel_carrier": "gls",
-            },
-        ]
-    }
-
-
 def test_boite_api_key(admin_user):
     """Make sure the api_key is properly set."""
     boite = Boite(name="test boite", user=admin_user)

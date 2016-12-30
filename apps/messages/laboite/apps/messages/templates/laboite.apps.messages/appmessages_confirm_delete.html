@@ -1,0 +1,24 @@
+{% extends "boites/base.html" %}
+
+{% load i18n %}
+{% load bootstrap %}
+
+{% block body_class %}boite boite-delete{% endblock %}
+
+{% block head_title %}{% trans "Suppression d'une app ?" %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-5">
+            <h1>{% trans "Supprimer ?" %}</h1>
+
+            <p>{% trans "Êtes vous sûr de vouloir supprimer cette app ?" %}</p>
+
+            <form method="post" action="" autocapitalize="off">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">{% trans "Supprimer" %}</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

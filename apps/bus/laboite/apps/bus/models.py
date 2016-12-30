@@ -24,22 +24,40 @@ class AppBus(App):
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.last_activity is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
-                url = 'https://data.explore.star.fr/api/records/1.0/search?dataset=tco-bus-circulation-passages-tr&rows=2&apikey=d55230a97e137bd4b073009462489f85d6486c1c242fb43db3d152a7&sort=-depart&refine.idarret='
+            if self.route0 is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+                url = 'https://data.explore.star.fr/api/records/1.0/search?dataset=tco-bus-circulation-passages-tr&rows=2&apikey='
+                url += settings.STAR_API_KEY
+                url += '&sort=-depart&q=idarret='
                 url += str(self.stop)
+
+                self.route0 = None
+                self.departure0 = None
+                self.route1 = None
+                self.departure1 = None
 
                 r = requests.get(url)
 
                 now = timezone.now()
+                records = r.json().get('records')
+                if records:
+                    records = list(records)
 
-                records = list(r.json()['records'])
-                self.route0 = records[0]['fields']['nomcourtligne']
-                departure = dateparse.parse_datetime(records[0]['fields']['depart']) - now
-                self.departure0 = departure.seconds/60
+                    try:
+                        self.route0 = records[0]['fields']['nomcourtligne']
+                        departure = dateparse.parse_datetime(records[0]['fields']['depart']) - now
+                        self.departure0 = departure.seconds/60
+                    except IndexError:
+                        self.route0 = None
+                        self.departure0 = None
 
-                self.route1 = records[1]['fields']['nomcourtligne']
-                departure = dateparse.parse_datetime(records[1]['fields']['depart']) - now
-                self.departure1 = departure.seconds/60
+                    try:
+                        self.route1 = records[1]['fields']['nomcourtligne']
+                        departure = dateparse.parse_datetime(records[1]['fields']['depart']) - now
+                        self.departure1 = departure.seconds/60
+                    except IndexError:
+                        self.route1 = None
+                        self.departure1 = None
+
                 self.save()
 
             return {'route0' : self.route0, 'departure0': self.departure0, 'route1': self.route1, 'departure1':self.departure1}

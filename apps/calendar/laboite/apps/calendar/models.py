@@ -26,7 +26,8 @@ class AppCalendar(App):
     def get_app_dictionary(self):
         if self.enabled:
             # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.last_activity is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
+            now = timezone.now()
+            if now <= self.created_date + timedelta(seconds=10) or now >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
                 now = timezone.now()
                 today = now.replace(hour = 0, minute=0)
                 tonight = now.replace(hour = 23, minute=59)
@@ -50,7 +51,7 @@ class AppCalendar(App):
                             dtstart = datetime.fromordinal(dtstart.toordinal())
                         dtstart = dtstart.replace(tzinfo = pytz.timezone('UTC'))
                         if dtstart > today and dtstart > now and dtstart < tonight:
-                            self.dtstart = dtstart.astimezone(pytz.timezone(settings.TIME_ZONE)).strftime("%H:%M")
+                            self.dtstart = dtstart.astimezone(pytz.timezone('Europe/Paris')).strftime("%H:%M")
                             self.summary = str(event.get('summary'))
                             self.save()
 
