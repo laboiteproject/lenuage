@@ -1,4 +1,4 @@
-import time
+from datetime import timedelta
 
 from django.utils import timezone
 import pytest
@@ -83,7 +83,7 @@ def test_should_update():
     app.last_activity = timezone.now()
     assert not app.should_update()
     # Wait for it to expire
-    time.sleep(2)
+    app.last_activity -= timedelta(seconds=2)
     assert app.should_update()
 
 
