@@ -146,7 +146,7 @@ INSTALLED_APPS = [
     "boites",
 
     # laboite apps
-    "laboite.apps.alarm",
+    #"laboite.apps.alarm",
     "laboite.apps.bikes",
     "laboite.apps.bus",
     "laboite.apps.calendar",
@@ -156,6 +156,8 @@ INSTALLED_APPS = [
     "laboite.apps.time",
     "laboite.apps.traffic",
     "laboite.apps.weather",
+    "laboite.apps.metro",
+    "laboite.apps.energy",
 ]
 
 # A sample logging configuration. The only tangible logging
