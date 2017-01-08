@@ -32,3 +32,4 @@ pytest-watch==4.1.0
 -e apps/time
 -e apps/traffic
 -e apps/weather
+-e apps/metro
