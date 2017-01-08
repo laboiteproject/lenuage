@@ -50,7 +50,8 @@ class AppTasksUpdateView(SuccessMessageMixin, UpdateView):
 
 class AppTasksCreateView(SuccessMessageMixin, CreateView):
     model = AppTasks
-    fields = ['asana_personal_access_token', 'asana_project_id']
+    fields = ['asana_personal_access_token']
+    template_name = 'apptasks_create_form.html'
 
     success_message = _(u"App a bien été créée !")
 
