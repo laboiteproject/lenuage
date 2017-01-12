@@ -31,6 +31,8 @@ urlpatterns = [
     url(r"^(?P<boite_pk>\d+)/apps/calendar/", include('laboite.apps.calendar.urls', namespace="app_calendar")),
     url(r"^(?P<boite_pk>\d+)/apps/parcel/", include('laboite.apps.parcel.urls', namespace="app_parcel")),
     url(r"^(?P<boite_pk>\d+)/apps/messages/", include('laboite.apps.messages.urls', namespace="app_messages")),
+    url(r"^(?P<boite_pk>\d+)/apps/metro/", include('laboite.apps.metro.urls', namespace="app_metro")),
+    url(r"^(?P<boite_pk>\d+)/apps/energy/", include('laboite.apps.energy.urls', namespace="app_energy")),
     url(r'^(?P<api_key>[0-9a-z-]+)/$', json_view, name='json'),
     url(r'^redirect/(?P<api_key>[0-9a-z-]+)/$', login_required(redirect_view), name="redirect"),
 ]

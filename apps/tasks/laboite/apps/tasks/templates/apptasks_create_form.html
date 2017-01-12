@@ -1,0 +1,23 @@
+{% extends "boites/base.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% load humanize %}
+
+{% block body_class %}boite boite-apps{% endblock %}
+
+{% block head_title %}{{ verbose_name }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-5">
+            <form method="POST" action="">
+                <legend>{{ verbose_name }}</legend>
+                {% csrf_token %}
+                {{ form|bootstrap }}
+                <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
