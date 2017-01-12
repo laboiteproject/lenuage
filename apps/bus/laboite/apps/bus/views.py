@@ -73,7 +73,7 @@ class BusStopAutocomplete(Select2ListView):
         directions = []
 
         if self.q:
-            url = "https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-bus-circulation-passages-tr&apikey="
+            url = "https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-bus-circulation-passages-tr&rows=128&apikey="
             url += settings.STAR_API_KEY
             url += "&q="
             url += self.q
