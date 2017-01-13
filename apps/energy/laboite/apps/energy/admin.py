@@ -8,4 +8,5 @@ class AppEnergyAdmin(admin.ModelAdmin):
 
     list_display = ('boite', 'enabled', 'power', 'get_app_dictionary', 'created_date', 'last_activity')
 
+
 admin.site.register(AppEnergy, AppEnergyAdmin)
