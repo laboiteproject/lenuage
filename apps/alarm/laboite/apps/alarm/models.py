@@ -14,7 +14,7 @@ MINUTES_CHOICES = [(v, _(v)) for v in ('{:02d}'.format(v) for v in range(0, 60, 
 
 class AppAlarm(App):
     heure = models.CharField(_('Heure'), help_text=_("Veuillez saisir l'heure de votre alarme"), max_length=32, default=_('00'), choices=HOURS_CHOICES)
-    minutes = models.CharField(_(u"Minutes"), help_text=_('Veuillez saisir les minutes de votre alarme'), max_length=32, default=_(u"00"),choices=MINUTES_CHOICES)
+    minutes = models.CharField(_(u'Minutes'), help_text=_('Veuillez saisir les minutes de votre alarme'), max_length=32, default=_(u"00"),choices=MINUTES_CHOICES)
 
     def _get_data(self):
         return {'alarm': '{}:{}'.format(self.heure, self.minutes)}
