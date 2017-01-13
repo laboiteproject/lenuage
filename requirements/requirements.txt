@@ -13,8 +13,7 @@ icalendar>=3.10
 asana==0.5.1
 qrcode==5.3
 Pygments==2.1.3
-
-git+git://git.symlink.me/pub/weboob/stable.git
+https://git.weboob.org/weboob/devel/repository/archive.tar?ref=1.2
 
 pytest==3.0.3
 pytest-cache==1.0
@@ -26,11 +25,11 @@ pytest-watch==4.1.0
 -e apps/bikes
 -e apps/bus
 -e apps/calendar
+-e apps/energy
 -e apps/messages
+-e apps/metro
 -e apps/parcel
 -e apps/tasks
 -e apps/time
 -e apps/traffic
 -e apps/weather
--e apps/metro
--e apps/energy
