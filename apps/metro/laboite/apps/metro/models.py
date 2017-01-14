@@ -1,48 +1,47 @@
 # coding: utf-8
 
 from __future__ import unicode_literals
-from django.utils.translation import ugettext as _
-from django.utils import timezone
-from django.utils import dateparse
-from datetime import timedelta
-from django.db import models
 
-from boites.models import Boite, App
+from django.utils.translation import ugettext as _
+from django.db import models
+import requests
+from boites.models import App
 from . import settings
 
-import requests
 
 class AppMetro(App):
-    failure = models.BooleanField(_(u"Problème en cours ?"), default=False, null=False)
-    recovery_time = models.PositiveSmallIntegerField(_(u"Minutes avant rétablissement"), default=None, null=True)
+    UPDATE_INTERVAL = 30 * 60
 
-    def get_app_dictionary(self):
-        if self.enabled:
-            # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.failure is None or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
-                url = 'https://data.explore.star.fr/api/records/1.0/search?dataset=tco-metro-lignes-etat-tr&rows=2&apikey='
-                url += settings.STAR_API_KEY
+    failure = models.BooleanField(_('Problème en cours ?'), default=False, null=False)
+    recovery_time = models.PositiveSmallIntegerField(_('Minutes avant rétablissement'), default=None, null=True)
 
-                self.failure = False
-                self.recovery_time = 0
+    def update_data(self):
+        url = 'https://data.explore.star.fr/api/records/1.0/search'
+        params = {'dataset': 'tco-metro-lignes-etat-tr',
+                  'rows': 2,
+                  'apikey': settings.STAR_API_KEY}
+        self.failure = False
+        self.recovery_time = 0
 
-                r = requests.get(url)
+        r = requests.get(url, params=params)
+        records = r.json().get('records')
+        if records:
+            records = list(records)
 
-                now = timezone.now()
-                records = r.json().get('records')
-                if records:
-                    records = list(records)
+            try:
+                if records[0]['fields']['etat'] != 'OK':
+                    self.failure = True
+                    self.recovery_time = int(records[0]['fields']['finpanneprevue'])
+            except IndexError:
+                pass
 
-                    try:
-                        if records[0]['fields']['etat'] != 'OK':
-                            self.failure = True
-                            self.recovery_time = int(records[0]['fields']['finpanneprevue'])
-                    except IndexError:
-                        pass
+        self.save()
 
-                self.save()
-
-            return {'failure' : self.failure, 'recovery_time': self.recovery_time}
+    def _get_data(self):
+        if not self.failure:
+            return None
+        return {'failure': self.failure,
+                'recovery_time': self.recovery_time}
 
     class Meta:
         verbose_name = _("Configuration : Métro")

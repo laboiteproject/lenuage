@@ -2,8 +2,9 @@
 from __future__ import unicode_literals
 
 from django.apps import AppConfig
+from django.utils.translation import ugettext_lazy as _
 
 
 class AppMetroConfig(AppConfig):
     name = label = 'laboite.apps.metro'
-    verbose_name = 'App : Métro'
+    verbose_name = _('App : Métro')
