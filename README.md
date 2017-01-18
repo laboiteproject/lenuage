@@ -1,4 +1,7 @@
 [![Build Status](https://api.travis-ci.org/laboiteproject/laboite-backend.svg?branch=master)](https://travis-ci.org/laboiteproject/laboite-backend)
+[![Code Climate](https://codeclimate.com/github/laboiteproject/laboite-backend/badges/gpa.svg)](https://codeclimate.com/github/laboiteproject/laboite-backend)
+[![Test Coverage](https://codeclimate.com/github/laboiteproject/laboite-backend/badges/coverage.svg)](https://codeclimate.com/github/laboiteproject/laboite-backend/coverage)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/laboiteproject/laboite-backend/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/laboiteproject/laboite-backend/?branch=master)
 
 # laboîte
 Django web app of the laboîte project http://laboite.cc/help
