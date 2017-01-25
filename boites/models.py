@@ -20,6 +20,11 @@ import qrcode
 logger = logging.getLogger('laboite.apps')
 
 
+SECONDS = 1
+MINUTES = 60
+HOURS = 3600
+
+
 @python_2_unicode_compatible
 class Boite(models.Model):
     name = models.CharField(_(u'Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32, default=_('Ma boîte'))
