@@ -8,7 +8,6 @@ from boites.models import MINUTES, App
 
 from weboob.core import Weboob
 from weboob.capabilities.base import NotLoaded
-from weboob.capabilities.parcel import CapParcel
 
 
 WEBOOB_MODULES_CHOICES = (
@@ -41,13 +40,9 @@ class AppParcel(App):
     info = models.CharField(_('Informations'), max_length=64, null=True, blank=True)
     url = models.URLField(_('Lien vers le site du transporteur'), default=None, null=True)
 
-    def should_update(self):
-        return super(AppParcel, self).should_update() and super(AppParcel, self).should_update()
-
     def update_data(self):
         weboob = Weboob()
-        backends = weboob.load_backends(CapParcel)
-        backend = backends[self.parcel_carrier]
+        backend = weboob.load_backend(self.parcel_carrier, None)
         parcel = backend.get_parcel_tracking(self.parcel)
         parcel_dict = parcel.to_dict()
         self.status = parcel_dict['status']

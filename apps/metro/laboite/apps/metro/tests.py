@@ -102,8 +102,8 @@ class MockRequest:
 
 
 def test_not_enabled(monkeypatch):
-    model = AppMetro(last_activity=PAST, created_date=PAST)
     monkeypatch.setattr(AppMetro, 'save', lambda self: True)
+    model = AppMetro(last_activity=PAST, created_date=PAST)
     assert model.get_app_dictionary() is None
 
 
