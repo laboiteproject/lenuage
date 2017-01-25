@@ -3,64 +3,66 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from django.utils import timezone
-from datetime import timedelta
 
-from boites.models import Boite, App
-from . import settings
+from boites.models import MINUTES, App
 
 from weboob.core import Weboob
+from weboob.capabilities.base import NotLoaded
 from weboob.capabilities.parcel import CapParcel
 
+
+WEBOOB_MODULES_CHOICES = (
+    ('chronopost', _('Chronopost')),
+    ('colisprive', _('Colis privé')),
+    ('colissimo', _('Colissimo')),
+    ('dpd', _('DPD')),
+    ('dhl', _('DHL')),
+    ('gls', _('GLS')),
+    ('itella', _('Itella')),
+    ('ups', _('UPS')),
+)
+
+
+WEBOOB_PARCEL_STATUS_CHOICES = (
+    (0, _('Inconnu')),
+    (1, _('Traitement')),
+    (2, _('En transit')),
+    (3, _('Livré')),
+)
+
+
 class AppParcel(App):
-    parcel = models.CharField(_(u"Identifiant du colis"), help_text=_(u"Veuillez saisir l'identifiant de votre colis"), max_length=64, default=_(u"XX123456789FR"), null=False, blank=False)
+    UPDATE_INTERVAL = 10 * MINUTES
 
-    WEBOOB_MODULES_CHOICES = (
-        ("chronopost", _(u"Chronopost")),
-        ("colisprive", _(u"Colisprive")),
-        ("colissimo", _(u" Colissimo")),
-        ("dhl", _(u"DHL")),
-        ("dpd", _(u"DPD")),
-        ("gls", _(u"GLS")),
-        ("itella", _(u"Itella")),
-        ("ups", _(u"UPS")),
-    )
-    parcel_carrier = models.CharField(_(u"Transporteur"), help_text=_(u"Veuillez indiquer le transporteur de votre colis"), max_length=16, default="chronopost", choices=WEBOOB_MODULES_CHOICES)
+    parcel = models.CharField(_('Identifiant du colis'), help_text=_("Veuillez saisir l'identifiant de votre colis"), max_length=64, default=_('XX123456789FR'), null=False, blank=False)
+    parcel_carrier = models.CharField(_('Transporteur'), help_text=_('Veuillez indiquer le transporteur de votre colis'), max_length=16, default='chronopost', choices=WEBOOB_MODULES_CHOICES)
+    arrival = models.DateTimeField(_('Date de livraison'), null=True, default=None)
+    status = models.PositiveSmallIntegerField(_('Statut'), choices=WEBOOB_PARCEL_STATUS_CHOICES, default=None, null=True)
+    info = models.CharField(_('Informations'), max_length=64, null=True, blank=True)
+    url = models.URLField(_('Lien vers le site du transporteur'), default=None, null=True)
 
-    WEBOOB_PARCEL_STATUS_CHOICES = (
-        (0, "Inconnu"),
-        (1, "Traitement"),
-        (2, "En transit"),
-        (3, "Livré"),
-    )
-    arrival = models.DateTimeField(_(u"Date de livraison"), null=True, default=None)
-    status = models.PositiveSmallIntegerField(_(u"Statut"), choices=WEBOOB_PARCEL_STATUS_CHOICES, default=None, null=True)
-    info = models.CharField(_(u"Informations"), max_length=64, null=True, blank=True)
-    url = models.URLField(_(u"Lien vers le site du transporteur"), default=None, null=True)
+    def should_update(self):
+        return super(AppParcel, self).should_update() and super(AppParcel, self).should_update()
 
-    def get_app_dictionary(self):
-        if self.enabled:
-            # we wan't to update every VALUES_UPDATE_INTERVAL minutes
-            if self.status != 3 or timezone.now() >= self.last_activity + timedelta(minutes=settings.VALUES_UPDATE_INTERVAL):
-                # Weboob 1.2 example http://dev.weboob.org/
-                weboob = Weboob()
-                weboob.load_backends(CapParcel)
-                for backend in list(weboob.iter_backends()):
-                    if backend.name == self.parcel_carrier:
-                        parcel = backend.get_parcel_tracking(self.parcel)
-                        parcel_dict = parcel.to_dict()
-                        self.status = parcel_dict['status']
-                        if parcel_dict['arrival'] == 'Not loaded':
-                            self.arrival = None
-                        else:
-                            pass
-                            #parcel_dict['arrival']
-                        self.url = parcel_dict['url']
-                        self.info = parcel_dict['info']
-                        self.save()
+    def update_data(self):
+        weboob = Weboob()
+        backends = weboob.load_backends(CapParcel)
+        backend = backends[self.parcel_carrier]
+        parcel = backend.get_parcel_tracking(self.parcel)
+        parcel_dict = parcel.to_dict()
+        self.status = parcel_dict['status']
+        self.arrival = parcel_dict['arrival'] if parcel_dict['arrival'] is not NotLoaded else None
+        self.url = parcel_dict['url'] if parcel_dict['url'] is not NotLoaded else None
+        self.info = parcel_dict['info']
+        self.save()
 
-            return {'parcel': self.parcel, 'parcel_carrier' : self.parcel_carrier, 'arrival': self.arrival, 'status': self.status, 'info':self.info}
+    def _get_data(self):
+        return {'parcel': self.parcel,
+                'parcel_carrier': self.parcel_carrier,
+                'arrival': self.arrival,
+                'status': self.status,
+                'info': self.info}
 
     class Meta:
-        verbose_name = _("Configuration : colis")
-        verbose_name_plural = _("Configurations : colis")
+        verbose_name = _('Configuration : colis')
+        verbose_name_plural = _('Configurations : colis')
