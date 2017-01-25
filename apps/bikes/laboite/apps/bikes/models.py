@@ -6,12 +6,12 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from boites.exceptions import ExternalWebserviceError
-from boites.models import App
+from boites.models import App, MINUTES
 from . import providers
 
 
 class AppBikes(App):
-    UPDATE_INTERVAL = 10 * 60
+    UPDATE_INTERVAL = 10 * MINUTES
 
     provider = models.CharField(_('Fournisseur de données'), help_text=_('Choisissez le service de vélos désiré'), choices=providers.get_providers(), max_length=64)
     id_station = models.CharField(_('Station'), help_text=_('Choisissez la station dont vous voulez obtenir les informations'), max_length=64)

@@ -5,12 +5,12 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.db import models
 import requests
-from boites.models import App
+from boites.models import App, MINUTES
 from . import settings
 
 
 class AppMetro(App):
-    UPDATE_INTERVAL = 30 * 60
+    UPDATE_INTERVAL = 30 * MINUTES
 
     failure = models.BooleanField(_('Problème en cours ?'), default=False, null=False)
     recovery_time = models.PositiveSmallIntegerField(_('Minutes avant rétablissement'), default=None, null=True)

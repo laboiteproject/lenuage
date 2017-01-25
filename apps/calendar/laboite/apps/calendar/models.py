@@ -10,11 +10,11 @@ from icalendar import Calendar
 import pytz
 import requests
 
-from boites.models import App
+from boites.models import App, HOURS
 
 
 class AppCalendar(App):
-    UPDATE_INTERVAL = 60 * 60
+    UPDATE_INTERVAL = 1 * HOURS
 
     ics_url = models.CharField(_('URL du calendrier .ics'), help_text=_("Veuillez indiquer l'adresse de votre calendrier .ics"), max_length=256, default=None, null=True)
     dtstart = models.CharField(_('Heure du prochain rendez-vous'), max_length=5, default=None, null=True)

@@ -4,17 +4,16 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.utils import dateparse
-from datetime import timedelta
 from django.db import models
 
-from boites.models import App
+from boites.models import App, MINUTES
 from . import settings
 
 import requests
 
 
 class AppBus(App):
-    UPDATE_INTERVAL = 60
+    UPDATE_INTERVAL = 1 * MINUTES
     API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
 
     stop = models.PositiveSmallIntegerField(_('Arrêt'), help_text=_("Veuillez saisir l'identifiant Timeo de votre arrêt de bus"), default=None, null=True)

@@ -6,13 +6,13 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db import models
 
-from boites.models import App
+from boites.models import App, MINUTES
 
 import requests
 
 
 class AppEnergy(App):
-    UPDATE_INTERVAL = 30 * 60
+    UPDATE_INTERVAL = 30 * MINUTES
 
     url = models.URLField(_('URL du serveur emoncms'), help_text=_("Veuillez indiquer l'adresse de votre serveur emoncms"), default='https://emoncms.org/', null=False)
     power_feedid = models.PositiveSmallIntegerField(_('Identifiant flux puissance instantanée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation instantannée (en watts)'), default=None, null=True)
