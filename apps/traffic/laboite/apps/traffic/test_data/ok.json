@@ -1,0 +1,203 @@
+{
+   "geocoded_waypoints" : [
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "ChIJu8LcATFu5kcRuTwA8KHqwys",
+         "types" : [ "route" ]
+      },
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "EiZQbGFjZSBkZSBsYSBSw6lwdWJsaXF1ZSwgUGFyaXMsIEZyYW5jZQ",
+         "types" : [ "route" ]
+      }
+   ],
+   "routes" : [
+      {
+         "bounds" : {
+            "northeast" : {
+               "lat" : 48.8702732,
+               "lng" : 2.3634673
+            },
+            "southwest" : {
+               "lat" : 48.8646965,
+               "lng" : 2.3315269
+            }
+         },
+         "copyrights" : "Map data ©2017 Google",
+         "legs" : [
+            {
+               "distance" : {
+                  "text" : "2.6 km",
+                  "value" : 2603
+               },
+               "duration" : {
+                  "text" : "11 mins",
+                  "value" : 647
+               },
+               "end_address" : "Place de la République, Paris, France",
+               "end_location" : {
+                  "lat" : 48.8672991,
+                  "lng" : 2.3634673
+               },
+               "start_address" : "Rue de la Paix, 75002 Paris, France",
+               "start_location" : {
+                  "lat" : 48.8695761,
+                  "lng" : 2.3315269
+               },
+               "steps" : [
+                  {
+                     "distance" : {
+                        "text" : "0.1 km",
+                        "value" : 96
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 31
+                     },
+                     "end_location" : {
+                        "lat" : 48.8702723,
+                        "lng" : 2.3322893
+                     },
+                     "html_instructions" : "Head \u003cb\u003enortheast\u003c/b\u003e on \u003cb\u003eRue de la Paix\u003c/b\u003e toward \u003cb\u003eAvenue de l'Opéra\u003c/b\u003e",
+                     "polyline" : {
+                        "points" : "{ygiHakfMiBmBIIGIMU"
+                     },
+                     "start_location" : {
+                        "lat" : 48.8695761,
+                        "lng" : 2.3315269
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.6 km",
+                        "value" : 591
+                     },
+                     "duration" : {
+                        "text" : "2 mins",
+                        "value" : 137
+                     },
+                     "end_location" : {
+                        "lat" : 48.8689069,
+                        "lng" : 2.3400877
+                     },
+                     "html_instructions" : "Slight \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003eRue du 4 Septembre\u003c/b\u003e",
+                     "maneuver" : "turn-slight-right",
+                     "polyline" : {
+                        "points" : "e~giHyofM?cA`@yE@KDY@U\\cDb@qEBWPoALiAf@qE`@iD\\{CN{ADa@"
+                     },
+                     "start_location" : {
+                        "lat" : 48.8702723,
+                        "lng" : 2.3322893
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.1 km",
+                        "value" : 137
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 26
+                     },
+                     "end_location" : {
+                        "lat" : 48.8685525,
+                        "lng" : 2.3418815
+                     },
+                     "html_instructions" : "Continue onto \u003cb\u003ePlace de la Bourse\u003c/b\u003e",
+                     "polyline" : {
+                        "points" : "uugiHq`hMr@yFRkB"
+                     },
+                     "start_location" : {
+                        "lat" : 48.8689069,
+                        "lng" : 2.3400877
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "1.1 km",
+                        "value" : 1054
+                     },
+                     "duration" : {
+                        "text" : "4 mins",
+                        "value" : 258
+                     },
+                     "end_location" : {
+                        "lat" : 48.8655793,
+                        "lng" : 2.3555694
+                     },
+                     "html_instructions" : "Continue onto \u003cb\u003eRue Réaumur\u003c/b\u003e",
+                     "polyline" : {
+                        "points" : "msgiHwkhM@IHs@f@mDVkBdAkID[BMBOb@_DBMf@sDL}@PyAx@wGl@mEX{Bf@wDT{Ad@_EL}@lAeJ"
+                     },
+                     "start_location" : {
+                        "lat" : 48.8685525,
+                        "lng" : 2.3418815
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.3 km",
+                        "value" : 312
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 70
+                     },
+                     "end_location" : {
+                        "lat" : 48.8646965,
+                        "lng" : 2.359611
+                     },
+                     "html_instructions" : "Continue straight to stay on \u003cb\u003eRue Réaumur\u003c/b\u003e",
+                     "maneuver" : "straight",
+                     "polyline" : {
+                        "points" : "{`giHiakM@WTeAPiADe@PgBp@iF`@oCXwB"
+                     },
+                     "start_location" : {
+                        "lat" : 48.8655793,
+                        "lng" : 2.3555694
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.4 km",
+                        "value" : 413
+                     },
+                     "duration" : {
+                        "text" : "2 mins",
+                        "value" : 125
+                     },
+                     "end_location" : {
+                        "lat" : 48.8672991,
+                        "lng" : 2.3634673
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eleft\u003c/b\u003e onto \u003cb\u003eRue du Temple\u003c/b\u003e",
+                     "maneuver" : "turn-left",
+                     "polyline" : {
+                        "points" : "k{fiHqzkMk@}@w@y@c@g@_B{Am@m@cAcAACA?ACWc@KOOc@cA{DMi@Wu@IY"
+                     },
+                     "start_location" : {
+                        "lat" : 48.8646965,
+                        "lng" : 2.359611
+                     },
+                     "travel_mode" : "DRIVING"
+                  }
+               ],
+               "traffic_speed_entry" : [],
+               "via_waypoint" : []
+            }
+         ],
+         "overview_polyline" : {
+            "points" : "{ygiHakfMsBwBU_@?cA`@yEFe@fAcLhBuOfBsOfAwIfBaNrAqJdGme@zAcL@WTeAVoBPgBp@iFz@gGk@}@w@y@cCcCqBqBEGc@s@Oc@cA{De@_BIY"
+         },
+         "summary" : "Rue Réaumur",
+         "warnings" : [],
+         "waypoint_order" : []
+      }
+   ],
+   "status" : "OK"
+}
