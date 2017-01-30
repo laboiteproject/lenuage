@@ -10,4 +10,5 @@ class AppTasksAdmin(admin.ModelAdmin):
 
     exclude = ('asana_project',)
 
+
 admin.site.register(AppTasks, AppTasksAdmin)

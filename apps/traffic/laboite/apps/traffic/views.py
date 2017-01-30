@@ -4,12 +4,12 @@ from .models import AppTraffic
 
 class AppTrafficCreateView(AppCreateView):
     model = AppTraffic
-    fields = ['start', 'dest']
+    fields = ['mode', 'start', 'dest']
 
 
 class AppTrafficUpdateView(AppUpdateView):
     model = AppTraffic
-    fields = ['start', 'dest', 'enabled']
+    fields = ['mode', 'start', 'dest', 'enabled']
 
 
 class AppTrafficDeleteView(AppDeleteView):

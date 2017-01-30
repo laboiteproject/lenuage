@@ -10,10 +10,19 @@ from boites.models import App, MINUTES
 from . import settings
 
 
+MODES = (
+    ('driving', 'En voiture'),
+    ('walking', 'A pied'),
+    ('bicycling', 'A vélo'),
+    ('transit', 'En transport en commun')
+)
+
+
 class AppTraffic(App):
     UPDATE_INTERVAL = 15 * MINUTES
     BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 
+    mode = models.CharField(_('Mode de transport'), choices=MODES, max_length=32, null=True, default='driving')
     start = models.CharField(_('Point de départ'), max_length=1024,  null=True, default=None)
     dest = models.CharField(_('Destination'), max_length=1024, null=True, default=None)
     trajectory_name = models.CharField(_('Itinéraire'), max_length=128, null=True, default=None)
@@ -22,6 +31,7 @@ class AppTraffic(App):
     def update_data(self):
         params = {'origin': self.start,
                   'destination': self.dest,
+                  'mode': self.mode,
                   'key': settings.GOOGLE_MAPS_API_KEY}
         r = requests.get(self.BASE_URL, params=params)
         routes = r.json().get('routes')
