@@ -9,6 +9,18 @@ from boites.models import App, MINUTES
 import asana
 
 
+def get_projects(asana_personal_access_token):
+    client = asana.Client.access_token(asana_personal_access_token)
+    workspaces = client.workspaces.find_all()
+    results = []
+    for workspace in workspaces:
+        projects = client.projects.find_all({'workspace': workspace['id']})
+        for project in projects:
+            results.append({'id': project['id'], 'name': project['name']})
+    results.sort(key=lambda proj: proj['name'])
+    return results
+
+
 class AppTasks(App):
     UPDATE_INTERVAL = 30 * MINUTES
 
@@ -24,7 +36,7 @@ class AppTasks(App):
         me = client.users.me()
 
         tasks = client.tasks.find_all({'project': self.asana_project_id,
-                                       'opt_fields' : 'due_on, completed, name, assignee'})
+                                       'opt_fields': 'due_on, completed, name, assignee'})
         uncompleted_tasks = 0
         self.name = None
 
@@ -34,8 +46,7 @@ class AppTasks(App):
                     uncompleted_tasks += 1
                     if uncompleted_tasks == 1:
                         self.name = task['name']
-
-                self.tasks = uncompleted_tasks
+        self.tasks = uncompleted_tasks
         self.save()
 
     def _get_data(self):

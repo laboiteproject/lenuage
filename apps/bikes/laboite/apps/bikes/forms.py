@@ -34,4 +34,4 @@ class BikeModelForm(forms.ModelForm):
         }
 
     class Media:
-        js = ('js/form.js',)
+        js = ('js/app_bikes_form.js',)

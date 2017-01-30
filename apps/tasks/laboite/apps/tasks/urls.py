@@ -7,5 +7,5 @@ urlpatterns = [
     url(r"^create/$", login_required(AppTasksCreateView.as_view()), name="create"),
     url(r"^(?P<pk>\d+)/$", login_required(AppTasksUpdateView.as_view()), name="update"),
     url(r"^(?P<pk>\d+)/delete/$", login_required(AppTasksDeleteView.as_view()), name="delete"),
-    url(r"^(?P<pk>\d+)/projects$", login_required(get_projects_view), name="get_projects"),
+    url(r"^projects$", login_required(get_projects_view), name="get_projects"),
 ]
