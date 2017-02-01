@@ -118,6 +118,21 @@ ROOT_URLCONF = "laboite.urls"
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = "laboite.wsgi.application"
 
+LABOITE_APPS = [
+    "laboite.apps.alarm",
+    "laboite.apps.bikes",
+    "laboite.apps.bus",
+    "laboite.apps.calendar",
+    "laboite.apps.energy",
+    "laboite.apps.messages",
+    "laboite.apps.metro",
+    "laboite.apps.parcel",
+    "laboite.apps.tasks",
+    "laboite.apps.time",
+    "laboite.apps.traffic",
+    "laboite.apps.weather",
+]
+
 INSTALLED_APPS = [
     'dal',
     'dal_select2',
@@ -143,20 +158,8 @@ INSTALLED_APPS = [
 
     # project
     "laboite",
-    "boites",
-
-    # laboite apps
-    "laboite.apps.alarm",
-    "laboite.apps.bikes",
-    "laboite.apps.bus",
-    "laboite.apps.calendar",
-    "laboite.apps.messages",
-    "laboite.apps.parcel",
-    "laboite.apps.tasks",
-    "laboite.apps.time",
-    "laboite.apps.traffic",
-    "laboite.apps.weather",
-]
+    "boites"
+] + LABOITE_APPS
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -172,6 +175,10 @@ LOGGING = {
         }
     },
     "handlers": {
+        'console': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler'
+        },
         "mail_admins": {
             "level": "ERROR",
             "filters": ["require_debug_false"],
@@ -179,6 +186,11 @@ LOGGING = {
         }
     },
     "loggers": {
+        'laboite.apps': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True
+        },
         "django.request": {
             "handlers": ["mail_admins"],
             "level": "ERROR",

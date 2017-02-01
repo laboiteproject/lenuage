@@ -9,10 +9,9 @@ from django.utils import timezone
 import requests
 
 from .models import AppBikes
-from .settings import VALUES_UPDATE_INTERVAL
 from .providers import get_provider
 
-PAST = timezone.now() - timedelta(minutes=VALUES_UPDATE_INTERVAL + 1)
+PAST = timezone.now() - timedelta(seconds=AppBikes.UPDATE_INTERVAL + 1)
 
 STAR_SEARCH_RESULTS = '''{"nhits": 2, "parameters": {"dataset": ["vls-stations-etat-tr"], "timezone": "Europe/Paris", "q": "nom:place", "rows": 10, "sort": "nom", "format": "json", "fields": ["idstation", "nom"]}, "records": [{"datasetid": "vls-stations-etat-tr", "recordid": "03bd9f7320deca7e70c171d1a1a14224c446698b", "fields": {"idstation": 24, "nom": "Place de Bretagne"}, "record_timestamp": "2016-10-21T12:22:00+02:00"}, {"datasetid": "vls-stations-etat-tr", "recordid": "b4619d5f34e51da488f9fb19ebb8e88020d78df0", "fields": {"idstation": 4, "nom": "Place Hoche"}, "record_timestamp": "2016-10-21T12:22:00+02:00"}]}'''
 STAR_STATION_INFOS = '''{"nhits": 1, "parameters": {"dataset": ["vls-stations-etat-tr"], "timezone": "Europe/Paris", "q": "idstation:4", "rows": 10, "format": "json", "fields": ["nom", "nombreemplacementsactuels", "nombrevelosdisponibles", "etat"]}, "records": [{"datasetid": "vls-stations-etat-tr", "recordid": "b4619d5f34e51da488f9fb19ebb8e88020d78df0", "fields": {"etat": "En fonctionnement", "nom": "Place Hoche", "nombrevelosdisponibles": 18, "nombreemplacementsactuels": 24}, "record_timestamp": "2016-10-21T12:23:00+02:00"}]}'''
@@ -59,8 +58,6 @@ def test_should_update():
     assert model.should_update()
     model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=None)
     assert model.should_update()
-    model = AppBikes(created_date=timezone.now(), last_activity=timezone.now())
-    assert model.should_update()
     model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=timezone.now() - timedelta(hours=1))
     assert model.should_update()
 
@@ -68,9 +65,12 @@ def test_should_update():
     assert not model.should_update()
     model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=timezone.now())
     assert not model.should_update()
+    model = AppBikes(created_date=timezone.now(), last_activity=timezone.now())
+    assert not model.should_update()
 
 
-def test_not_enabled():
+def test_not_enabled(monkeypatch):
+    _patch_ko(monkeypatch)
     model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=False)
     assert model.get_app_dictionary() is None
 

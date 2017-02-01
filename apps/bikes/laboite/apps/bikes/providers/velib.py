@@ -1,8 +1,10 @@
 # coding: utf-8
 
+from __future__ import unicode_literals
+
 import requests
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _L
+from django.utils.translation import ugettext_lazy as _
 
 from . import base
 from .. import settings
@@ -11,7 +13,7 @@ from .. import settings
 class VelibProvider(base.BaseProvider):
     VELIB_BASE_URL = 'http://opendata.paris.fr/api/records/1.0/search'
 
-    verbose_name = _L(u"Vélib' - Paris")
+    verbose_name = _("Vélib' - Paris")
 
     @classmethod
     def get_stations(cls, query):
@@ -53,5 +55,5 @@ class VelibProvider(base.BaseProvider):
             'station': data['name'],
             'slots': data['bike_stands'],
             'bikes': data['available_bikes'],
-            'status': data['status'] == u'OPEN'
+            'status': data['status'] == 'OPEN'
         }

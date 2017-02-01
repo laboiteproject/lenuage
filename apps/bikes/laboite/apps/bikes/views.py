@@ -2,10 +2,11 @@ import json
 
 from dal import autocomplete
 from django import http
-from django.views.generic.edit import UpdateView
 
-from .providers import get_provider
+from boites.views import AppCreateView, AppUpdateView, AppDeleteView
+from .forms import BikeModelForm
 from .models import AppBikes
+from .providers import get_provider
 
 
 class StationAutoComplete(autocomplete.Select2ListView):
@@ -19,16 +20,16 @@ class StationAutoComplete(autocomplete.Select2ListView):
         results = [{'id': id_, 'text': label} for id_, label in self.get_list()]
         return http.HttpResponse(json.dumps({'results': results}))
 
-class AppBikesUpdateView(UpdateView):
+
+class AppBikesCreateView(AppCreateView):
     model = AppBikes
-    fields = ['id_station', 'enabled']
+    form_class = BikeModelForm
 
-    success_url = '../../'
 
-    def get_context_data(self, **kwargs):
-        context = super(AppBikesUpdateView, self).get_context_data(**kwargs)
-        verbose_name = self.object._meta.verbose_name.title()
-        context['verbose_name'] = verbose_name
-        context['boite_id'] = self.kwargs.get('boite_pk')
+class AppBikesUpdateView(AppUpdateView):
+    model = AppBikes
+    form_class = BikeModelForm
 
-        return context
+
+class AppBikesDeleteView(AppDeleteView):
+    model = AppBikes

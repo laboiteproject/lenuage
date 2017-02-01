@@ -1,121 +1,60 @@
 # coding: utf-8
+from __future__ import unicode_literals
 
-import pycurl
+import requests
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
-from StringIO import StringIO
 
-from boites.models import Boite, App
-
-
-#Parse the google map infobox string, made of inbricked bracket arrays
-def boxStringToArray(dataS):
-    retval = []
-    curVal = ""
-    ind = 0
-    while ind < len(dataS):
-    	char = dataS[ind]
-    	if char == '[':
-    		opened = 0
-    		closingInd = ind +1
-    		while dataS[closingInd] != ']' or opened != 0:
-    			if dataS[closingInd] == '[':
-    				opened += 1
-    			elif dataS[closingInd] == ']':
-    				opened -= 1
-    			closingInd += 1
-
-    		retval.append(boxStringToArray(dataS[ind+1:closingInd + 1]))
-    		ind = closingInd
-    	elif char == ',':
-    		if len(curVal) > 0:
-    			retval.append(curVal)
-    		curVal = ""
-    	elif char != ']':
-    		curVal += char
-        ind += 1
-
-    if len(curVal) > 0:
-        retval.append(curVal)
-
-    return retval
-
-def queryTimes(start, dest):
-
-    RESPONSE_KEY = "        cacheResponse"
-
-    retval = {}
-    boxedData = ""
-
-    #Remove spaces in addresses
-    start = start.replace(' ', '+')
-    dest = dest.replace(' ', '+')
+from boites.exceptions import ExternalDataError
+from boites.models import App, MINUTES
+from . import settings
 
 
-    #Format the target URL
-    base_url = "https://www.google.com/maps/dir/?"
-    source_address_key = "saddr="
-    destination_address_key = "daddr="
-    end_parameters = "&dg=dbrw&newdg=1"
-
-    url =  base_url
-    url += source_address_key
-    url += start
-    url += "&"
-    url += destination_address_key
-    url += dest
-    url += end_parameters
-
-    #Request
-    buf = StringIO()
-    c = pycurl.Curl()
-    c.setopt(c.URL, url.encode('utf-8'))
-    c.setopt(pycurl.WRITEFUNCTION, lambda x: None)
-    c.setopt(c.WRITEDATA, buf)
-
-    c.perform()
-    c.close()
-
-    body = buf.getvalue()
-
-    # Parse the response, and extract the code correponding to the info box
-    for line in body.splitlines():
-    	if RESPONSE_KEY in line:
-    		boxedData = line[line.index('['):]
-                break
-
-    # Convert that string to an array
-    infobox = boxStringToArray(boxedData)
-
-    for traj in infobox[0][11][0]:
-    	info = traj[0]
-    	name = info[0]
-        name = name.replace('"', '')
-    	dist = info[1][1]
-	if len(info[6][0]) == 2:
-        	duration_s, duration = info[6][0]
-                retval[name] = int(duration_s)
-
-    return retval
+MODES = (
+    ('driving', 'En voiture'),
+    ('walking', 'A pied'),
+    ('bicycling', 'A vélo'),
+    ('transit', 'En transport en commun')
+)
 
 
 class AppTraffic(App):
-    start = models.CharField(_(u"Starting Point"), max_length = 1024,  null=True, default=None)
-    dest = models.CharField(_(u"Destination"), max_length = 1024,null=True, default=None)
-    trajectory_name = models.CharField((u"Itineray Name"), max_length = 128,null=True, default=None)
-    trip_duration = models.PositiveSmallIntegerField((u"Duration"),null=True, default=None)
+    UPDATE_INTERVAL = 15 * MINUTES
+    BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 
-    def get_app_dictionary(self):
-        if self.enabled:
-            durations = queryTimes(self.start, self.dest)
+    mode = models.CharField(_('Mode de transport'), choices=MODES, max_length=32, null=True, default='driving')
+    start = models.CharField(_('Point de départ'), max_length=1024,  null=True, default=None)
+    dest = models.CharField(_('Destination'), max_length=1024, null=True, default=None)
+    trajectory_name = models.CharField(_('Itinéraire'), max_length=128, null=True, default=None)
+    trip_duration = models.PositiveSmallIntegerField(_('Durée'), null=True, default=None)
 
-            self.trajectory_name = min(durations, key = lambda x : durations[x])
-            self.trip_duration = durations[self.trajectory_name] / 60
-
+    def update_data(self):
+        params = {'origin': self.start,
+                  'destination': self.dest,
+                  'mode': self.mode,
+                  'key': settings.GOOGLE_MAPS_API_KEY}
+        r = requests.get(self.BASE_URL, params=params)
+        routes = r.json().get('routes')
+        all_routes = []
+        for route in routes:
+            duration = sum(leg['duration']['value'] for leg in route['legs']) / 60
+            all_routes.append({'trajectory_name': route['summary'],
+                               'trip_duration': duration})
+        if all_routes:
+            all_routes.sort(key=lambda route: route['trip_duration'])
+            best_route = all_routes.pop(0)
+            self.trajectory_name = best_route['trajectory_name']
+            self.trip_duration = best_route['trip_duration']
             self.save()
+        else:
+            raise ExternalDataError('No route found')
 
-            return {'start': self.start, 'dest' : self.dest, 'trajectory_name':self.trajectory_name, 'trip_duration':self.trip_duration}
+    def _get_data(self):
+        return {'start': self.start,
+                'dest': self.dest,
+                'trajectory_name': self.trajectory_name,
+                'trip_duration': self.trip_duration}
 
     class Meta:
-        verbose_name = _("Configuration : traffic")
-        verbose_name_plural = _("Configurations : traffic")
+        verbose_name = _('Configuration : trafic')
+        verbose_name_plural = _('Configurations : trafic')

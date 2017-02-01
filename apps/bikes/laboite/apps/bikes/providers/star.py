@@ -1,8 +1,10 @@
 # coding: utf-8
 
+from __future__ import unicode_literals
+
 import requests
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _L
+from django.utils.translation import ugettext_lazy as _
 
 from . import base
 from .. import settings
@@ -11,7 +13,7 @@ from .. import settings
 class StarProvider(base.BaseProvider):
     STAR_API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
 
-    verbose_name = _L(u'Star - Rennes')
+    verbose_name = _('Star - Rennes')
 
     @classmethod
     def get_stations(cls, query):
@@ -53,5 +55,5 @@ class StarProvider(base.BaseProvider):
             'station': data['nom'],
             'slots': data['nombreemplacementsactuels'],
             'bikes': data['nombrevelosdisponibles'],
-            'status': data['etat'] == u'En fonctionnement'
+            'status': data['etat'] == 'En fonctionnement'
         }
