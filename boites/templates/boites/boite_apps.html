@@ -1,0 +1,39 @@
+{% extends "boites/base.html" %}
+
+{% load i18n %}
+{% load bootstrap %}
+{% load humanize %}
+
+{% block body_class %}boite boite-apps{% endblock %}
+
+{% block head_title %}{% trans "Apps" %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
+            <li><a href="{% url 'boites:update' boite.id %}">{{ boite.name }}</a></li>
+            <li class="active">Apps</li>
+        </ul>
+        {% if apps %}
+            <div class="row">
+            {% for app in apps %}
+                {% if app.pk %}
+                    {% with app.app_label|slice:"13:"|add:"_app.html" as template %}
+                        {% include template %}
+                    {% endwith %}
+                {% endif %}
+            {% endfor %}
+            <a href="create">
+                <div class="col-md-3">
+                    <div class="panel panel-success">
+                        <div id="add-app" class="panel-body">
+                            <i class="fa fa-plus-circle fa-5x" aria-hidden="true" style="margin-top: 56px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
