@@ -7,52 +7,7 @@ body.boite-apps .boite-apps {
     border-color: @list-group-active-border;
 }
 
-/* Material Design Switch - http://bootsnipp.com/snippets/featured/material-design-switch */
-.material-switch > input[type="checkbox"] {
-    display: none;
-}
-
-.material-switch > label {
-    cursor: pointer;
-    height: 0px;
-    position: relative;
-    width: 40px;
-}
-
-.material-switch > label::before {
-    background: rgb(0, 0, 0);
-    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    content: '';
-    height: 16px;
-    margin-top: -8px;
-    position:absolute;
-    opacity: 0.3;
-    transition: all 0.4s ease-in-out;
-    width: 40px;
-}
-.material-switch > label::after {
-    background: rgb(255, 255, 255);
-    border-radius: 16px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-    content: '';
-    height: 24px;
-    left: -4px;
-    margin-top: -8px;
-    position: absolute;
-    top: -4px;
-    transition: all 0.3s ease-in-out;
-    width: 24px;
-}
-.material-switch > input[type="checkbox"]:checked + label::before {
-    background: inherit;
-    opacity: 0.5;
-}
-.material-switch > input[type="checkbox"]:checked + label::after {
-    background: inherit;
-    left: 20px;
-}
-
+// select2 custom laboite css
 .boite span.select2-selection {
     height: 45px;
     padding: 10px 15px;
@@ -75,4 +30,45 @@ body.boite-apps .boite-apps {
 
 .boite span.select2-selection span.select2-selection__arrow b {
     margin-top: -4px;
+}
+
+.panel-app {
+  border-color: lighten(@brand-primary, 15%);
+}
+
+.panel-app > .panel-heading {
+  color: #fff;
+  background-color: lighten(@brand-primary, 15%);
+  border-color: lighten(@brand-primary, 15%);
+}
+
+.panel-app > .panel-body {
+  color: rgba(255, 255, 255, 0.7);
+
+  background-color: lighten(@brand-primary, 15%);
+  border-color: lighten(@brand-primary, 15%);
+}
+
+.panel-app > .panel-footer{
+  color: #fff;
+  background-color: @brand-primary;
+  border-color: @brand-primary;
+}
+.panel-app > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: lighten(@brand-primary, 15%);
+}
+.panel-app > .panel-heading .badge {
+  color: lighten(@brand-primary, 15%);
+  background-color: #fff;
+}
+
+.panel-app > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: lighten(@brand-primary, 15%);
+}
+
+#add-app {
+    height:221.43px;
+    color:#fff;
+    text-align:center;
+    background-color:#18BC9C;
 }

@@ -9,9 +9,12 @@
 
 {% block body %}
     <div class="row">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
+            <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
+            <li class="active">{% trans "Supprimer" %}</li>
+        </ul>
         <div class="col-md-5">
-            <h1>{% trans "Supprimer ?" %}</h1>
-
             <p>{% trans "Êtes vous sûr de vouloir supprimer" %} <b>{{ object.name }}</b>{% trans " ?" %}</p>
 
             <form method="post" action="{% url 'boites:delete' object.id %}" autocapitalize="off">
