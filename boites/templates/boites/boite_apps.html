@@ -24,6 +24,7 @@
                     {% endwith %}
                 {% endif %}
             {% endfor %}
+            {% if show_create_button %}
             <a href="create">
                 <div class="col-md-3">
                     <div class="panel panel-success">
@@ -33,6 +34,7 @@
                     </div>
                 </div>
             </a>
+            {% endif %}
         </div>
         {% endif %}
     </div>

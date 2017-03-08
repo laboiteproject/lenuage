@@ -58,21 +58,23 @@ def apps_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk)
 
     apps_list = []
+    enabled_apps = 0
     for model in apps.get_models():
         if issubclass(model, App):
             app_instances = model.objects.filter(boite=boite)
             pk = None
             enabled = None
+
             if app_instances:
                 first_app = app_instances.first()
                 pk = first_app.pk
                 enabled = first_app.enabled
+                enabled_apps += 1
 
             verbose_name =  model._meta.verbose_name.title()
             apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label})
 
-
-    return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
+    return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list, 'show_create_button' : len(apps_list) > enabled_apps})
 
 
 def redirect_view(request, api_key):
