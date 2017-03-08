@@ -153,7 +153,7 @@ class AppCreateView(SuccessMessageMixin, CreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
+        return reverse_lazy('boites:apps', kwargs={'pk': self.kwargs.get('boite_pk')})
 
     def form_valid(self, form):
         boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
@@ -175,7 +175,7 @@ class AppUpdateView(UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
+        return reverse_lazy('boites:apps', kwargs={'pk': self.kwargs.get('boite_pk')})
 
 
 class AppDeleteView(DeleteView):
@@ -190,4 +190,4 @@ class AppDeleteView(DeleteView):
 
     def get_success_url(self):
         messages.error(self.request, _('App supprimée !'))
-        return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
+        return reverse_lazy('boites:apps', kwargs={'pk': self.kwargs.get('boite_pk')})
