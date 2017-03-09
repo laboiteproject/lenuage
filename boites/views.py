@@ -106,6 +106,10 @@ class BoiteUpdateView(UpdateView):
 
     success_url = reverse_lazy('boites:list')
 
+    def get_queryset(self):
+        qs = super(BoiteUpdateView, self).get_queryset()
+        return qs.filter(user=self.request.user)
+
     def get_context_data(self, **kwargs):
         context = super(BoiteUpdateView, self).get_context_data(**kwargs)
         context['boite'] = self.object
@@ -121,6 +125,10 @@ class BoiteUpdateView(UpdateView):
 class BoiteDeleteView(DeleteView):
     model = Boite
     success_url = reverse_lazy('boites:list')
+
+    def get_queryset(self):
+        qs = super(BoiteDeleteView, self).get_queryset()
+        return qs.filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(BoiteDeleteView, self).get_context_data(**kwargs)
