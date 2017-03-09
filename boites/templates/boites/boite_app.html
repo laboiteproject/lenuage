@@ -1,0 +1,27 @@
+{% load i18n %}
+<a href="{% if app.pk == "create" %}../{% endif %}{{ app.app_label|slice:"13:" }}/{{ app.pk }}/" class="app">
+    <div class="col-md-3">
+        <div class="panel panel-app">
+            <div class="panel-heading"><strong><i class="fa fa-{% block app_icon %}{% endblock %}" aria-hidden="true"></i>&nbsp;{{ app.verbose_name }}</strong></div>
+            <div class="panel-body" style="height:128px;">
+                {% block app_description %}{% endblock %}
+            </div>
+            {% if app.pk != "create" %}
+            <div class="panel-footer">
+                <div>
+                    {% if app.pk %}
+                    <span class="{% if app.pk and app.enabled %}text-success{% elif app.pk and not app.enabled %}text-danger{% endif %}">
+                        <span class="fa-stack">
+                            <i class="fa fa-circle fa-stack-1x"></i>
+                            <i class="fa fa-circle-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </span>
+                    {% else %}
+                    <span>&nbsp;</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</a>

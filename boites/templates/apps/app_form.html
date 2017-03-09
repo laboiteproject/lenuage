@@ -9,11 +9,18 @@
 
 {% block head_title %}{{ verbose_name }}{% endblock %}
 
+{% block create_subnav %}<a class="list-group-item app-delete" href="delete/">{% trans "Supprimer cette app" %}</a>{% endblock %}
+
 {% block body %}
     <div class="row">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
+            <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
+            <li><a href="{% url 'boites:apps' boite_id %}">Apps</a></li>
+            <li class="active">{% if verbose_name %}{{ verbose_name }}{% else %}{% trans "Créer une app" %}{% endif %}</li>
+        </ul>
         <div class="col-md-5">
             <form method="POST" action="">
-                <legend>{{ verbose_name }}</legend>
                 {% csrf_token %}
                 {{ form|bootstrap }}
                 <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>

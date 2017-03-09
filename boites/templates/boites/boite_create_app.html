@@ -1,0 +1,31 @@
+{% extends "boites/base.html" %}
+
+{% load i18n %}
+{% load bootstrap %}
+{% load humanize %}
+
+{% block body_class %}boite boite-apps{% endblock %}
+
+{% block head_title %}{% trans "Créer une app" %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
+            <li><a href="{% url 'boites:update' boite.id %}">{{ boite.name }}</a></li>
+            <li><a href="{% url 'boites:apps' boite.id %}">Apps</a></li>
+            <li class="active">{% trans "Créer une app" %}</li>
+        </ul>
+        {% if apps %}
+            <div class="row">
+            {% for app in apps %}
+                {% if app.pk %}
+                    {% with app.app_label|slice:"13:"|add:"_app.html" as template %}
+                        {% include template %}
+                    {% endwith %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

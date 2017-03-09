@@ -5,12 +5,12 @@ from boites.views import AppCreateView, AppUpdateView, AppDeleteView
 
 class AppEnergyCreateView(AppCreateView):
     model = AppEnergy
-    fields = ['url', 'power_feedid', 'kwhd_feedid', 'emoncms_read_apikey', 'enabled']
+    fields = ['url', 'power_feedid', 'kwhd_feedid', 'emoncms_read_apikey']
 
 
 class AppEnergyUpdateView(AppUpdateView):
     model = AppEnergy
-    fields = ['url', 'power_feedid', 'kwhd_feedid', 'emoncms_read_apikey']
+    fields = ['url', 'power_feedid', 'kwhd_feedid', 'emoncms_read_apikey', 'enabled']
 
 
 class AppEnergyDeleteView(AppDeleteView):

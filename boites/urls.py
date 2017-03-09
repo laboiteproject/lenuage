@@ -12,6 +12,8 @@ from .views import (
     json_view,
     generate_api_key,
     redirect_view,
+    apps_view,
+    create_app_view,
 )
 
 urlpatterns = [
@@ -20,6 +22,8 @@ urlpatterns = [
     url(r"^(?P<pk>\d+)/$", login_required(BoiteUpdateView.as_view()), name="update"),
     url(r"^(?P<pk>\d+)/delete/$", login_required(BoiteDeleteView.as_view()), name="delete"),
     url(r"^(?P<pk>\d+)/generate/$", login_required(generate_api_key), name="generate"),
+    url(r"^(?P<pk>\d+)/apps/$", login_required(apps_view), name="apps"),
+    url(r"^(?P<pk>\d+)/apps/create/$", login_required(create_app_view), name="create_app"),
     # Apps
     url(r"^(?P<boite_pk>\d+)/apps/alarm/", include('laboite.apps.alarm.urls', namespace="apps_alarm")),
     url(r"^(?P<boite_pk>\d+)/apps/bus/", include('laboite.apps.bus.urls', namespace="apps_bus")),

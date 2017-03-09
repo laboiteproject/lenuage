@@ -29,7 +29,7 @@
                                 <td><code><a style="text-decoration:none;" href="/boites/{{ boite.api_key }}">{{ boite.api_key|truncatechars:9 }}</a></code></td>
                                 <td style ="color: {% if boite.was_active_recently %}#18bc9c{% else %}#e74c3c{% endif %};"><i class="fa fa-circle"></i></td>
                                 <td>
-                                    <a href="{% url 'boites:update' boite.id %}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                                    <a href="{% url 'boites:apps' boite.id %}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
                                     <button id ="popover{{ boite.id }}" class="btn btn-info btn-xs" data-container="body" data-toggle="popover" data-content=""><i class="fa fa-qrcode"></i></button>
                                     <a href="{% url 'boites:delete' boite.id %}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                                 </td>

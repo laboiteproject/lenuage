@@ -7,7 +7,7 @@ from django.apps import apps
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -39,6 +39,42 @@ def json_view(request, api_key):
     boite.last_connection = request.META.get("REMOTE_ADDR", "")
     boite.save()
     return JsonResponse(boite.get_apps_dictionary(), safe=False)
+
+def create_app_view(request, pk):
+    boite = get_object_or_404(Boite, pk=pk, user=request.user)
+
+    apps_list = []
+    for model in apps.get_models():
+        if issubclass(model, App):
+            app_instances = model.objects.filter(boite=boite)
+            verbose_name =  model._meta.verbose_name.title()
+            if not app_instances:
+                apps_list.append({'verbose_name':verbose_name[16:], 'pk':'create', 'app_label': model._meta.app_label})
+
+    return render(request, 'boites/boite_create_app.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
+
+
+def apps_view(request, pk):
+    boite = get_object_or_404(Boite, pk=pk, user=request.user)
+
+    apps_list = []
+    enabled_apps = 0
+    for model in apps.get_models():
+        if issubclass(model, App):
+            app_instances = model.objects.filter(boite=boite)
+            pk = None
+            enabled = None
+
+            if app_instances:
+                first_app = app_instances.first()
+                pk = first_app.pk
+                enabled = first_app.enabled
+                enabled_apps += 1
+
+            verbose_name =  model._meta.verbose_name.title()
+            apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label})
+
+    return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list, 'show_create_button' : len(apps_list) > enabled_apps})
 
 
 def redirect_view(request, api_key):
@@ -83,22 +119,6 @@ class BoiteUpdateView(UpdateView):
         context['last_connection'] = Boite._meta.get_field('last_connection')
         context['pretty_json_html'] = get_prettyjson_html(self.object.api_key)
 
-        apps_list = []
-        for model in apps.get_models():
-            if issubclass(model, App):
-                app_instances = model.objects.filter(boite=self.object)
-                pk = None
-                enabled = None
-                if app_instances:
-                    first_app = app_instances.first()
-                    pk = first_app.pk
-                    enabled = first_app.enabled
-
-                verbose_name =  model._meta.verbose_name.title()
-                apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label})
-
-        context['apps'] = apps_list
-
         return context
 
 
@@ -137,11 +157,13 @@ class AppCreateView(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(AppCreateView, self).get_context_data(**kwargs)
+        boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
+        context['boite'] = boite
         context['boite_id'] = self.kwargs.get('boite_pk')
         return context
 
     def get_success_url(self):
-        return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
+        return reverse_lazy('boites:apps', kwargs={'pk': self.kwargs.get('boite_pk')})
 
     def form_valid(self, form):
         boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
@@ -156,12 +178,14 @@ class AppUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(AppUpdateView, self).get_context_data(**kwargs)
         verbose_name = self.object._meta.verbose_name.title()
-        context['verbose_name'] = verbose_name
+        context['verbose_name'] = verbose_name[16:]
+        boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
+        context['boite'] = boite
         context['boite_id'] = self.kwargs.get('boite_pk')
         return context
 
     def get_success_url(self):
-        return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
+        return reverse_lazy('boites:apps', kwargs={'pk': self.kwargs.get('boite_pk')})
 
 
 class AppDeleteView(DeleteView):
@@ -169,9 +193,11 @@ class AppDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super(AppDeleteView, self).get_context_data(**kwargs)
+        boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
+        context['boite'] = boite
         context['boite_id'] = self.kwargs.get('boite_pk')
         return context
 
     def get_success_url(self):
         messages.error(self.request, _('App supprimée !'))
-        return reverse_lazy('boites:update', kwargs={'pk': self.kwargs.get('boite_pk')})
+        return reverse_lazy('boites:apps', kwargs={'pk': self.kwargs.get('boite_pk')})

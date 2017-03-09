@@ -28,7 +28,7 @@ class AppBus(App):
 
     def update_data(self):
         params = {
-            'dataser': 'tco-bus-circulation-passages-tr',
+            'dataset': 'tco-bus-circulation-passages-tr',
             'rows': 2,
             'apikey': settings.STAR_API_KEY,
             'sort': '-depart',

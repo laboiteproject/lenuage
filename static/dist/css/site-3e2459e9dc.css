@@ -9038,51 +9038,6 @@ body.boite-apps .boite-apps {
   background-color: #2C3E50;
   border-color: #2C3E50;
 }
-/* Material Design Switch - http://bootsnipp.com/snippets/featured/material-design-switch */
-.material-switch > input[type="checkbox"] {
-  display: none;
-}
-.material-switch > label {
-  cursor: pointer;
-  height: 0px;
-  position: relative;
-  width: 40px;
-}
-.material-switch > label::before {
-  background: #000000;
-  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
-  content: '';
-  height: 16px;
-  margin-top: -8px;
-  position: absolute;
-  opacity: 0.3;
-  -webkit-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out;
-  width: 40px;
-}
-.material-switch > label::after {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  content: '';
-  height: 24px;
-  left: -4px;
-  margin-top: -8px;
-  position: absolute;
-  top: -4px;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-  width: 24px;
-}
-.material-switch > input[type="checkbox"]:checked + label::before {
-  background: inherit;
-  opacity: 0.5;
-}
-.material-switch > input[type="checkbox"]:checked + label::after {
-  background: inherit;
-  left: 20px;
-}
 .boite span.select2-selection {
   height: 45px;
   padding: 10px 15px;
@@ -9101,6 +9056,40 @@ body.boite-apps .boite-apps {
 }
 .boite span.select2-selection span.select2-selection__arrow b {
   margin-top: -4px;
+}
+.panel-app {
+  border-color: #476481;
+}
+.panel-app > .panel-heading {
+  color: #fff;
+  background-color: #476481;
+  border-color: #476481;
+}
+.panel-app > .panel-body {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: #476481;
+  border-color: #476481;
+}
+.panel-app > .panel-footer {
+  color: #fff;
+  background-color: #2C3E50;
+  border-color: #2C3E50;
+}
+.panel-app > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #476481;
+}
+.panel-app > .panel-heading .badge {
+  color: #476481;
+  background-color: #fff;
+}
+.panel-app > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #476481;
+}
+#add-app {
+  height: 221.43px;
+  color: #fff;
+  text-align: center;
+  background-color: #18BC9C;
 }
 body {
   padding-top: 50px;
