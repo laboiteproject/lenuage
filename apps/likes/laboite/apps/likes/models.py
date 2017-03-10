@@ -6,12 +6,12 @@ from django.db import models
 
 import requests
 
-from boites.models import App, MINUTE
+from boites.models import App, MINUTES
 from . import settings
 
 
 class AppLikes(App):
-    UPDATE_INTERVAL = 1 * MINUTE
+    UPDATE_INTERVAL = 1 * MINUTES
 
     page_name = models.CharField(_('Nom de la page'), max_length=96)
     likes = models.PositiveIntegerField(_("Nombre de J'aime"), blank=True, null=True)
