@@ -22,7 +22,6 @@ class AppLikes(App):
     def update_data(self):
         url = "https://graph.facebook.com/v2.8/" + self.page_name + "?fields=fan_count&access_token=" + settings.FACEBOOK_ACCESS_TOKEN
         r = requests.get(url)
-        print int(r.json().get("fan_count"))
         self.likes = int(r.json().get("fan_count"))
         self.save()
 
