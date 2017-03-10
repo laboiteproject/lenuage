@@ -8,8 +8,8 @@ from boites.models import App
 
 
 class AppWifi(App):
-    ssid = models.CharField(_('Nom du réseau'), max_length=64)
-    preshared_key  = models.CharField(_('Clé de protection'), max_length=128)
+    ssid = models.CharField(_('Nom du réseau'), help_text=_('Veuillez indiquer le nom de votre réseau wifi'), max_length=64)
+    preshared_key  = models.CharField(_('Clé de protection'), help_text=_('Veuillez indiquer la clé de protection de votre réseau'), max_length=128)
 
     def _get_data(self):
         return {'ssid': self.ssid,
