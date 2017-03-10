@@ -33,3 +33,4 @@ pytest-watch==4.1.0
 -e apps/traffic
 -e apps/weather
 -e apps/wifi
+-e apps/likes

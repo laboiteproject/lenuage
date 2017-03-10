@@ -38,6 +38,7 @@ urlpatterns = [
     url(r"^(?P<boite_pk>\d+)/apps/traffic/", include('laboite.apps.traffic.urls', namespace="app_traffic")),
     url(r"^(?P<boite_pk>\d+)/apps/weather/", include('laboite.apps.weather.urls', namespace="app_weather")),
     url(r"^(?P<boite_pk>\d+)/apps/wifi/", include('laboite.apps.wifi.urls', namespace="app_wifi")),
+    url(r"^(?P<boite_pk>\d+)/apps/likes/", include('laboite.apps.likes.urls', namespace="app_likes")),
     url(r'^(?P<api_key>[0-9a-z-]+)/$', json_view, name='json'),
     url(r'^redirect/(?P<api_key>[0-9a-z-]+)/$', login_required(redirect_view), name="redirect"),
 ]
