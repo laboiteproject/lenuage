@@ -76,8 +76,6 @@ class Boite(models.Model):
                 dicts = filter(lambda r: r is not None, [a.get_app_dictionary() for a in applications])
                 if dicts:
                     apps_dict[model.get_label()] = dicts
-        self.last_activity = timezone.now()
-        self.save()
         return apps_dict
 
     def was_active_recently(self):
