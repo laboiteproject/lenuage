@@ -7,13 +7,13 @@ from boites.views import AppCreateView, AppUpdateView, AppDeleteView
 class AppCustomCreateView(AppCreateView):
     model = AppCustom
     template_name = 'custom_form.html'
-    fields = ['some_field_name']
+    fields = ['message']
 
 
 class AppCustomUpdateView(AppUpdateView):
     model = AppCustom
     template_name = 'custom_form.html'
-    fields = ['some_field_name', 'enabled']
+    fields = ['message', 'enabled']
 
 
 class AppCustomDeleteView(AppDeleteView):

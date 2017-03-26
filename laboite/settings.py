@@ -133,6 +133,8 @@ LABOITE_APPS = [
     "laboite.apps.weather",
     "laboite.apps.wifi",
     "laboite.apps.likes",
+    "laboite.apps.custom",
+    "laboite.apps.parking",
 ]
 
 INSTALLED_APPS = [

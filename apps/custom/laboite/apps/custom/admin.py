@@ -4,9 +4,9 @@ from .models import AppCustom
 
 
 class AppCustomAdmin(admin.ModelAdmin):
-    readonly_fields = []
+    readonly_fields = ('icon',)
 
-    list_display = ('boite', 'enabled', 'get_app_dictionary', 'created_date', 'last_activity')
+    list_display = ('message', 'icon', 'boite', 'enabled', 'get_app_dictionary', 'created_date', 'last_activity')
 
 
 admin.site.register(AppCustom, AppCustomAdmin)

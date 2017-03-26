@@ -16,5 +16,5 @@ class AppCustom(App):
                 'message': self.message}
 
     class Meta:
-        verbose_name = _('Configuration : Affichage personnalisé')
-        verbose_name_plural = _('Configurations : Affichage personnalisé')
+        verbose_name = _('Configuration : App personnalisée')
+        verbose_name_plural = _('Configurations : App personnalisée')
