@@ -36,6 +36,7 @@ class BoiteListView(ListView):
 
 def json_view(request, api_key):
     boite = get_object_or_404(Boite, api_key=api_key)
+    boite.last_activity = timezone.now()
     boite.last_connection = request.META.get("REMOTE_ADDR", "")
     boite.save()
     return JsonResponse(boite.get_apps_dictionary(), safe=False)

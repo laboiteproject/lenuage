@@ -49,6 +49,7 @@ class Boite(models.Model):
     def generate_api_key(self):
         self.api_key = uuid.uuid4()
         self.generate_qrcode()
+        self.last_activity = timezone.now()
 
     def generate_qrcode(self):
         url = 'http://'
