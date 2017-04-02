@@ -30,9 +30,6 @@ class AppCoffees(App):
 
         self.daily = int(r.json()['coffees']['today'])
         self.monthly = int(r.json()['coffees']['this_month'])
-
-        print r.json()
-
         self.save()
 
     class Meta:
