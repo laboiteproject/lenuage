@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
 from pygments import highlight
@@ -36,6 +37,7 @@ class BoiteListView(ListView):
 
 def json_view(request, api_key):
     boite = get_object_or_404(Boite, api_key=api_key)
+    boite.last_activity = timezone.now()
     boite.last_connection = request.META.get("REMOTE_ADDR", "")
     boite.save()
     return JsonResponse(boite.get_apps_dictionary(), safe=False)

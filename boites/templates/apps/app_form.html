@@ -27,9 +27,21 @@
             </form>
         </div>
     </div>
+    <style media="screen">
+        .checkbox label {
+            padding-left: 0px;
+        }
+    </style>
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    {% include "_scripts.html" %}
     {{ form.media }}
+    <script type="text/javascript">
+        var enabled_label = $(".checkbox label span").text();
+        $(".checkbox label span").html("");
+        $(".checkbox").parent().prepend("<label>" + enabled_label + "</label>");
+        $("#id_enabled").bootstrapSwitch();
+    </script>
 {% endblock %}

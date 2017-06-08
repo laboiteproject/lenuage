@@ -7,71 +7,77 @@
 {% block body_class %}home{% endblock %}
 
 {% block body_base %}
-    <section class="jumbotron">
+    <section class="jumbotron" style="color:white; background:#2C3E50">
         <div class="container">
             {% include "_messages.html" %}
-            <h1>{% blocktrans %}Welcome to<br>pinax-project-account{% endblocktrans %}</h1>
-            <p>
-                {% blocktrans %}
-                In addition to what is provided by the "zero" project, this project
-                provides thorough integration with django-user-accounts, adding
-                comprehensive account management functionality. It is a foundation
-                suitable for most sites that have user accounts.
-                {% endblocktrans %}
-            </p>
-            {% if not user.is_authenticated %}
-            {% url "account_login" as login_url %}
-            {% url "account_signup" as signup_url %}
-            <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-default">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to try out the site.{% endblocktrans %}</p>
-            {% endif %}
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2 class="text-center">{% blocktrans %}What is Pinax?{% endblocktrans %}</h2>
-            <p class="lead">
-                {% blocktrans %}
-                <b>Pinax</b> is an open-source platform based on Django and
-                intended to provide a starting point for websites. It takes
-                care of the things that many sites have in common, so you can
-                focus on what makes your site different.
-                {% endblocktrans %}
-            </p>
-            <div class="feature-columns">
-                <div>
-                    <i class="fa fa-cubes fa-3x"></i><br>
-                    {% blocktrans %}
-                    <b>Starter projects</b> provide project layout,
-                    scaffolding, already integrated components and
-                    ready-to-go code.
-                    {% endblocktrans %}
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2>{% blocktrans %}
+                        Vos données dans votre horloge !
+                        {% endblocktrans %}
+                    </h2>
+                    <p class="lead">
+                        {% blocktrans %}
+                        laboîte est une horloge connectée qui affiche des
+                        informations provenant d'Internet. Elle est peu coûteuse,
+                        totalement paramétrable et améliorée par une équipe de
+                        passionnés !
+                        {% endblocktrans %}
+                    </p>
+                    {% if not user.is_authenticated %}
+                    {% url "account_login" as login_url %}
+                    {% url "account_signup" as signup_url %}
+                    <p>{% blocktrans %}<a href="{{ login_url }}" class="btn btn-default">Identifiez-vous</a> ou <a href="{{ signup_url }}" class="btn btn-success">Créer un compte</a>{% endblocktrans %}</p>
+                    {% endif %}
                 </div>
-                <div>
-                    <i class="fa fa-puzzle-piece fa-3x"></i><br>
-                    {% blocktrans %}
-                    <b>Reusable apps</b> provide common
-                    infrastructure, back-end functionality,
-                    and user-facing components.
-                    {% endblocktrans %}
-                </div>
-                <div>
-                    <i class="fa fa-tint fa-3x"></i><br>
-                    {% blocktrans %}
-                    <b>Themes</b> provide default templates and
-                    stylesheets for quick prototyping and easy customization.
-                    {% endblocktrans %}
+                <div class="col-lg-4">
+                    <img width="100%" src="{{ STATIC_URL }}laboite_specs.svg" alt="laboîte specs">
                 </div>
             </div>
         </div>
     </section>
     <section>
         <div class="container">
-            <p class="lead text-center">
-                {% blocktrans %}
-                See <a href="http://pinaxproject.com/">pinaxproject.com</a>
-                for more information.
-                {% endblocktrans %}
-            </p>
+            <div class="feature-columns">
+                <div>
+                    <img class="img-circle" src="{{ STATIC_URL }}leds.svg" alt="app" style="width: 100px; height: 100px;"><br>
+                    <h2>{% blocktrans %}Vos données !{% endblocktrans %}</h2>
+                    {% blocktrans %}
+                    Avec laboîte, toutes les données qui vous importent sont là quand vous regardez l'heure !
+                    {% endblocktrans %}
+                </div>
+                <div>
+                    <img class="img-circle" src="{{ STATIC_URL }}arduino.svg" alt="Visualisation" style="width: 100px; height: 100px;"><br>
+                    <h2>{% blocktrans %}Compatible Arduino{% endblocktrans %}</h2>
+                    {% blocktrans %}
+                    laboîte est basée sur la plateforme Arduino. Ce qui signifie que vous pouvez modifier son code et améliorer votre boîte !
+                    {% endblocktrans %}
+                </div>
+                <div>
+                    <img class="img-circle" src="{{ STATIC_URL }}opensource.svg" alt="Visualisation" style="width: 100px; height: 100px;"><br>
+                    <h2>{% blocktrans %}Ouvert !{% endblocktrans %}</h2>
+                    {% blocktrans %}
+                    Le code de cette application web est ouvert et libre. Il est disponible <a href="https://github.com/laboiteproject/laboite-backend">ici</a> sous licence <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPLv3</a>
+                    {% endblocktrans %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <section>
+        <div class="container text-center">
+            <h2>{% blocktrans %}Des dizaines d'apps pour afficher ce que vous souhaitez !{% endblocktrans %}</h2>
+            {% if apps %}
+                <div class="row">
+                {% for app in apps %}
+                    {% if app.pk %}
+                        {% with app.app_label|slice:"13:"|add:"_app.html" as template %}
+                            {% include template %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </section>
 {% endblock %}

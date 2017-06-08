@@ -34,3 +34,6 @@ pytest-watch==4.1.0
 -e apps/weather
 -e apps/wifi
 -e apps/likes
+-e apps/custom
+-e apps/parking
+-e apps/coffees
