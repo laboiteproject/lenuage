@@ -1,7 +1,0 @@
-global-exclude *.py[co] __pycache__
-
-graft laboite/apps/*/static
-graft laboite/apps/*/templates
-
-include *.rst *.md
-

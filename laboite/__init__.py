@@ -1,5 +1,3 @@
-__import__('pkg_resources').declare_namespace(__name__)
-
 __about__ = """
 In addition to what is provided by the "zero" project, this project
 provides thorough integration with django-user-accounts, adding
