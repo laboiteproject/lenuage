@@ -59,6 +59,9 @@ def create_app_view(request, pk):
 def apps_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
 
+    # update apps data
+    boite.get_apps_dictionary()
+
     apps_list = []
     enabled_apps = 0
     for model in apps.get_models():
