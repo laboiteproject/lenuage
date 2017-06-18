@@ -3,4 +3,13 @@
 {% load i18n %}
 
 {% block app_icon %}truck{% endblock %}
+{% block app_data %}
+	<span class="badge">
+	{% if app.instance.status == 3 %}
+		{% trans "Livré" %}
+	{% else %}
+		{% trans "En route" %}
+	{% endif %}
+	</span>
+{% endblock %}
 {% block app_description %}{% trans "Affiche le suivi d'un colis" %}{% endblock %}

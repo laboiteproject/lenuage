@@ -9255,6 +9255,11 @@ body.boite-apps .boite-apps {
 .panel-app > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #476481;
 }
+.panel-body .badge {
+  color: #476481;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 3px;
+}
 #add-app {
   height: 221.43px;
   color: #fff;

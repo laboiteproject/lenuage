@@ -3,4 +3,13 @@
 {% load i18n %}
 
 {% block app_icon %}car{% endblock %}
+{% block app_data %}
+	<span class="badge">
+	{% if app.instance.open %}
+		{{ app.instance.occupied }}/{{ app.instance.available }}
+	{% else %}
+		{% trans "Fermé" %}
+	{% endif %}
+	</span>
+{% endblock %}
 {% block app_description %}{% trans "Affiche le nombre de places disponibles dans votre parking" %}{% endblock %}

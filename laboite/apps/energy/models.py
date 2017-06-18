@@ -52,7 +52,7 @@ class AppEnergy(App):
                   'limitinterval': 1,
                   'apikey': self.emoncms_read_apikey}
         r = requests.get(url, params=params)
-        values = [v[0] for v in r.json()[:7]]
+        values = [v[1] for v in r.json()[:7]]
         try:
             self.day0, self.day1, self.day2, self.day3, self.day4, self.day5, self.day6 = values
         except IndexError:

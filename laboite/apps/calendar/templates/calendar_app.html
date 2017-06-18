@@ -3,4 +3,8 @@
 {% load i18n %}
 
 {% block app_icon %}calendar{% endblock %}
+{% block app_data %}
+  <span class="badge">{{ app.instance.dtstart|default:"Aucun rendez-vous" }}</span><br>
+  {{ app.instance.summary|default:"" }}
+{% endblock %}
 {% block app_description %}{% trans "Affiche votre prochain rendez-vous" %}{% endblock %}
