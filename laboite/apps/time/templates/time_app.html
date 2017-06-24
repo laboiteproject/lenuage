@@ -3,4 +3,8 @@
 {% load i18n %}
 
 {% block app_icon %}clock-o{% endblock %}
+{% block app_data %}
+  <span class="badge">{{ app.instance.time }}</span><br>
+  {{ app.instance.date }}
+{% endblock %}
 {% block app_description %}{% trans "Affiche l'heure d'une ville dans le monde" %}{% endblock %}

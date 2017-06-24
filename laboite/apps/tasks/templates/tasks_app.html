@@ -3,4 +3,8 @@
 {% load i18n %}
 
 {% block app_icon %}check-square{% endblock %}
+{% block app_data %}
+  <span class="badge">{{ app.instance.tasks|default:"0" }} {% trans "tâches" %}</span><br>
+  {{ app.instance.name|default:"" }}
+{% endblock %}
 {% block app_description %}{% trans "Affiche votre prochaine tâche à réaliser" %}{% endblock %}

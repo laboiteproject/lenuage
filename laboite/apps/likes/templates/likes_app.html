@@ -3,4 +3,7 @@
 {% load i18n %}
 
 {% block app_icon %}thumbs-o-up{% endblock %}
+{% block app_data %}
+  <span class="badge">{{ app.instance.likes|default:"0" }} <i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+{% endblock %}
 {% block app_description %}{% trans "Affiche le nombre de" %} <i class="fa fa-thumbs-up" aria-hidden="true"></i> {% trans "de votre page" %}{% endblock %}

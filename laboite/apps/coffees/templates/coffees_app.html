@@ -3,4 +3,8 @@
 {% load i18n %}
 
 {% block app_icon %}coffee{% endblock %}
+{% block app_data %}
+  <span class="badge">{{ app.instance.daily }}</span> {% trans "cafés aujourd'hui" %}<br>
+  <span class="badge">{{ app.instance.monthly }}</span> {% trans "cafés ce mois" %}
+{% endblock %}
 {% block app_description %}{% trans "Affiche le nombre de cafés que vous consommez" %}{% endblock %}

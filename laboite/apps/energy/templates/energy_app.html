@@ -3,4 +3,14 @@
 {% load i18n %}
 
 {% block app_icon %}bolt{% endblock %}
+{% block app_data %}
+	<span class="badge">
+		{{ app.instance.day6|floatformat:1|default:"0" }}{% trans "kWh" %}
+		{% if app.instance.day6 > app.instance.day5 %}
+			<i class="fa fa-caret-up text-danger" aria-hidden="true"></i>
+		{% else %}
+			<i class="fa fa-caret-down text-success" aria-hidden="true"></i>
+		{% endif %}
+	</span>
+{% endblock %}
 {% block app_description %}{% trans "Affiche la consommation énergétique de votre batiment" %}{% endblock %}

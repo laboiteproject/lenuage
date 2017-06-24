@@ -3,4 +3,24 @@
 {% load i18n %}
 
 {% block app_icon %}cloud{% endblock %}
+{% block app_data %}
+	{% if app.instance.temperature_now %}
+		<span class="badge">
+		{% with icon=app.instance.icon_now %}
+			{% if icon == 0 %}
+				<i class="fa fa-sun-o" aria-hidden="true"></i>
+			{% elif icon == 2 %}
+				<i class="fa fa-tint" aria-hidden="true"></i>
+			{% elif icon == 3 %}
+				<i class="fa fa-align-justify" aria-hidden="true"></i>
+			{% elif icon == 4 %}
+				<i class="fa fa-snowflake-o" aria-hidden="true"></i>
+			{% else %}
+				<i class="fa fa-cloud" aria-hidden="true"></i>
+			{% endif %}
+		{% endwith %}
+		{{ app.instance.temperature_now }}{% trans "°C" %}/{{ app.instance.humidity_now }}{% trans "%" %}
+		</span>
+	{% endif %}
+{% endblock %}
 {% block app_description %}{% trans "Affiche les conditions météo" %}{% endblock %}

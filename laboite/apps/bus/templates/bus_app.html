@@ -3,4 +3,8 @@
 {% load i18n %}
 
 {% block app_icon %}bus{% endblock %}
+{% block app_data %}
+	<span class="badge">{{ app.instance.route0 }}</span> {% trans "dans" %} {{ app.instance.departure0 }} {% trans "minutes" %}<br>
+	<span class="badge">{{ app.instance.route1 }}</span> {% trans "dans" %} {{ app.instance.departure1 }} {% trans "minutes" %}
+{% endblock %}
 {% block app_description %}{% trans "Affiche le nombre de minutes avant le passage du bus à votre arrêt " %}{% endblock %}

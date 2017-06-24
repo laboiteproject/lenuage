@@ -59,6 +59,9 @@ def create_app_view(request, pk):
 def apps_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
 
+    # update apps data
+    boite.get_apps_dictionary()
+
     apps_list = []
     enabled_apps = 0
     for model in apps.get_models():
@@ -74,7 +77,7 @@ def apps_view(request, pk):
                 enabled_apps += 1
 
             verbose_name =  model._meta.verbose_name.title()
-            apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label})
+            apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label, 'instance': app_instances.first()})
 
     return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list, 'show_create_button' : len(apps_list) > enabled_apps})
 

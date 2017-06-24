@@ -50,7 +50,10 @@ class AppBus(App):
             try:
                 self.route0 = records[0]['fields']['nomcourtligne']
                 departure = dateparse.parse_datetime(records[0]['fields']['depart']) - now
-                self.departure0 = departure.seconds / 60
+                if departure.total_seconds() < 0:
+                    self.departure0 = 0
+                else:
+                    self.departure0 = departure.seconds / 60
             except IndexError:
                 self.route0 = None
                 self.departure0 = None

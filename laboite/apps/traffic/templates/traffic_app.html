@@ -3,4 +3,8 @@
 {% load i18n %}
 
 {% block app_icon %}road{% endblock %}
+{% block app_data %}
+  <span class="badge">{{ app.instance.trip_duration|default:"0" }} {% trans "minutes" %}</span><br>
+  {{ app.instance.trajectory_name|default:"" }}
+{% endblock %}
 {% block app_description %}{% trans "Affiche la durée d'un trajet en fonction du traffic" %}{% endblock %}

@@ -3,4 +3,8 @@
 {% load i18n %}
 
 {% block app_icon %}wifi{% endblock %}
+{% block app_data %}
+	<span class="badge">{{ app.app_instances.first.ssid }}</span><br>
+	{{ app.instance.preshared_key }}
+{% endblock %}
 {% block app_description %}{% trans "Affiche les informations de votre réseau wifi" %}{% endblock %}

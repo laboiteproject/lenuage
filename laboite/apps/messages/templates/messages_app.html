@@ -3,4 +3,5 @@
 {% load i18n %}
 
 {% block app_icon %}envelope{% endblock %}
+{% block app_data %}{{ app.instance.message|default:"Aucun message" }}{% endblock %}
 {% block app_description %}{% trans "Affiche un message personnalisé" %}{% endblock %}
