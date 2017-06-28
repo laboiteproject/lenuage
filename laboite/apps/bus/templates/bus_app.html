@@ -4,7 +4,7 @@
 
 {% block app_icon %}bus{% endblock %}
 {% block app_data %}
-	<span class="badge">{{ app.instance.route0 }}</span> {% trans "dans" %} {{ app.instance.departure0 }} {% trans "minutes" %}<br>
-	<span class="badge">{{ app.instance.route1 }}</span> {% trans "dans" %} {{ app.instance.departure1 }} {% trans "minutes" %}
+	<span class="badge">{{ app.instance.route0 }}</span> {% if app.instance.departure0 < 180 %}{% trans "dans" %} {{ app.instance.departure0 }} {% trans "minutes" %}{% endif %}<br>
+	<span class="badge">{{ app.instance.route1 }}</span> {% if app.instance.departure1 < 180 %}{% trans "dans" %} {{ app.instance.departure1 }} {% trans "minutes" %}{% endif %}
 {% endblock %}
 {% block app_description %}{% trans "Affiche le nombre de minutes avant le passage du bus à votre arrêt " %}{% endblock %}
