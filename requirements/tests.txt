@@ -1,0 +1,6 @@
+pytest==3.0.3
+pytest-cache==1.0
+pytest-django==3.0.0
+pytest-sugar==0.7.1
+pytest-watch==4.1.0
+pytest-mock==1.6.0

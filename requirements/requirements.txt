@@ -13,9 +13,3 @@ asana==0.5.1
 qrcode==5.3
 Pygments==2.1.3
 https://git.weboob.org/weboob/devel/repository/archive.tar.bz2?ref=1.2
-
-pytest==3.0.3
-pytest-cache==1.0
-pytest-django==3.0.0
-pytest-sugar==0.7.1
-pytest-watch==4.1.0
