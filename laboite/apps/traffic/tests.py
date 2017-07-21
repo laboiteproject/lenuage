@@ -1,9 +1,8 @@
 # coding: utf-8
 from __future__ import unicode_literals
-import json
 import os
 
-import requests
+import pytest
 
 from .models import AppTraffic
 
@@ -11,32 +10,22 @@ from .models import AppTraffic
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
-class MockRequest(object):
-    def __init__(self, status_code, data):
-        self.status_code = status_code
-        self.data = data
-
-    def json(self):
-        return self.data
-
-    @property
-    def ok(self):
-        return self.status_code == 200
+@pytest.fixture
+def app(boite):
+    return AppTraffic.objects.create(boite=boite)
 
 
-def test_result_ok(monkeypatch):
+def test_result_ok(app, requests_mocker):
     with open(os.path.join(HERE, 'test_data', 'ok.json')) as f:
-        data = f.read()
-    monkeypatch.setattr(requests, 'get', lambda url, params: MockRequest(200, json.loads(data, encoding='utf-8')))
-    monkeypatch.setattr(AppTraffic, 'save', lambda self: True)
-    ret = AppTraffic().get_app_dictionary()
-    assert ret['trajectory_name'] == 'Rue Réaumur'
-    assert ret['trip_duration'] == 10
+        with requests_mocker as m:
+            m.get(AppTraffic.BASE_URL, body=f)
+            ret = app.get_app_dictionary()
+            assert ret['trajectory_name'] == 'Rue Réaumur'
+            assert ret['trip_duration'] == 10
 
 
-def test_results_ko(monkeypatch):
+def test_results_ko(app, requests_mocker):
     with open(os.path.join(HERE, 'test_data', 'ko.json')) as f:
-        data = f.read()
-    monkeypatch.setattr(requests, 'get', lambda url, params: MockRequest(200, json.loads(data, encoding='utf-8')))
-    monkeypatch.setattr(AppTraffic, 'save', lambda self: True)
-    assert AppTraffic().get_app_dictionary() is None
+        with requests_mocker as m:
+            m.get(AppTraffic.BASE_URL, body=f)
+            assert app.get_app_dictionary() is None

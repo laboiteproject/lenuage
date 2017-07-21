@@ -6,10 +6,10 @@ from datetime import timedelta
 import json
 
 from django.utils import timezone
-import requests
+import pytest
 
 from .models import AppBikes
-from .providers import get_provider
+from .providers import get_provider, StarProvider, VelibProvider
 
 PAST = timezone.now() - timedelta(seconds=AppBikes.UPDATE_INTERVAL + 1)
 
@@ -19,27 +19,12 @@ VELIB_SEARCH_RESULTS = '''{"nhits": 2, "parameters": {"dataset": ["stations-veli
 VELIB_STATION_INFOS = '''{"nhits": 1, "parameters": {"dataset": ["stations-velib-disponibilites-en-temps-reel"], "timezone": "UTC", "q": "number:8020", "rows": 10, "format": "json", "fields": ["name", "bike_stands", "available_bikes", "status"]}, "records": [{"datasetid": "stations-velib-disponibilites-en-temps-reel", "recordid": "581a0aa68a4f7878ec806ea8308651c685af1c69", "fields": {"status": "OPEN", "bike_stands": 44, "available_bikes": 7, "name": "08020 - METRO ROME"}}]}'''
 
 
-class MockRequest(object):
-    def __init__(self, status_code, data):
-        self.status_code = status_code
-        self.data = data
-
-    def json(self):
-        return self.data
-
-    @property
-    def ok(self):
-        return self.status_code == 200
-
-
-def _patch_ok(monkeypatch, result_string):
-    monkeypatch.setattr(requests, 'get', lambda url, params: MockRequest(200, json.loads(result_string)))
-    monkeypatch.setattr(AppBikes, 'save', lambda self: True)
-
-
-def _patch_ko(monkeypatch):
-    monkeypatch.setattr(requests, 'get', lambda url, params: MockRequest(500, ''))
-    monkeypatch.setattr(AppBikes, 'save', lambda self: True)
+@pytest.fixture
+def app(boite):
+    return AppBikes.objects.create(boite=boite,
+                                   created_date=PAST - timedelta(minutes=10),
+                                   last_activity=PAST,
+                                   enabled=True)
 
 
 def _get_stations(provider_name):
@@ -53,77 +38,82 @@ def _get_station_infos(provider_name):
 
 
 # Common
-def test_should_update():
-    model = AppBikes(created_date=timezone.now(), last_activity=None)
-    assert model.should_update()
-    model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=None)
-    assert model.should_update()
-    model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=timezone.now() - timedelta(hours=1))
-    assert model.should_update()
-
-    model = AppBikes(created_date=timezone.now() - timedelta(seconds=30), last_activity=timezone.now())
-    assert not model.should_update()
-    model = AppBikes(created_date=timezone.now() - timedelta(days=10), last_activity=timezone.now())
-    assert not model.should_update()
-    model = AppBikes(created_date=timezone.now(), last_activity=timezone.now())
-    assert not model.should_update()
-
-
-def test_not_enabled(monkeypatch):
-    _patch_ko(monkeypatch)
-    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=False)
-    assert model.get_app_dictionary() is None
+@pytest.mark.django_db
+def test_not_enabled(app, requests_mocker):
+    app.enabled = False
+    app.save()
+    with requests_mocker as m:
+        m.get(StarProvider.STAR_API_BASE_URL, status_code=500, text='')
+        assert app.get_app_dictionary() is None
 
 
 # Star
-def test_search_results_ok_star(monkeypatch):
-    _patch_ok(monkeypatch, STAR_SEARCH_RESULTS)
-    assert _get_stations('star') == [(24, 'Place de Bretagne'), (4, 'Place Hoche')]
+def test_search_results_ok_star(requests_mocker):
+    with requests_mocker as m:
+        m.get(StarProvider.STAR_API_BASE_URL, text=STAR_SEARCH_RESULTS)
+        assert _get_stations('star') == [(24, 'Place de Bretagne'),
+                                         (4, 'Place Hoche')]
 
 
-def test_search_results_ko_star(monkeypatch):
-    _patch_ko(monkeypatch)
-    assert len(_get_stations('star')) == 0
+def test_search_results_ko_star(requests_mocker):
+    with requests_mocker as m:
+        m.get(StarProvider.STAR_API_BASE_URL, status_code=500, text='')
+        assert len(_get_stations('star')) == 0
 
 
-def test_station_infos_ok_star(monkeypatch):
-    _patch_ok(monkeypatch, STAR_STATION_INFOS)
-    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='star')
-    assert model.get_app_dictionary() == {'provider': 'star',
-                                          'station': 'Place Hoche',
-                                          'slots': 24,
-                                          'bikes': 18,
-                                          'status': True}
+@pytest.mark.django_db
+def test_station_infos_ok_star(app, requests_mocker):
+    app.provider = 'star'
+    app.save()
+    with requests_mocker as m:
+        m.get(StarProvider.STAR_API_BASE_URL, text=STAR_STATION_INFOS)
+        assert app.get_app_dictionary() == {'provider': 'star',
+                                            'station': 'Place Hoche',
+                                            'slots': 24,
+                                            'bikes': 18,
+                                            'status': True}
 
 
-def test_station_infos_ko_star(monkeypatch):
-    _patch_ko(monkeypatch)
-    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='star')
-    assert model.get_app_dictionary() is None
+@pytest.mark.django_db
+def test_station_infos_ko_star(app, requests_mocker):
+    app.provider = 'star'
+    app.save()
+    with requests_mocker as m:
+        m.get(StarProvider.STAR_API_BASE_URL, status_code=500, text='')
+        assert app.get_app_dictionary() is None
 
 
 # Velib
-def test_search_results_ok_velib(monkeypatch):
-    _patch_ok(monkeypatch, VELIB_SEARCH_RESULTS)
-    assert _get_stations('velib') == [(8020, '08020 - METRO ROME'), (22401, '22401 - DE GAULLE (MALAKOFF)')]
+def test_search_results_ok_velib(requests_mocker):
+    with requests_mocker as m:
+        m.get(VelibProvider.VELIB_BASE_URL, text=VELIB_SEARCH_RESULTS)
+        assert _get_stations('velib') == [(8020, '08020 - METRO ROME'),
+                                          (22401, '22401 - DE GAULLE (MALAKOFF)')]
 
 
-def test_search_results_ko_velib(monkeypatch):
-    _patch_ko(monkeypatch)
-    assert len(_get_stations('velib')) == 0
+def test_search_results_ko_velib(requests_mocker):
+    with requests_mocker as m:
+        m.get(VelibProvider.VELIB_BASE_URL, status_code=500, text='')
+        assert len(_get_stations('velib')) == 0
 
 
-def test_station_infos_ok_velib(monkeypatch):
-    _patch_ok(monkeypatch, VELIB_STATION_INFOS)
-    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='velib')
-    assert model.get_app_dictionary() == {'provider': 'velib',
-                                          'station': '08020 - METRO ROME',
-                                          'slots': 44,
-                                          'bikes': 7,
-                                          'status': True}
+@pytest.mark.django_db
+def test_station_infos_ok_velib(app, requests_mocker):
+    app.provider = 'velib'
+    app.save()
+    with requests_mocker as m:
+        m.get(VelibProvider.VELIB_BASE_URL, text=VELIB_STATION_INFOS)
+        assert app.get_app_dictionary() == {'provider': 'velib',
+                                            'station': '08020 - METRO ROME',
+                                            'slots': 44,
+                                            'bikes': 7,
+                                            'status': True}
 
 
-def test_station_infos_ko_velib(monkeypatch):
-    _patch_ko(monkeypatch)
-    model = AppBikes(created_date=PAST - timedelta(minutes=10), last_activity=PAST, enabled=True, provider='velib')
-    assert model.get_app_dictionary() is None
+@pytest.mark.django_db
+def test_station_infos_ko_velib(app, requests_mocker):
+    app.provider = 'velib'
+    app.save()
+    with requests_mocker as m:
+        m.get(VelibProvider.VELIB_BASE_URL, status_code=500, text='')
+        assert app.get_app_dictionary() is None
