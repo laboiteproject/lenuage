@@ -1,5 +1,7 @@
 import json
 from datetime import timedelta
+
+import pytest
 from django.utils import timezone
 
 from .models import AppMetro, requests
@@ -92,52 +94,36 @@ WITH_FAILURE = """
     }"""
 
 
-class MockRequest:
-    def __init__(self, status_code, data):
-        self.status_code = status_code
-        self.data = data
-
-    def json(self):
-        return self.data
+@pytest.fixture
+def app(boite):
+    return AppMetro.objects.create(boite=boite,
+                                   last_activity=PAST,
+                                   created_date=PAST)
 
 
-def test_not_enabled(monkeypatch):
-    monkeypatch.setattr(AppMetro, 'save', lambda self: True)
-    model = AppMetro(last_activity=PAST, created_date=PAST)
-    assert model.get_app_dictionary() is None
+@pytest.mark.django_db
+def test_not_enabled(app):
+    app.enabled = False
+    app.save()
+    assert app.get_app_dictionary() is None
 
 
-def test_no_data_failed_request(monkeypatch):
-    monkeypatch.setattr(requests, 'get', lambda url, params: MockRequest(500, ""))
-    monkeypatch.setattr(AppMetro, 'save', lambda self: True)
-    model = AppMetro(last_activity=PAST, created_date=PAST, failure="")
-    assert model.get_app_dictionary() is None
+@pytest.mark.django_db
+def test_failed_request(app, requests_mocker):
+    with requests_mocker as m:
+        m.get(AppMetro.BASE_URL, status_code=500, text='')
+        assert app.get_app_dictionary() is None
 
 
-def test_no_data_successful_request_no_failure(monkeypatch):
-    monkeypatch.setattr(requests, 'get', lambda url, params: MockRequest(200, json.loads(NO_FAILURE)))
-    monkeypatch.setattr(AppMetro, 'save', lambda self: True)
-    model = AppMetro(last_activity=PAST, created_date=PAST, failure="")
-    assert model.get_app_dictionary() is None
+@pytest.mark.django_db
+def test_successful_request_no_failure(app, requests_mocker):
+    with requests_mocker as m:
+        m.get(AppMetro.BASE_URL, text=NO_FAILURE)
+        assert app.get_app_dictionary() is None
 
 
-def test_no_data_successful_request_with_failure(monkeypatch):
-    monkeypatch.setattr(requests, 'get', lambda url, params: MockRequest(200, json.loads(WITH_FAILURE)))
-    monkeypatch.setattr(AppMetro, 'save', lambda self: True)
-    model = AppMetro(last_activity=PAST, created_date=PAST, failure="")
-    assert model.get_app_dictionary() == {'failure': True, 'recovery_time': 50}
-
-
-def test_should_update():
-    # Last activity was more than <delay> ago: update.
-    model = AppMetro(last_activity=PAST, created_date=PAST, failure="")
-    assert model.should_update()
-
-    # Last activity was not far ago, don't update.
-    now = timezone.now()
-    model = AppMetro(last_activity=now, created_date=PAST, failure="")
-    assert not model.should_update()
-
-    # Last activity was not far ago, but was just created: update.
-    model = AppMetro(last_activity=None, created_date=now, failure="")
-    assert model.should_update()
+@pytest.mark.django_db
+def test_no_data_successful_request_with_failure(app, requests_mocker):
+    with requests_mocker as m:
+        m.get(AppMetro.BASE_URL, text=WITH_FAILURE)
+        assert app.get_app_dictionary() == {'failure': True, 'recovery_time': 50}

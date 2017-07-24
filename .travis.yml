@@ -1,13 +1,17 @@
 language: python
 sudo: false
+addons:
+  code_climate:
+    repo_token:
+      secure: "WFLmcRXis4SKFy4XOLagkmjcF7lBL8fJlBBHCwy1nhEZfZjv2jwuIRgUAYgjUp1w+osRNXUjuOdNqI386Ch1UHEgLVv6wm1dWpcnkAu/McwmlhthLk/pX5ZUdvDwZ0o5y917+M6vTEnHr0yP7yLRnOnqx0uQrsrns26vDENH2P/MuTf0oSe6sf1iIVKCngj8z1Dt4TseCWVQQgkEhW13cDyYteochUTU7HNUF/ThxVu2mtcK4NvlwQcVCGIanV+V+OMIS7fB+ao6ICZbgRgbUA2eDVf3O/+Gu9EJJL9rsb6GlDwITRRyYPKImQSprRnk3KbGCceGWCb+35ZWKjcBzjrkVGx3J5H3G6mta5FVJMgytRHBtfCQM7m/cER+9COZ7ds+p5RJAVLdwuCxm7Ag9Q3K4rhyvFBqbBIW6HRCp/TWJUjKZuhUQclxdoBzvRMybtOT8PMCKNCNcEk90Xpasn+qzsu8TdEFd6Ada/3pIdj2oQDgT0UE6XtbHEb6yNtqv8IoP0BnD5BDmn4foqtN+QGnOplzcTxxOqqNCcIogRPffDNgv9dEXHpDBrzLBigUCMIMjfJ3UNwLZRQ1YB6x1Ji3beG7J2WmdL5JH8/LkYYJrGq1uXy7Mw79MZsJKkwI3CELGU71m5eG3IctcIniqE5J3XXUPt5/J/xbWuFAFtE="
 python:
-- '2.7'
+  - '2.7'
 env:
-- python2.7
+  - python2.7
 install:
-- pip install -r requirements/requirements.txt
+  - pip install -r requirements/requirements.txt
+  - pip install -r requirements/tests.txt
+  - pip install codeclimate-test-reporter
 script:
-- pytest
-notifications:
-  slack:
-    secure: j1SZaLDp3OWWTQYxmfBGclMrNW1cf+sCXsUacmXwGzmG/1yelbs5UoWMDTmmLsV5CQGMR8g7swxxnO+Nfx0TPUrm2c0Ga4QFTdKSC+bY6N3y+jGpgueAOoDYGKsBj+e0KSkMVGOMGCmqpRX0eEUh5Q5easRHxxqHs4pX9iEA3J33bCTi78rC/l51BFJ4W7g2OYBtht8kqFr14Cpvvr1QSY1pZu3pg+D3GIcHWUjUPkfTgkK3zFqKKk4Thd3vo2e7okLKL4bVsDe7j6dZDzB7/ZZjjcQsQGouagoo+Q2dZNwrV65YXSyl/Ft7bz3vY3NSVrDZAdcvcjA2ZhaCpm2GBiHJu8JE/T3Ik+plC2n751IUIm5OHaPiEqBqIikbM6MB7Zf8hwLWoAi8C/3ZRpkLEyGFVi7+l3hx6WgLs1m9r80/r+CON+RrrxOgZgaY4iPg6KWSvwdYOM7q+PuLXFg7w+MiOohrefA2tbubupqPPqg4sN2a5ugiL01RxAR23NQWU11INmuBUDBp7imZVHOue6TsLBUroPn48Ba2ApxSLbJ9es11fcPNlq84ywGxdbNNpwiC+v8njN5ltyH6AEk24gO7P9Mn+Bzc0BMO8cUmRCEcWqYYRgSIyldRKscTkxIlxIPtAgCq4skDLR7FfLfFhXrpszZRS58VdmJE7lJh4yU=
+  - pytest
+  - codeclimate-test-reporter

@@ -1,0 +1,6 @@
+[run]
+omit =
+    */tests_*.py
+    */tests.py
+    laboite/apps/*/migrations/*
+    laboite/settings/*

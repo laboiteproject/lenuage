@@ -1,4 +1,5 @@
-from __future__ import unicode_literals
+import pytest
+
 from .models import AppAlarm, HOURS_CHOICES, MINUTES_CHOICES
 
 
@@ -11,11 +12,16 @@ def test_choices():
                                                 '30', '35', '40', '45', '50', '55']
 
 
-def test_all(monkeypatch):
-    monkeypatch.setattr(AppAlarm, 'save', lambda self: True)
-    alarm = AppAlarm(heure='12', minutes='30', enabled=True)
+@pytest.mark.django_db
+def test_app_dictionary(boite):
+    alarm = AppAlarm.objects.create(heure='12', minutes='30', enabled=True, boite=boite)
     assert alarm.get_app_dictionary() == {'alarm': '12:30'}
-    alarm = AppAlarm(heure='01', minutes='05', enabled=True)
+
+    alarm.heure = '01'
+    alarm.minutes = '05'
+    alarm.save(update_fields=('heure', 'minutes'))
     assert alarm.get_app_dictionary() == {'alarm': '01:05'}
+
     alarm.enabled = False
+    alarm.save(update_fields=('enabled',))
     assert alarm.get_app_dictionary() is None
