@@ -12,9 +12,44 @@ class AppWifi(App):
     preshared_key  = models.CharField(_('Clé de protection'), help_text=_('Veuillez indiquer la clé de protection de votre réseau'), max_length=128)
 
     def _get_data(self):
-        return {'ssid': self.ssid,
-                'preshared_key': self.preshared_key}
-
+        return {
+            'width': 32,
+            'height': 16,
+            'update-interval': self.UPDATE_INTERVAL,
+            'icon-wifi': {
+                'type': 'icon',
+                'width': 7,
+                'height': 6,
+                'x': 2,
+                'y': 0,
+                'content':
+                    [
+                        0,0,1,1,1,0,0,
+                        0,1,0,0,0,1,0,
+                        1,0,0,1,0,0,1,
+                        0,0,1,0,1,0,0,
+                        0,0,0,0,0,0,0,
+                        0,0,0,1,0,0,0,
+                    ]
+            },
+            'text-wifi': {
+                'type': 'text',
+                'width': 10,
+                'height': 8,
+                'x': 10,
+                'y': 1,
+                'content': "wifi",
+            },
+            'text-ssid': {
+                'type': 'text',
+                'width': 32,
+                'height': 8,
+                'scrolling': True,
+                'x': 0,
+                'y': 9,
+                'content': self.ssid + '/' + self.preshared_key,
+            }
+        }
     class Meta:
         verbose_name = _('Configuration : wifi')
         verbose_name_plural = _('Configurations : wifi')

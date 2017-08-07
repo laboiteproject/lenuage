@@ -30,8 +30,19 @@ class AppTime(App):
         self.save()
 
     def _get_data(self):
-        return {'time': self.time,
-                'date': self.date}
+        return {
+            'width': 32,
+            'height': 8,
+            'update-interval': self.UPDATE_INTERVAL,
+            'text-time': {
+                'type': 'text',
+                'width': 25,
+                'height': 8,
+                'x': 4,
+                'y': 1,
+                'content': self.time,
+            },
+        }
 
     class Meta:
         verbose_name = _('Configuration : temps')

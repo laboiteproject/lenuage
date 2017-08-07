@@ -71,5 +71,5 @@ class AppEnergy(App):
                 'day6': self.day6}
 
     class Meta:
-        verbose_name = _("Configuration : Énergie")
-        verbose_name_plural = _("Configurations : Énergie")
+        verbose_name = _("Configuration : énergie")
+        verbose_name_plural = _("Configurations : énergie")

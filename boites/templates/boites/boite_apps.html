@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load bootstrap %}
 {% load humanize %}
+{% load static %}
 
 {% block body_class %}boite boite-apps{% endblock %}
 
@@ -10,7 +11,7 @@
 
 {% block body %}
     <div class="row">
-        <ul class="breadcrumb">
+        <ul class="breadcrumb hidden-xs hidden-sm">
             <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
             <li><a href="{% url 'boites:update' boite.id %}">{{ boite.name }}</a></li>
             <li class="active">Apps</li>
@@ -26,7 +27,7 @@
             {% endfor %}
             {% if show_create_button %}
             <a href="create">
-                <div class="col-md-3">
+                <div class="col-xs-6 col-md-3">
                     <div class="panel panel-success">
                         <div id="add-app" class="panel-body">
                             <i class="fa fa-plus-circle fa-5x" aria-hidden="true" style="margin-top: 56px;"></i>
@@ -38,4 +39,31 @@
         </div>
         {% endif %}
     </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}font.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}gfx.js"></script>
+    {% include "_scripts.html" %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            for(var pixels = 0; pixels < matrixWidth*matrixHeight;	pixels++)
+                $(".led ul").append("<li></li>");
+
+            var i = 0;
+            setInterval(function() {
+                for(var j=0; j< matrixWidth*matrixHeight; j++)
+                    $(".led ul li").eq(j).css("background","transparent");
+                draw(0, 0, bitmaps[i], matrixWidth, matrixHeight, 'rgba(255, 255, 255, 0.7)');
+                i++;
+                if(i >= bitmaps.length)
+                    i=0;
+            }, 200);
+
+            $(".led").css("width", matrixWidth * (4 + 1) + 6);
+            $(".led").css("height", matrixHeight * (4 + 1) + 7);
+        });
+    </script>
 {% endblock %}

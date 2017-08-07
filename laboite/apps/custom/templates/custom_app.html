@@ -1,6 +1,33 @@
 {% extends "boites/boite_app.html" %}
 
 {% load i18n %}
+{% load static %}
 
 {% block app_icon %}paint-brush{% endblock %}
+{% block app_data %}
+    <style>
+        .led ul li {
+            width: 4px;
+            height: 4px;
+            margin-right: 1px;
+            margin-top: 1px;
+            border-radius: 1px;
+            background: transparent;
+        }
+        .led {
+            float: left;
+        	background: transparent;
+            border:none;
+        }
+    </style>
+    <script type="text/javascript">
+        var bitmaps = {% autoescape off %}{{ app.instance.get_bitmaps }}{% endautoescape %};
+
+        var matrixWidth = {{ app.instance.width }},
+            matrixHeight= {{ app.instance.height }};
+    </script>
+    <div class="led">
+        <ul></ul>
+    </div>
+{% endblock %}
 {% block app_description %}{% trans "Affiche une icône et des informations personnalisées" %}{% endblock %}

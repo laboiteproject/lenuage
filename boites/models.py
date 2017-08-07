@@ -9,6 +9,8 @@ import uuid
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -137,3 +139,55 @@ class App(models.Model):
 
     class Meta:
         abstract = True
+
+class Tile(models.Model):
+    boite = models.ForeignKey(Boite, on_delete=models.CASCADE)
+    duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en secondes)"), default=5)
+    created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
+
+    def get_data(self):
+        apps = TileApp.objects.filter(tile=self)
+        apps_list = {}
+        for app in apps:
+            apps_list[app.content_object.get_label()] = app.get_data()
+
+        tile = {
+            'id': self.id,
+            'duration': self.duration,
+            'apps': apps_list,
+        }
+
+        return tile
+
+    class Meta:
+        verbose_name = _('Tuile')
+        verbose_name_plural = _('Tuiles')
+
+class TileApp(models.Model):
+    tile = models.ForeignKey(Tile, on_delete=models.CASCADE, verbose_name=_('Tuile'))
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_("Type d'app"))
+    object_id = models.PositiveIntegerField(verbose_name=_("Identifiant de l'app"))
+    content_object = GenericForeignKey('content_type', 'object_id')
+    x = models.SmallIntegerField(_('Position x'), help_text=_("Veuillez indiquer la position en x de l'app sur la tuile (en pixels)"), default=0)
+    y = models.SmallIntegerField(_('Position y'), help_text=_("Veuillez indiquer la position en y de l'app sur la tuile (en pixels)"), default=0)
+
+    def get_data(self):
+        app = self.content_object.get_data()
+
+        shifted_app = {}
+        for key, value in app.items():
+            if key not in ('update-interval',  'height', 'width'):
+                value['x'] += self.x
+                shifted_app[key] = value
+
+                value['y'] += self.y
+                shifted_app[key] = value
+
+        return shifted_app
+
+    class Meta:
+        verbose_name = _('App')
+        verbose_name_plural = _('Apps')

@@ -33,11 +33,36 @@ class AppBikes(App):
 
     def _get_data(self):
         return {
-            'provider': self.provider,
-            'station': self.station,
-            'slots': self.slots,
-            'bikes': self.bikes,
-            'status': self.status
+            'width': 32,
+            'height': 10,
+            'update-interval': self.UPDATE_INTERVAL,
+            'icon-bikes': {
+                'type': 'icon',
+                'width': 12,
+                'height': 10,
+                'x': 5,
+                'y': 1,
+                'content':
+                    [
+                        0,0,0,0,0,0,0,0,1,1,0,0,
+                        0,0,0,1,1,1,0,0,0,0,1,0,
+                        0,0,0,0,1,0,0,0,1,1,0,0,
+                        0,0,0,0,1,1,1,1,1,0,0,0,
+                        0,1,1,1,1,0,0,0,1,1,1,0,
+                        1,0,1,0,1,0,1,1,1,0,0,1,
+                        1,0,1,1,1,1,0,1,0,1,0,1,
+                        1,0,0,0,1,0,0,1,0,0,0,1,
+                        0,1,1,1,0,0,0,0,1,1,1,0,
+                    ]
+            },
+            'text-bikes': {
+                'type': 'text',
+                'width': 10,
+                'height': 10,
+                'x': 18,
+                'y': 3,
+                'content': '%d' % self.bikes
+            }
         }
 
     class Meta:
