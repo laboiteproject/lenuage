@@ -5,11 +5,11 @@
 
 {% block body_class %}boite boite-delete{% endblock %}
 
-{% block head_title %}{{ object.name }}{% endblock %}
+{% block head_title %}{% trans "Suppression de" %} {{ object.name }}{% endblock %}
 
 {% block body %}
     <div class="row">
-        <ul class="breadcrumb">
+        <ul class="breadcrumb hidden-xs hidden-sm">
             <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
             <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
             <li class="active">{% trans "Supprimer" %}</li>

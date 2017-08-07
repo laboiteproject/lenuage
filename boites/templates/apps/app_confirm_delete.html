@@ -7,7 +7,7 @@
 
 {% block body %}
     <div class="row">
-        <ul class="breadcrumb">
+        <ul class="breadcrumb hidden-xs hidden-sm">
             <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
             <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
             <li><a href="{% url 'boites:apps' boite_id %}">Apps</a></li>

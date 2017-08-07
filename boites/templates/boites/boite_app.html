@@ -1,6 +1,6 @@
 {% load i18n %}
 <a href="{% if app.pk == "create" %}../{% endif %}{{ app.app_label|slice:"13:" }}/{{ app.pk }}/" class="app">
-    <div class="col-md-3">
+    <div class="col-xs-6 col-md-3">
         <div class="panel panel-app">
             <div class="panel-heading"><strong><i class="fa fa-{% block app_icon %}{% endblock %}" aria-hidden="true"></i>&nbsp;{{ app.verbose_name }}</strong></div>
             <div class="panel-body" style="height:128px;{% if app.pk == "create" %} border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;{% endif %}">
