@@ -14,6 +14,13 @@ from .views import (
     redirect_view,
     apps_view,
     create_app_view,
+    tiles_view,
+    tile_editor_view,
+    TileUpdateView,
+    TileDeleteView,
+    tileapp_view,
+    create_tile_view,
+    TileAppDeleteView,
 )
 
 urlpatterns = [
@@ -24,8 +31,13 @@ urlpatterns = [
     url(r"^(?P<pk>\d+)/generate/$", login_required(generate_api_key), name="generate"),
     url(r"^(?P<pk>\d+)/apps/$", login_required(apps_view), name="apps"),
     url(r"^(?P<pk>\d+)/apps/create/$", login_required(create_app_view), name="create_app"),
+    url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/$", login_required(TileUpdateView.as_view()), name="tile"),
+    url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/create/$", login_required(create_tile_view), name="create_tile"),
+    url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/delete/$", login_required(TileDeleteView.as_view()), name="delete_tile"),
+    url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/app/$", login_required(tileapp_view), name="tileapp"),
+    url(r"^(?P<boite_pk>\d+)/tiles/(?P<tile_pk>\d+)/app/(?P<pk>\d+)/delete/$", login_required(TileAppDeleteView.as_view()), name="delete_tileapp"),
+    url(r"^(?P<boite_pk>\d+)/tiles/editor/$", login_required(tile_editor_view), name="editor"),
     # Apps
-    url(r"^(?P<boite_pk>\d+)/apps/alarm/", include('laboite.apps.alarm.urls', namespace="apps_alarm")),
     url(r"^(?P<boite_pk>\d+)/apps/bus/", include('laboite.apps.bus.urls', namespace="apps_bus")),
     url(r"^(?P<boite_pk>\d+)/apps/bikes/", include('laboite.apps.bikes.urls', namespace="app_bikes")),
     url(r"^(?P<boite_pk>\d+)/apps/calendar/", include('laboite.apps.calendar.urls', namespace="app_calendar")),

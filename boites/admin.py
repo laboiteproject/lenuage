@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from .models import Boite
+from .models import Boite, Tile, TileApp
 
 class BoiteAdmin(admin.ModelAdmin):
     readonly_fields = ('api_key','created_date', 'qrcode', 'last_activity', 'last_connection')
@@ -13,3 +13,16 @@ class BoiteAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 admin.site.register(Boite, BoiteAdmin)
+
+class TileAdmin(admin.ModelAdmin):
+    readonly_fields = ['created_date']
+    list_display = ('id', 'boite', 'duration')
+
+    search_fields = ['boite']
+
+admin.site.register(Tile, TileAdmin)
+
+class TileAppAdmin(admin.ModelAdmin):
+    list_display = ('id', 'tile', 'x', 'y', 'content_object')
+
+admin.site.register(TileApp, TileAppAdmin)

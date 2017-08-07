@@ -1,0 +1,140 @@
+{% extends "boites/base.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+{% load humanize %}
+
+{% block body_class %}boite boite-update{% endblock %}
+
+{% block head_title %}{% trans "Tuiles" %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <ul class="breadcrumb hidden-xs hidden-sm">
+            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
+            <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
+            <li>{% trans "Tuiles" %}</li>
+            <li><a href="{% url 'boites:tile' boite_id object.id %}">{{ object.id }}</a></li>
+        </ul>
+        <div class="col-md-5">
+            <h3>{% trans "Tuile" %}</h3>
+            <div class="led">
+                <ul></ul>
+            </div>
+            <p class="help-block">
+                <h4>{% trans "Mode d'emploi" %}</h4>
+                <ol>
+                    <li>{% trans "Sélectionnez dans un premier temps l'app que vous souhaitez ajouter sur la tuile dans la section" %} <a href="#available_apps">{% trans "apps disponibles" %}</a> {% trans "ci-dessous" %}.</li>
+                    <li>{% trans "Une fois selectionnée, cette app apparaît dans" %} <a href="#enabled_apps">{% trans "apps activées" %}</a>.</li>
+                    <li>{% trans "Vous pouvez alors cliquer sur cette app et le positionner sur la tuile ci-dessus" %}.</li>
+                    <li>{% trans "Appuyez sur le bouton" %} <a href="{% url 'boites:update' boite_id %}?tile={{ object.id }}" class="btn btn-info btn-xs"><i class="fa fa-play" aria-hidden="true"></i></a> {% trans "pour visualiser cette tuile sur le simulateur." %}</li>
+                </ol>
+            </p>
+            <div class="form-group" id="enabled_apps" style="margin-top: 15px;">
+                <label>{% trans "Apps activées" %}</label>
+            </div>
+            {% if tile_apps %}
+                {% for app in tile_apps %}
+                    <div class="btn-group" style="margin-top: 4px;">
+                        <button class="btn btn-info btn-sm" data-pk="{{ app.pk }}" data-width="{{ app.data.width }}" data-height="{{ app.data.height }}">{{ app.verbose_name }} <span  id="{{ app.pk }}" class="badge"></span></button>
+                        <a href="{% url 'boites:delete_tileapp' boite_id object.id app.pk %}" class="btn btn-sm btn-info"><i class="fa fa-times" aria-hidden="true"></i></a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="help-block">
+                    {% trans "Aucune app n'est activée sur cette tuile pour le moment, ajoutez une app en cliquant sur une des apps disponibles ci-dessous !" %}
+                </p>
+            {% endif %}
+
+            <div class="form-group" id="available_apps" style="margin-top: 15px;">
+                <label>{% trans "Apps disponibles" %}</label>
+            </div>
+            {% if apps %}
+                {% for app in apps %}
+                    {% if app.pk and app.data.height %}
+                        <a href="?app={{ app.app_label }}&pk={{ app.pk }}" class="btn btn-success btn-sm" style="margin-top: 2px" data-pk="{{ app.pk }}" data-width="{{ app.data.width }}" data-height="{{ app.data.height }}">{{ app.verbose_name }} <span class="badge">{{ app.data.width }}&times;{{ app.data.height }}</span></a>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="help-block">
+                    {% trans "Aucune" %} <a href="{% url 'boites:apps' boite_id %}">{% trans "app" %}</a> {% trans "n'est configurée le moment, configurez une app en cliquant " %} <a href="{% url 'boites:apps' boite_id %}">{% trans "ici " %}</a>!
+                </p>
+            {% endif %}
+            <form method="POST" action="" style="margin-top: 25px;">
+                {% csrf_token %}
+                {{ form|bootstrap }}
+                <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}font.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}gfx.js"></script>
+    <script type="text/javascript">
+        var matrixWidth = 32,
+            matrixHeight= 16;
+
+        $(document).ready(function(){
+            for(var pixels = 0; pixels < matrixWidth*matrixHeight;	pixels++)
+                $(".led ul").append("<li></li>");
+
+            var width = 0;
+                height = 0;
+                app = null;
+                editing = true;
+
+            $("button").click(
+                function() {
+                    editing = true;
+                    width = $(this).data("width");
+                    height = $(this).data("height");
+                    app = $(this).data("pk");
+                    $("button").removeClass("active");
+                    $(this).addClass("active");
+                    element = document.getElementById(app);
+                    element.innerHTML = '0,0';
+                    reset();
+                    drawRect(0, 0, width, height, '#fff');}
+            );
+
+            $(".led ul li").hover(function() {
+                var index = $(this).index();
+                var x = index % matrixWidth,
+                    y = Math.round(index /matrixWidth),
+                    x0 = x-(width/2),
+                    y0 = y-(height/2);
+                if(app && editing) {
+                    element = document.getElementById(app);
+                    element.innerHTML = x0 + ',' + y0;
+                    reset();
+                    drawRect(x0, y0, width, height, '#fff');
+
+                    $.get("app/", { app: app, x: x0, y: y0 });
+                }
+            });
+
+            $(".led ul li").click(function() {
+                var index = $(this).index();
+                var x = index % matrixWidth,
+                    y = Math.round(index /matrixWidth),
+                    x0 = x-(width/2),
+                    y0 = y-(height/2);
+                if(app && editing) {
+                    editing = false;
+                    reset();
+                    drawRect(x0, y0, width, height, '#18BC9C');
+
+                    $.get("app/", { app: app, x: x0, y: y0 });
+                }
+            });
+
+            $(".led").css("width", matrixWidth*11+6);
+            $(".led").css("height", matrixHeight*11+7);
+        });
+    </script>
+{% endblock %}

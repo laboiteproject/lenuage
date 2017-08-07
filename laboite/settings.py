@@ -120,7 +120,7 @@ ROOT_URLCONF = "laboite.urls"
 WSGI_APPLICATION = "laboite.wsgi.application"
 
 LABOITE_APPS = [
-    "laboite.apps.alarm",
+    #"laboite.apps.alarm",
     "laboite.apps.bikes",
     "laboite.apps.bus",
     "laboite.apps.calendar",

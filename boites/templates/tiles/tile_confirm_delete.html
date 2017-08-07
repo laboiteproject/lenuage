@@ -1,0 +1,27 @@
+{% extends "boites/base.html" %}
+
+{% load i18n %}
+{% load bootstrap %}
+
+{% block head_title %}{% trans "Suppression de la tuile n°" %} {{ object.id }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <ul class="breadcrumb hidden-xs hidden-sm">
+            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
+            <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
+            <li>{% trans "Tuiles" %}</li>
+            <li><a href="{% url 'boites:tile' boite_id object.id %}">{{ object.id }}</a></li>
+            <li class="active">{% trans "Supprimer" %}</li>
+        </ul>
+        <div class="col-md-5">
+            <p>{% trans "Êtes vous sûr de vouloir supprimer la tuile n°" %} <b>{{ object.id }}</b>{% trans " ?" %}</p>
+
+            <form method="post" action="{% url 'boites:delete_tile' boite_id object.id %}" autocapitalize="off">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">{% trans "Supprimer" %}</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

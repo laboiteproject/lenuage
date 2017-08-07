@@ -45,5 +45,5 @@ class AppMetro(App):
                 'recovery_time': self.recovery_time}
 
     class Meta:
-        verbose_name = _("Configuration : Métro")
-        verbose_name_plural = _("Configurations : Métro")
+        verbose_name = _("Configuration : métro")
+        verbose_name_plural = _("Configurations : métro")

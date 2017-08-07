@@ -66,5 +66,5 @@ class AppParking(App):
                 'occupied': self.occupied}
 
     class Meta:
-        verbose_name = _('Configuration : Parking')
-        verbose_name_plural = _('Configurations : Parking')
+        verbose_name = _('Configuration : parkings')
+        verbose_name_plural = _('Configurations : parkings')
