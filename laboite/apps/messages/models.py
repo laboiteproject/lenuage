@@ -14,7 +14,22 @@ class AppMessages(App):
     def _get_data(self):
         if not self.message:
             return None
-        return {'message': self.message}
+        result = {
+            'width': 32,
+            'height': 8,
+            'update-interval': self.UPDATE_INTERVAL,
+            'text-message': {
+                'type': 'text',
+                'width': len(self.message) * 5,
+                'height': 8,
+                'x': 0,
+                'y': 1,
+                'content': '%s' % self.message,
+            },
+        }
+        if len(self.message) > 6:
+            result['text-message']['scrolling'] = True
+        return result
 
     class Meta:
         verbose_name = _("Configuration : messages")

@@ -76,16 +76,12 @@ def tiles_view(request, pk):
     apps_list = []
     for model in apps.get_models():
         if issubclass(model, App):
-            app_instances = model.objects.filter(boite=boite)
+            app = model.objects.filter(boite=boite, enabled=True).first()
             pk = None
-            enabled = None
 
-            if app_instances:
-                first_app = app_instances.first()
-                pk = first_app.pk
-                if first_app.enabled:
-                    verbose_name =  model._meta.verbose_name.title()
-                    apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label, 'data': first_app.get_data()})
+            if app:
+                verbose_name =  model._meta.verbose_name.title()
+                apps_list.append({'verbose_name':verbose_name[16:], 'pk':app.pk, 'enabled':True, 'app_label': model._meta.app_label, 'data': first_app.get_data()})
 
     return render(request, 'boites/tiles_form.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
 
@@ -165,7 +161,7 @@ class BoiteUpdateView(UpdateView):
 
         tiles = Tile.objects.filter(boite= self.object).order_by('id')
 
-        if self.request.GET.get('tile'):
+        if self.request.GET.get('tile') or not tiles:
             current_tile, created = Tile.objects.get_or_create(boite=self.object, pk=self.request.GET.get('tile'))
         else:
             current_tile = tiles.first()
@@ -285,7 +281,11 @@ class TileUpdateView(UpdateView, JSONResponseMixin):
         context['boite_id'] = self.object.boite.id
 
         if self.request.GET.get('app'):
-            content_type = ContentType.objects.get(app_label=self.request.GET.get('app'))
+            #TODO : fix this MultipleObjectsReturned exception
+            if self.request.GET.get('app') == "laboite.apps.custom":
+                content_type = ContentType.objects.get(app_label="laboite.apps.custom", model="appcustom")
+            else:
+                content_type = ContentType.objects.get(app_label=self.request.GET.get('app'))
             tile_app = TileApp(tile= self.object, object_id= self.request.GET.get('pk'), content_type=content_type)
             if issubclass(tile_app.content_object.__class__, App):
                 tile_app.save()
