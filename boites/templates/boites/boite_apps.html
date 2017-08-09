@@ -62,6 +62,8 @@
                     i=0;
             }, 200);
 
+            // each .led pixel is 5×5px (including margin) and we need a bit of
+            // margin-right and margin-bottom on the .led div
             $(".led").css("width", matrixWidth * (4 + 1) + 6);
             $(".led").css("height", matrixHeight * (4 + 1) + 7);
         });
