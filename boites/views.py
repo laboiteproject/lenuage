@@ -77,8 +77,6 @@ def tiles_view(request, pk):
     for model in apps.get_models():
         if issubclass(model, App):
             app = model.objects.filter(boite=boite, enabled=True).first()
-            pk = None
-
             if app:
                 verbose_name =  model._meta.verbose_name.title()
                 apps_list.append({'verbose_name':verbose_name[16:], 'pk':app.pk, 'enabled':True, 'app_label': model._meta.app_label, 'data': first_app.get_data()})
