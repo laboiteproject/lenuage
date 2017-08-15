@@ -1,8 +1,8 @@
 import os
 
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+PACKAGE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+PROJECT_ROOT = os.path.abspath(os.path.join(PACKAGE_ROOT, os.pardir))
 BASE_DIR = PACKAGE_ROOT
 
 DEBUG = True

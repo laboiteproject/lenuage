@@ -11,20 +11,20 @@ from . import settings
 
 
 class AppMetro(App):
+    BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
     UPDATE_INTERVAL = 30 * MINUTES
 
     failure = models.BooleanField(_('Problème en cours ?'), default=False, null=False)
     recovery_time = models.PositiveSmallIntegerField(_('Minutes avant rétablissement'), default=None, null=True)
 
     def update_data(self):
-        url = 'https://data.explore.star.fr/api/records/1.0/search'
         params = {'dataset': 'tco-metro-lignes-etat-tr',
                   'rows': 2,
                   'apikey': settings.STAR_API_KEY}
         self.failure = False
         self.recovery_time = 0
 
-        r = requests.get(url, params=params)
+        r = requests.get(self.BASE_URL, params=params)
         records = r.json().get('records')
         if records:
             records = list(records)
