@@ -59,8 +59,8 @@
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}font.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}gfx.js"></script>
+    <script type="text/javascript" src="{% static 'js/font.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/gfx.js' %}"></script>
     {% include "_scripts.html" %}
     {{ form.media }}
     <script type="text/javascript">

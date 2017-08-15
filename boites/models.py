@@ -181,8 +181,6 @@ class TileApp(models.Model):
         for key, value in app.items():
             if key not in ('update-interval',  'height', 'width'):
                 value['x'] += self.x
-                shifted_app[key] = value
-
                 value['y'] += self.y
                 shifted_app[key] = value
 
