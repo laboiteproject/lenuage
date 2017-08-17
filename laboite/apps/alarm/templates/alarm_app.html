@@ -1,9 +1,0 @@
-{% extends "boites/boite_app.html" %}
-
-{% load i18n %}
-
-{% block app_icon %}bell{% endblock %}
-{% block app_data %}
-	<span class="badge">{{ app.instance.heure }}:{{ app.instance.minutes }}</span>
-{% endblock %}
-{% block app_description %}{% trans "Permet de spécifier une heure de réveil" %}{% endblock %}

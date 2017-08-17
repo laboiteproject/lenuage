@@ -7,13 +7,13 @@
 
 {% block body_class %}boite boite-apps{% endblock %}
 
-{% block head_title %}{{ verbose_name }}{% endblock %}
+{% block head_title %}{% if verbose_name %}{{ verbose_name }}{% else %}{% trans "Créer une app" %}{% endif %}{% endblock %}
 
 {% block create_subnav %}<a class="list-group-item app-delete" href="delete/">{% trans "Supprimer cette app" %}</a>{% endblock %}
 
 {% block body %}
     <div class="row">
-        <ul class="breadcrumb">
+        <ul class="breadcrumb hidden-xs hidden-sm">
             <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
             <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
             <li><a href="{% url 'boites:apps' boite_id %}">Apps</a></li>

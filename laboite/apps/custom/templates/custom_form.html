@@ -1,19 +1,21 @@
-{% extends "boites/base.html" %}
+{% extends "apps/app_form.html" %}
 
 {% load static %}
 {% load i18n %}
 {% load bootstrap %}
-{% load humanize %}
-
-{% block body_class %}boite boite-apps{% endblock %}
-
-{% block head_title %}{{ verbose_name }}{% endblock %}
-
-{% block create_subnav %}<a class="list-group-item app-delete" href="delete/">{% trans "Supprimer cette app" %}</a>{% endblock %}
 
 {% block body %}
+    <style>
+        .led ul li {
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+            margin-top: 4px;
+        }
+    </style>
     <div class="row">
-        <ul class="breadcrumb">
+        <ul class="breadcrumb hidden-xs hidden-sm">
             <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
             <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
             <li><a href="{% url 'boites:apps' boite_id %}">Apps</a></li>
@@ -22,14 +24,130 @@
         <div class="col-md-5">
             <form method="POST" action="">
                 {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label" for="id_message">{% trans "Éditeur d'icône" %}</label>
+                    <div class=" ">
+                        <div class="led">
+                            <ul></ul>
+                        </div>
+                        <div class="btn-group btn-group-centered pull-right" style="margin-top: 4px;">
+                            <a id="previous" class="btn btn-sm btn-info" href="#"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+                            <a id="next" class="btn btn-sm btn-info" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                            <a id="add" class="btn btn-sm btn-info" href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                        </div>
+                        <p class="help-block">
+                            {% trans "Concevez votre icône en cliquant sur les pixels sur l'écran virtuel ci-dessus." %}
+                        </p>
+                    </div>
+                </div>
                 {{ form|bootstrap }}
+                <div id="bitmaps">
+                    {% for bitmap in bitmaps %}
+                        <textarea name="id_bitmap{{ bitmap.id }}" id="id_bitmap{{ bitmap.id }}" rows="16"  cols="32">{{ bitmap.bitmap }}</textarea>
+                    {% endfor %}
+                </div>
                 <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
             </form>
         </div>
     </div>
+    <style media="screen">
+        .checkbox label {
+            padding-left: 0px;
+        }
+    </style>
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/font.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/gfx.js' %}"></script>
+    {% include "_scripts.html" %}
     {{ form.media }}
+    <script type="text/javascript">
+        var enabled_label = $(".checkbox label span").text();
+        $(".checkbox label span").html("");
+        $(".checkbox").parent().prepend("<label>" + enabled_label + "</label>");
+        $("#id_enabled").bootstrapSwitch();
+
+        var matrixWidth = $("#id_width").val(),
+            matrixHeight= $("#id_height").val();
+
+        var bitmaps_ids= [{% for bitmap in bitmaps %}{{ bitmap.id }},{% endfor %}],
+            bitmap_index = 0;
+        console.log(bitmaps_ids);
+        for(var pixels = 0; pixels < matrixWidth*matrixHeight;	pixels++)
+            $(".led ul").append("<li></li>");
+
+        draw_bitmap(bitmaps_ids[bitmap_index]);
+
+        $(".led ul li").click(
+            function() {
+                if($( this ).css( "background-color" ) == "rgb(68, 68, 68)")
+                    $( this ).css("background",'#fff')
+                else
+                    $( this ).css("background",'#444')
+                dump_bitmap(bitmaps_ids[bitmap_index]);
+            }
+        );
+
+        $("#previous").click(
+            function() {
+                if (bitmap_index >=1) {
+                    bitmap_index--;
+                    reset();
+                    draw_bitmap(bitmaps_ids[bitmap_index]);
+                }
+            }
+        );
+
+        $("#next").click(
+            function() {
+                if (bitmap_index < bitmaps_ids.length-1) {
+                    bitmap_index++;
+                    reset();
+                    draw_bitmap(bitmaps_ids[bitmap_index]);
+                }
+            }
+        );
+
+        $("#add").click(
+            function() {
+                var last_bitmap_id = bitmaps_ids[bitmaps_ids.length-1];
+                var new_bitmap_id = last_bitmap_id + 1;
+                bitmaps_ids.push(new_bitmap_id);
+                var bitmap_html = $("#id_bitmap" + last_bitmap_id).text();
+                $("#bitmaps").append('<textarea name="id_bitmap' + new_bitmap_id + '" id="id_bitmap' + new_bitmap_id + '" rows="16"  cols="32">' + bitmap_html + '</textarea>');
+            }
+        );
+
+        $(".led").css("width", matrixWidth * (16 + 4) + 6);
+        $(".led").css("height", matrixHeight * (16 + 4) + 7);
+
+        function dump_bitmap(id) {
+            var bitmap_html = "";
+            for (var i = 0; i < matrixHeight*matrixWidth; i++) {
+                if($(".led ul li").eq(i).css("background-color") !=  "rgb(68, 68, 68)")
+                    bitmap_html += "1"
+                else
+                    bitmap_html += "0"
+            }
+            $("#id_bitmap" + id).text(bitmap_html);
+        }
+
+        function draw_bitmap(id) {
+            console.log(bitmap_index);
+            var bitmap_text = $("#id_bitmap" + id).text();
+            var i = 0;
+            for (var j = 0; j < bitmap_text.length; j++) {
+                switch (bitmap_text[j]) {
+                    case '0':
+                        i++
+                        break;
+                    case '1':
+                        $(".led ul li").eq(i).css("background","#fff");
+                        i++;
+                }
+            }
+        }
+    </script>
 {% endblock %}
