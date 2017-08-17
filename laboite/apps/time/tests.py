@@ -14,14 +14,41 @@ def test_all(boite, mocker):
     app = AppTime.objects.create(boite=boite,
                                  enabled=True,
                                  tz='Africa/Niamey')
-    assert app.get_app_dictionary() == {'time': '14:35',
-                                        'date': '13 jan. 2000'}
+    assert app.get_app_dictionary() == {
+                                        'width': 32,
+                                        'height': 8,
+                                        'update-interval': None,
+                                        'text-time': {
+                                            'type': 'text',
+                                            'width': 25,
+                                            'height': 8,
+                                            'x': 4,
+                                            'y': 1,
+                                            'content': '14:35'}}
 
     app.tz = 'Pacific/Pitcairn'
     app.save()
-    assert app.get_app_dictionary() == {'time': '05:35',
-                                        'date': '13 jan. 2000'}
+    assert app.get_app_dictionary() == {
+                                        'width': 32,
+                                        'height': 8,
+                                        'update-interval': None,
+                                        'text-time': {
+                                            'type': 'text',
+                                            'width': 25,
+                                            'height': 8,
+                                            'x': 4,
+                                            'y': 1,
+                                            'content': '05:35'}}
 
     translation.activate('en-us')
-    assert app.get_app_dictionary() == {'time': '5:35 a.m.',
-                                        'date': '01/13/2000'}
+    assert app.get_app_dictionary() == {
+                                        'width': 32,
+                                        'height': 8,
+                                        'update-interval': None,
+                                        'text-time': {
+                                            'type': 'text',
+                                            'width': 25,
+                                            'height': 8,
+                                            'x': 4,
+                                            'y': 1,
+                                            'content': '5:35 a.m.'}}

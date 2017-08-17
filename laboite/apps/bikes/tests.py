@@ -67,12 +67,34 @@ def test_station_infos_ok_star(app, requests_mocker):
     app.save()
     with requests_mocker as m:
         m.get(StarProvider.STAR_API_BASE_URL, text=STAR_STATION_INFOS)
-        assert app.get_app_dictionary() == {'provider': 'star',
-                                            'station': 'Place Hoche',
-                                            'slots': 24,
-                                            'bikes': 18,
-                                            'status': True}
-
+        assert app.get_app_dictionary() == {
+                                            'width': 32,
+                                            'height': 10,
+                                            'update-interval': 600,
+                                            'icon-bikes': {
+                                                'type': 'icon',
+                                                'width': 12,
+                                                'height': 10,
+                                                'x': 5,
+                                                'y': 1,
+                                                'content': [
+                                                            0,0,0,0,0,0,0,0,1,1,0,0,
+                                                            0,0,0,1,1,1,0,0,0,0,1,0,
+                                                            0,0,0,0,1,0,0,0,1,1,0,0,
+                                                            0,0,0,0,1,1,1,1,1,0,0,0,
+                                                            0,1,1,1,1,0,0,0,1,1,1,0,
+                                                            1,0,1,0,1,0,1,1,1,0,0,1,
+                                                            1,0,1,1,1,1,0,1,0,1,0,1,
+                                                            1,0,0,0,1,0,0,1,0,0,0,1,
+                                                            0,1,1,1,0,0,0,0,1,1,1,0,
+                                                            ]},
+                                            'text-bikes': {
+                                                'type': 'text',
+                                                'width': 10,
+                                                'height': 10,
+                                                'x': 18,
+                                                'y': 3,
+                                                'content': '18'}}
 
 @pytest.mark.django_db
 def test_station_infos_ko_star(app, requests_mocker):
@@ -103,12 +125,34 @@ def test_station_infos_ok_velib(app, requests_mocker):
     app.save()
     with requests_mocker as m:
         m.get(VelibProvider.VELIB_BASE_URL, text=VELIB_STATION_INFOS)
-        assert app.get_app_dictionary() == {'provider': 'velib',
-                                            'station': '08020 - METRO ROME',
-                                            'slots': 44,
-                                            'bikes': 7,
-                                            'status': True}
-
+        assert app.get_app_dictionary() == {
+                                            'width': 32,
+                                            'height': 10,
+                                            'update-interval': 600,
+                                            'icon-bikes': {
+                                                'type': 'icon',
+                                                'width': 12,
+                                                'height': 10,
+                                                'x': 5,
+                                                'y': 1,
+                                                'content': [
+                                                            0,0,0,0,0,0,0,0,1,1,0,0,
+                                                            0,0,0,1,1,1,0,0,0,0,1,0,
+                                                            0,0,0,0,1,0,0,0,1,1,0,0,
+                                                            0,0,0,0,1,1,1,1,1,0,0,0,
+                                                            0,1,1,1,1,0,0,0,1,1,1,0,
+                                                            1,0,1,0,1,0,1,1,1,0,0,1,
+                                                            1,0,1,1,1,1,0,1,0,1,0,1,
+                                                            1,0,0,0,1,0,0,1,0,0,0,1,
+                                                            0,1,1,1,0,0,0,0,1,1,1,0,
+                                                            ]},
+                                            'text-bikes': {
+                                                'type': 'text',
+                                                'width': 10,
+                                                'height': 10,
+                                                'x': 18,
+                                                'y': 3,
+                                                'content': '7'}}
 
 @pytest.mark.django_db
 def test_station_infos_ko_velib(app, requests_mocker):
