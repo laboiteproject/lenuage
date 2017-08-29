@@ -32,7 +32,7 @@ class AppCalendar(App):
         calendar = Calendar()
         r = requests.get(self.ics_url)
 
-        calendar = calendar.from_ical(unidecode.unidecode(r.text))
+        calendar = calendar.from_ical(r.text)
 
         for event in calendar.walk():
             if event.get('dtstart') and event.get('dtend'):
@@ -50,7 +50,7 @@ class AppCalendar(App):
                 if now <= dtend <= tonight:
                     dtstart = timezone.localtime(dtstart, pytz.timezone('Europe/Paris'))
                     self.dtstart = formats.time_format(dtstart, 'TIME_FORMAT')
-                    self.summary = str(event.get('summary'))
+                    self.summary = str(unidecode.unidecode(event.get('summary')))
         self.save()
 
     def _get_data(self):

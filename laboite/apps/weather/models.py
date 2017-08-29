@@ -50,7 +50,7 @@ class AppWeather(App):
     def convert_owm_icon(self, owm_icon):
         # clouds
         icon = "1"
-        owm_icon = owm_icon[:3]
+        owm_icon = owm_icon[:2]
 
         # clear sky
         if owm_icon == '01':
