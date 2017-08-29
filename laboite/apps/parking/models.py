@@ -60,10 +60,41 @@ class AppParking(App):
         self.save()
 
     def _get_data(self):
-        return {'parking': self.parking,
-                'open': self.open,
-                'available': self.available,
-                'occupied': self.occupied}
+        result = {
+            'width': 32,
+            'height': 10,
+            'update-interval': self.UPDATE_INTERVAL,
+            'icon-parking': {
+                'type': 'icon',
+                'width': 8,
+                'height': 9,
+                'x': 0,
+                'y': 0,
+                'content':
+                    [
+                        1,1,1,1,1,1,1,1,
+                        1,0,0,0,0,0,1,1,
+                        1,0,0,1,1,0,0,1,
+                        1,0,0,1,1,0,0,1,
+                        1,0,0,0,0,0,1,1,
+                        1,0,0,1,1,1,1,1,
+                        1,0,0,1,1,1,1,1,
+                        1,0,0,1,1,1,1,1,
+                        1,1,1,1,1,1,1,1,
+                    ],
+            },
+            'text-parking': {
+                'type': 'text',
+                'width': len(str(self.available)) * 5,
+                'height': 8,
+                'x': 9,
+                'y': 2,
+                'content': '%d ' % self.available,
+            }
+        }
+        if not self.open:
+            result['text-parking']['content'] = "Closed"
+        return result
 
     class Meta:
         verbose_name = _('Configuration : parkings')
