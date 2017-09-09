@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 import json
+import requests
 
 from django.apps import apps
 from django.contrib.messages.views import SuccessMessageMixin
@@ -19,7 +20,7 @@ from pygments import highlight
 from pygments.lexers import JsonLexer
 from pygments.formatters import HtmlFormatter
 
-from .models import App, Boite, Tile, TileApp
+from .models import App, Boite, Tile, TileApp, PushButton
 
 
 # Boîtes
@@ -41,7 +42,16 @@ def json_view(request, api_key):
     boite.last_activity = timezone.now()
     boite.last_connection = request.META.get("REMOTE_ADDR", "")
     boite.save()
-    return JsonResponse(boite.get_apps_dictionary(), safe=False)
+
+    boite_tiles = Tile.objects.filter(boite=boite).order_by('id')
+
+    tiles = []
+    for tile in  boite_tiles:
+        tiles.append({'id':tile.id,'last_activity':tile.get_last_activity()})
+
+    json = {'id': boite.id, 'tiles' : tiles}
+
+    return JsonResponse(json)
 
 def create_app_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
@@ -112,8 +122,6 @@ def apps_view(request, pk):
             apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label, 'instance': app_instances.first()})
 
     return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list, 'show_create_button' : len(apps_list) > enabled_apps})
-
-
 
 def redirect_view(request, api_key):
     boite = get_object_or_404(Boite, api_key=api_key)
@@ -200,6 +208,44 @@ class BoiteCreateView(SuccessMessageMixin, CreateView):
         form.instance.user = user
         return super(BoiteCreateView, self).form_valid(form)
 
+class PushButtonUpdateView(UpdateView):
+    model = PushButton
+    fields = ['api_key']
+
+    template_name = 'boites/pushbutton_form.html'
+
+    def get_success_url(self):
+        boite = get_object_or_404(Boite, pk=self.kwargs.get('pk'), user=self.request.user)
+        return reverse_lazy('boites:update', kwargs={'pk': boite.pk})
+
+    def get_object(self):
+        boite = get_object_or_404(Boite, pk=self.kwargs.get('pk'), user=self.request.user)
+        pb, created = PushButton.objects.get_or_create(boite=boite)
+        return pb
+
+    def get_context_data(self, **kwargs):
+        context = super(PushButtonUpdateView, self).get_context_data(**kwargs)
+        boite = get_object_or_404(Boite, pk=self.kwargs.get('pk'), user=self.request.user)
+        context['boite'] = boite
+        context['boite_id'] = self.kwargs.get('pk')
+
+        return context
+
+def trigger_pushbutton_view(request, api_key):
+    boite = get_object_or_404(Boite, api_key=api_key)
+    boite.last_activity = timezone.now()
+    boite.last_connection = request.META.get("REMOTE_ADDR", "")
+    boite.save()
+
+    pushbutton = get_object_or_404(PushButton, boite=boite)
+
+    url = pushbutton.API_BASE_URL
+    url += boite.api_key + '/with/key/'
+    url += pushbutton.api_key + '/'
+
+    r = requests.get(url, params={'value1': boite.name.lower() })
+
+    return JsonResponse({'status_code':r.status_code})
 
 # Apps
 
@@ -250,8 +296,11 @@ class AppUpdateView(UpdateView, JSONResponseMixin):
         if self.request.GET.get('format') == 'json' or self.request.content_type == 'application/json':
             return self.render_to_json_response(context)
         else:
-            return super(AppUpdateView, self).render_to_response(context)
-
+            if self.request.user.is_authenticated:
+                boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
+                return super(AppUpdateView, self).render_to_response(context)
+            else:
+                redirect('/account/login/?next=%s' % self.request.path)
 
 class AppDeleteView(DeleteView):
     template_name = 'apps/app_confirm_delete.html'
@@ -320,7 +369,11 @@ class TileUpdateView(UpdateView, JSONResponseMixin):
         if self.request.GET.get('format') == 'json' or self.request.content_type == 'application/json':
             return self.render_to_json_response(context)
         else:
-            return super(TileUpdateView, self).render_to_response(context)
+            if self.request.user.is_authenticated:
+                boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
+                return super(TileUpdateView, self).render_to_response(context)
+            else:
+                return redirect('/account/login/?next=%s' % self.request.path)
 
 class TileDeleteView(DeleteView):
     model = Tile

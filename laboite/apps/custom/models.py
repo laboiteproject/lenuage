@@ -25,8 +25,8 @@ class AppCustom(App):
             bitmap_list.append(bitmap.bitmap)
 
         return {
-            'width': 8,
-            'height': 8,
+            'width': self.width,
+            'height': self.height,
             'update-interval': self.UPDATE_INTERVAL,
             'icon-custom': {
                 'type': 'animation',
