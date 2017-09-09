@@ -1,7 +1,8 @@
 # coding: utf-8
 
 from __future__ import unicode_literals
-from datetime import timedelta
+from datetime import timedelta, datetime
+
 import logging
 import StringIO
 import uuid
@@ -89,6 +90,21 @@ class Boite(models.Model):
     was_active_recently.short_description = _('Connectée ?')
 
 
+class PushButton(models.Model):
+    API_BASE_URL = 'https://maker.ifttt.com/trigger/'
+
+    api_key = models.SlugField(_(u"IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
+    boite = models.OneToOneField(Boite, verbose_name=_('Boîte'))
+
+    last_triggered = models.DateTimeField(_('Dernière activité'), null=True)
+
+    def was_triggered_recently(self):
+        return self.last_activity >= timezone.now() - timedelta(minutes=2)
+
+    was_triggered_recently.admin_order_field = 'last_triggered'
+    was_triggered_recently.boolean = True
+    was_triggered_recently.short_description = _('Bouton appuyé récemment ?')
+
 class App(models.Model):
     """Base app model"""
     UPDATE_INTERVAL = None  # Subclasses can redefine it as a number of seconds between updates
@@ -152,7 +168,7 @@ class Tile(models.Model):
         apps = TileApp.objects.filter(tile=self)
         apps_list = {}
         for app in apps:
-            apps_list[app.content_object.get_label()] = app.get_data()
+            apps_list[app.id] = app.get_data()
 
         tile = {
             'id': self.id,
@@ -161,6 +177,18 @@ class Tile(models.Model):
         }
 
         return tile
+
+    def get_last_activity(self):
+        apps = TileApp.objects.filter(tile=self)
+
+        last_activities = []
+        for app in apps:
+            app.content_object.get_app_dictionary()
+            last_activity = app.content_object.last_activity.replace(tzinfo=None) - app.content_object.last_activity.utcoffset()
+            last_activity = (last_activity - datetime(1970, 1, 1)).total_seconds()
+            last_activities.append(int(last_activity))
+
+        return max(last_activities)
 
     class Meta:
         verbose_name = _('Tuile')
@@ -179,7 +207,7 @@ class TileApp(models.Model):
 
         shifted_app = {}
         for key, value in app.items():
-            if key not in ('update-interval',  'height', 'width'):
+            if key not in ('update-interval', 'height', 'width'):
                 value['x'] += self.x
                 value['y'] += self.y
                 shifted_app[key] = value

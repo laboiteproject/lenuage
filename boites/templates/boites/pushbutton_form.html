@@ -1,0 +1,46 @@
+{% extends "boites/base.html" %}
+
+{% load i18n %}
+{% load bootstrap %}
+{% load humanize %}
+{% load static %}
+
+{% block body_class %}boite boite-pushbutton{% endblock %}
+
+{% block head_title %}{% trans "Bouton de" %} {{ object.boite.name|lower }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <ul class="breadcrumb hidden-xs hidden-sm">
+            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
+            <li><a href="{% url 'boites:update' boite.id %}">{{ boite.name }}</a></li>
+            <li class="active">{% trans "Bouton" %}</li>
+        </ul>
+        <div class="col-md-5">
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ form|bootstrap }}
+                <button id="pushbutton" type="button" class="btn btn-info btn-block"><i class="fa fa-hand-o-down" aria-hidden="true"></i> {% trans "Simuler l'appui du bouton" %}</button><br/><br/>
+                <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    {% include "_scripts.html" %}
+    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#pushbutton").click(function() {
+                $("#pushbutton").html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {% trans "En cours" %}');
+                $.get("{% url 'boites:trigger_pushbutton' boite.api_key %}", function() {
+                    $("#pushbutton").html('{% trans "Bouton appuyé !" %}');
+                    $("#pushbutton").removeClass('btn-info');
+                    $("#pushbutton").addClass('btn-success');
+                })
+            });
+        });
+    </script>
+{% endblock %}
