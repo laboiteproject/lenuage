@@ -9185,6 +9185,7 @@ body.account-delete .account-delete {
   border-top-left-radius: 3px;
 }
 body.boite-update .boite-update,
+body.boite-pushbutton .boite-pushbutton,
 body.boite-delete .boite-delete,
 body.boite-apps .boite-apps {
   z-index: 2;
