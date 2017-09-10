@@ -98,6 +98,23 @@ def tile_editor_view(request, boite_pk):
 
     return render(request, 'boites/tile_editor.html', {'boite': boite, 'boite_id': boite.id})
 
+def tile_json_view(request, api_key, pk):
+    boite = get_object_or_404(Boite, api_key=api_key)
+    boite.last_activity = timezone.now()
+    boite.last_connection = request.META.get("REMOTE_ADDR", "")
+    boite.save()
+
+    tile = get_object_or_404(Tile, pk=pk)
+
+    apps = []
+    tile_apps = TileApp.objects.filter(tile=tile)
+    for app in tile_apps:
+        apps.append(app.content_object.get_data())
+
+    json = {'id': tile.id, 'apps' : apps}
+
+    return JsonResponse(json)
+
 def apps_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
 

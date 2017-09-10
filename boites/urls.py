@@ -23,6 +23,7 @@ from .views import (
     TileAppDeleteView,
     PushButtonUpdateView,
     trigger_pushbutton_view,
+    tile_json_view,
 )
 
 urlpatterns = [
@@ -36,6 +37,7 @@ urlpatterns = [
     url(r"^(?P<pk>\d+)/pushbutton/$", login_required(PushButtonUpdateView.as_view()), name="pushbutton"),
     url(r'^(?P<api_key>[0-9a-z-]+)/pushbutton/$', trigger_pushbutton_view, name='trigger_pushbutton'),
     url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/$", TileUpdateView.as_view(), name="tile"),
+    url(r"^(?P<api_key>[0-9a-z-]+)/tiles/(?P<pk>\d+)/$", tile_json_view, name="tile_json"),
     url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/create/$", login_required(create_tile_view), name="create_tile"),
     url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/delete/$", login_required(TileDeleteView.as_view()), name="delete_tile"),
     url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/app/$", login_required(tileapp_view), name="tileapp"),
