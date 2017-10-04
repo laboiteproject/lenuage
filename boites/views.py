@@ -106,14 +106,7 @@ def tile_json_view(request, api_key, pk):
 
     tile = get_object_or_404(Tile, pk=pk)
 
-    apps = []
-    tile_apps = TileApp.objects.filter(tile=tile)
-    for app in tile_apps:
-        apps.append(app.content_object.get_data())
-
-    json = {'id': tile.id, 'apps' : apps}
-
-    return JsonResponse(json)
+    return JsonResponse(tile.get_data())
 
 def apps_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
@@ -334,7 +327,7 @@ class AppDeleteView(DeleteView):
         return reverse_lazy('boites:apps', kwargs={'pk': self.kwargs.get('boite_pk')})
 
 
-class TileUpdateView(UpdateView, JSONResponseMixin):
+class TileUpdateView(UpdateView):
     model = Tile
     template_name = 'tiles/tile_form.html'
     fields = ['duration']
@@ -381,16 +374,6 @@ class TileUpdateView(UpdateView, JSONResponseMixin):
 
     def get_success_url(self):
         return reverse_lazy('boites:tile', kwargs={'boite_pk': self.kwargs.get('boite_pk'), 'pk': self.kwargs.get('pk')})
-
-    def render_to_response(self, context):
-        if self.request.GET.get('format') == 'json' or self.request.content_type == 'application/json':
-            return self.render_to_json_response(context)
-        else:
-            if self.request.user.is_authenticated:
-                boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
-                return super(TileUpdateView, self).render_to_response(context)
-            else:
-                return redirect('/account/login/?next=%s' % self.request.path)
 
 class TileDeleteView(DeleteView):
     model = Tile

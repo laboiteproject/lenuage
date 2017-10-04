@@ -35,15 +35,16 @@ class AppTime(App):
         return {
             'width': 32,
             'height': 8,
-            'update-interval': self.UPDATE_INTERVAL,
-            'text-time': {
-                'type': 'text',
-                'width': 25,
-                'height': 8,
-                'x': 4,
-                'y': 1,
-                'content': self.time,
-            },
+            'data': [
+                {
+                    'type': 'text',
+                    'width': 25,
+                    'height': 8,
+                    'x': 4,
+                    'y': 1,
+                    'content': self.time,
+                },
+            ]
         }
 
     class Meta:

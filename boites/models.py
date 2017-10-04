@@ -166,14 +166,14 @@ class Tile(models.Model):
 
     def get_data(self):
         apps = TileApp.objects.filter(tile=self)
-        apps_list = {}
+        items = []
         for app in apps:
-            apps_list[app.id] = app.get_data()
+            items+=app.get_data()
 
         tile = {
             'id': self.id,
             'duration': self.duration,
-            'apps': apps_list,
+            'items': items,
         }
 
         return tile
@@ -205,14 +205,18 @@ class TileApp(models.Model):
     def get_data(self):
         app = self.content_object.get_data()
 
-        shifted_app = {}
-        for key, value in app.items():
-            if key not in ('update-interval', 'height', 'width'):
-                value['x'] += self.x
-                value['y'] += self.y
-                shifted_app[key] = value
-
-        return shifted_app
+        shifted_items = []
+        for item in app.get('data'):
+            shifted_item = {}
+            for key, value in item.items():
+                if key == 'x':
+                    value += self.x
+                if key == 'y':
+                    value += self.y
+                shifted_item[key] = value
+            shifted_items.append(shifted_item)
+            
+        return shifted_items
 
     class Meta:
         verbose_name = _('App')

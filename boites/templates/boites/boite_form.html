@@ -109,40 +109,36 @@
             $(".led").css("width", matrixWidth*11+6);
             $(".led").css("height", matrixHeight*11+7);
 
-            $.get( "tiles/{{ current_tile.id }}/?format=json", function( data ) {
-                $.each(data, function( label, app ) {
-                    if(label == 'apps') {
-                        $.each(app, function( app_label, data ) {
-                            $.each(data, function( key, value ) {
-                                if(value.type == 'icon')
-                                    draw(value.x, value.y, value.content, value.width, value.height, '#fff');
-                                if(value.type == 'animation') {
-                                    console.log(value);
-                                    var i =0;
+            $.get( "/boites/{{ boite.api_key }}/tiles/{{ current_tile.id }}/?format=json", function(tile) {
+                $.each(tile, function(key, value) {
+                    if(key == 'items') {
+                        $.each(value, function(index, value) {
+                            if(value.type == 'icon')
+                                drawHex(value.x, value.y, value.content, value.width, value.height, '#fff');
+                            if(value.type == 'animation') {
+                                var i =0;
+                                setInterval(function() {
+                                    fillRect(value.x, value.y, value.width, value.height, '#444');
+                                    draw(value.x, value.y, value.content[i], value.width, value.height, '#fff');
+                                    i++;
+                                    if(i >= value.content.length)
+                                        i=0;
+                                }, {{ current_tile.duration }} * 1000 / value.content.length);
+                            }
+                            if(value.type == 'text') {
+                                if(!value.scrolling)
+                                    printText(value.x, value.y, value.content.toString(), '#fff');
+                                else {
+                                    x = matrixWidth;
                                     setInterval(function() {
-                                        console.log(value);
-                                        fillRect(value.x, value.y, value.width, value.height, '#444');
-                                        draw(value.x, value.y, value.content[i], value.width, value.height, '#fff');
-                                        i++;
-                                        if(i >= value.content.length)
-                                            i=0;
-                                    }, {{ current_tile.duration }} * 1000 / value.content.length);
+                                        if(x > -(value.content.length * 5)) {
+                                            printText(x, value.y, value.content, '#fff', '#444');
+                                            x--;
+                                        }
+                                        else x = matrixWidth;
+                                    }, {{ current_tile.duration }} * 1000 / (value.content.length * 5 + matrixWidth) );
                                 }
-                                if(value.type == 'text') {
-                                    if(!value.scrolling)
-                                        printText(value.x, value.y, value.content.toString(), '#fff');
-                                    else {
-                                        x = matrixWidth;
-                                        setInterval(function() {
-                                            if(x > -(value.content.length * 5)) {
-                                                printText(x, value.y, value.content, '#fff', '#444');
-                                                x--;
-                                            }
-                                            else x = matrixWidth;
-                                        }, {{ current_tile.duration }} * 1000 / (value.content.length * 5 + matrixWidth) );
-                                    }
-                                }
-                            });
+                            }
                         });
                     }
                     else {
