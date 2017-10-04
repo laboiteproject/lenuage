@@ -42,7 +42,7 @@ class AppBikes(App):
                     'height': 10,
                     'x': 5,
                     'y': 1,
-                    'content': '0xc1c208c0f878eab9bd589170e'
+                    'content': '0x00c1c208c0f878eab9bd589170e'
                 },
                 {
                     'type': 'text',

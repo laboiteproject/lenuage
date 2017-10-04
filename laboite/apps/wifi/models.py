@@ -18,11 +18,11 @@ class AppWifi(App):
             'data':[
                 {
                     'type': 'icon',
-                    'width': 7,
+                    'width': 8,
                     'height': 6,
                     'x': 2,
                     'y': 0,
-                    'content': '0xe229250008'
+                    'content': '0x384492280010'
                 },
                 {
                     'type': 'text',
