@@ -71,44 +71,18 @@ class AppBus(App):
     def _get_data(self):
         return {
             'width': 32,
-            'height': 16,
-            'update-interval': self.UPDATE_INTERVAL,
-            'icon-bus': {
-                'type': 'icon',
-                'width': 8,
-                'height': 9,
-                'x': 4,
-                'y': 0,
-                'content':
-                    [
-                        0,1,1,1,1,1,1,0,
-                        1,1,0,0,0,0,1,1,
-                        1,1,1,1,1,1,1,1,
-                        1,0,0,0,0,0,0,1,
-                        1,0,0,0,0,0,0,1,
-                        1,1,1,1,1,1,1,1,
-                        1,0,1,1,1,1,0,1,
-                        1,1,1,1,1,1,1,1,
-                        0,1,0,0,0,0,1,0,
-                    ]
-            },
-            'text-bus': {
-                'type': 'text',
-                'width': 10,
-                'height': 8,
-                'x': 14,
-                'y': 1,
-                'content': "bus",
-            },
-            'text-departures': {
-                'type': 'text',
-                'width': 32,
-                'height': 8,
-                'scrolling': True,
-                'x': 0,
-                'y': 10,
-                'content':  "%s:%d' %s:%d'" % (self.route0, self.departure0, self.route1, self.departure1)
-            }
+            'height': 8,
+            'data': [
+                {
+                    'type': 'text',
+                    'width': 32,
+                    'height': 8,
+                    'scrolling': True,
+                    'x': 0,
+                    'y': 0,
+                    'content':  "%s:%s' %s:%s'" % (self.route0, self.departure0, self.route1, self.departure1)
+                }
+            ]
         }
 
     class Meta:

@@ -17,18 +17,19 @@ class AppMessages(App):
         result = {
             'width': 32,
             'height': 8,
-            'update-interval': self.UPDATE_INTERVAL,
-            'text-message': {
-                'type': 'text',
-                'width': len(self.message) * 5,
-                'height': 8,
-                'x': 0,
-                'y': 1,
-                'content': '%s' % self.message,
-            },
+            'data': [
+                {
+                    'type': 'text',
+                    'width': len(self.message) * 5,
+                    'height': 8,
+                    'x': 0,
+                    'y': 1,
+                    'content': '%s' % self.message,
+                },
+            ]
         }
         if len(self.message) > 6:
-            result['text-message']['scrolling'] = True
+            result['data'][0]['scrolling'] = True
         return result
 
     class Meta:

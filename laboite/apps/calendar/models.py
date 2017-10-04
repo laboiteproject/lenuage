@@ -58,90 +58,82 @@ class AppCalendar(App):
             return {
                 'width': 32,
                 'height': 16,
-                'update-interval': self.UPDATE_INTERVAL,
-                'icon-calendar': {
-                    'type': 'icon',
-                    'width': 8,
-                    'height': 8,
-                    'x': 1,
-                    'y': 0,
-                    'content':
-                        [
-                            1,1,1,1,1,1,1,0,
-                            1,1,1,1,1,1,1,0,
-                            1,0,0,0,0,0,1,0,
-                            1,0,0,1,0,0,1,0,
-                            1,0,0,1,0,0,1,0,
-                            1,0,0,1,0,0,1,0,
-                            1,0,0,0,0,0,1,0,
-                            1,1,1,1,1,1,1,0,
-                        ]
-                },
-                'text-hours': {
-                    'type': 'text',
-                    'width': 10,
-                    'height': 8,
-                    'x': 9,
-                    'y': 1,
-                    'content': self.dtstart[:2],
-                },
-                'text-colon': {
-                    'type': 'text',
-                    'width': 24,
-                    'height': 8,
-                    'x': 18,
-                    'y': 1,
-                    'content': ':',
-                },
-                'text-minutes': {
-                    'type': 'text',
-                    'width': 24,
-                    'height': 8,
-                    'x': 22,
-                    'y': 1,
-                    'content': self.dtstart[-2:],
-                },
-                'text-summary': {
-                    'type': 'text',
-                    'width': 32,
-                    'height': 8,
-                    'scrolling': True,
-                    'x': 0,
-                    'y': 9,
-                    'content': self.summary,
-                }
+                'data': [
+                    {
+                        'type': 'icon',
+                        'width': 8,
+                        'height': 8,
+                        'x': 1,
+                        'y': 0,
+                        'content': '0xfefe8292929282fe'
+                    },
+                    {
+                        'type': 'text',
+                        'width': 10,
+                        'height': 8,
+                        'x': 9,
+                        'y': 1,
+                        'content': self.dtstart[:2],
+                    },
+                    {
+
+                        'type': 'text',
+                        'width': 24,
+                        'height': 8,
+                        'x': 18,
+                        'y': 1,
+                        'content': ':',
+                    },
+                    {'type': 'text',
+                        'width': 24,
+                        'height': 8,
+                        'x': 22,
+                        'y': 1,
+                        'content': self.dtstart[-2:],
+                    },
+                    {
+                        'type': 'text',
+                        'width': 32,
+                        'height': 8,
+                        'scrolling': True,
+                        'x': 0,
+                        'y': 9,
+                        'content': self.summary,
+                    }
+                ]
             }
         else:
             return {
                 'width': 32,
                 'height': 8,
-                'update-interval': self.UPDATE_INTERVAL,
-                'text-meetings': {
-                    'type': 'text',
-                    'width': 10,
-                    'height': 8,
-                    'x': 0,
-                    'y': 1,
-                    'content': '0',
-                },
-                'icon-calendar': {
-                    'type': 'icon',
-                    'width': 8,
-                    'height': 8,
-                    'x': 6,
-                    'y': 0,
-                    'content':
-                        [
-                            1,1,1,1,1,1,1,0,
-                            1,1,1,1,1,1,1,0,
-                            1,0,0,0,0,0,1,0,
-                            1,0,0,1,0,0,1,0,
-                            1,0,0,1,0,0,1,0,
-                            1,0,0,1,0,0,1,0,
-                            1,0,0,0,0,0,1,0,
-                            1,1,1,1,1,1,1,0,
-                        ]
-                },
+                'data': [
+                    {
+                        'type': 'text',
+                        'width': 10,
+                        'height': 8,
+                        'x': 0,
+                        'y': 1,
+                        'content': '0',
+                    },
+                    {
+                        'type': 'icon',
+                        'width': 8,
+                        'height': 8,
+                        'x': 6,
+                        'y': 0,
+                        'content':
+                            [
+                                1,1,1,1,1,1,1,0,
+                                1,1,1,1,1,1,1,0,
+                                1,0,0,0,0,0,1,0,
+                                1,0,0,1,0,0,1,0,
+                                1,0,0,1,0,0,1,0,
+                                1,0,0,1,0,0,1,0,
+                                1,0,0,0,0,0,1,0,
+                                1,1,1,1,1,1,1,0,
+                            ]
+                    },
+                ]
             }
 
     class Meta:
