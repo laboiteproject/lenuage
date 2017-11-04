@@ -91,8 +91,6 @@ class Boite(models.Model):
 
 
 class PushButton(models.Model):
-    API_BASE_URL = 'https://maker.ifttt.com/trigger/'
-
     api_key = models.SlugField(_(u"IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
     boite = models.OneToOneField(Boite, verbose_name=_('Boîte'))
 
@@ -104,6 +102,7 @@ class PushButton(models.Model):
     was_triggered_recently.admin_order_field = 'last_triggered'
     was_triggered_recently.boolean = True
     was_triggered_recently.short_description = _('Bouton appuyé récemment ?')
+
 
 class App(models.Model):
     """Base app model"""

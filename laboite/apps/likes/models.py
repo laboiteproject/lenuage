@@ -2,13 +2,12 @@
 
 from __future__ import unicode_literals
 
-import requests
 import facebook
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from boites.models import App, MINUTES
-from . import settings
 
 
 class AppLikes(App):

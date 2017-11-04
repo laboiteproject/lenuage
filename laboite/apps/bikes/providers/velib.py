@@ -3,16 +3,14 @@
 from __future__ import unicode_literals
 
 import requests
+from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from . import base
-from .. import settings
 
 
 class VelibProvider(base.BaseProvider):
-    VELIB_BASE_URL = 'http://opendata.paris.fr/api/records/1.0/search'
-
     verbose_name = _("Vélib' - Paris")
 
     @classmethod
@@ -22,12 +20,13 @@ class VelibProvider(base.BaseProvider):
         else:
             # Querying number with a string value raises an error, we remove this field
             query = 'name:{}'.format(query)
-        req = requests.get(cls.VELIB_BASE_URL, params={'apikey': settings.VELIB_API_KEY,
-                                                       'dataset': 'stations-velib-disponibilites-en-temps-reel',
-                                                       'fields': 'number,name',
-                                                       'q': query,
-                                                       #'sort': 'name',  Seems to create an error 2016-10-21
-                                                       'timezone': timezone.get_current_timezone_name()})
+        req = requests.get(settings.VELIB_API_BASE_URL,
+                           params={'apikey': settings.VELIB_API_KEY,
+                                   'dataset': 'stations-velib-disponibilites-en-temps-reel',
+                                   'fields': 'number,name',
+                                   'q': query,
+                                   #'sort': 'name',  Seems to create an error 2016-10-21
+                                   'timezone': timezone.get_current_timezone_name()})
         if not req.ok:
             return ()
         data = req.json()
@@ -39,11 +38,12 @@ class VelibProvider(base.BaseProvider):
 
     @classmethod
     def get_station_infos(cls, station_id):
-        req = requests.get(cls.VELIB_BASE_URL, params={'apikey': settings.VELIB_API_KEY,
-                                                       'dataset': 'stations-velib-disponibilites-en-temps-reel',
-                                                       'fields': 'name,bike_stands,available_bikes,status',
-                                                       'q': 'number:"{}"'.format(station_id),
-                                                       'timezone': timezone.get_current_timezone_name()})
+        req = requests.get(settings.VELIB_API_BASE_URL,
+                           params={'apikey': settings.VELIB_API_KEY,
+                                   'dataset': 'stations-velib-disponibilites-en-temps-reel',
+                                   'fields': 'name,bike_stands,available_bikes,status',
+                                   'q': 'number:"{}"'.format(station_id),
+                                   'timezone': timezone.get_current_timezone_name()})
         if not req.ok:
             return None
         data = req.json()

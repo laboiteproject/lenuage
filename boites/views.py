@@ -5,6 +5,7 @@ import json
 import requests
 
 from django.apps import apps
+from django.conf import settings
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
@@ -249,7 +250,7 @@ def trigger_pushbutton_view(request, api_key):
 
     pushbutton = get_object_or_404(PushButton, boite=boite)
 
-    url = pushbutton.API_BASE_URL
+    url = settings.IFTTT_API_BASE_URL
     url += boite.api_key + '/with/key/'
     url += pushbutton.api_key + '/'
 

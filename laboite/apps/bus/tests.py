@@ -26,14 +26,14 @@ def test_should_update(app):
     assert app.should_update() is False
 
 
-def test_data_ko(app, requests_mocker):
+def test_data_ko(app, requests_mocker, settings):
     assert app.should_update() is True
     with requests_mocker as m:
-        m.get(AppBus.API_BASE_URL, status_code=500, text='')
+        m.get(settings.STAR_API_BASE_URL, status_code=500, text='')
         assert app.get_app_dictionary() is None
 
 
-def test_data_ok(app, mocker, requests_mocker):
+def test_data_ok(app, mocker, requests_mocker, settings):
     assert app.should_update() is True
     now = timezone.now()
     now = now.replace(year=2017, month=7, day=22, hour=20, minute=19, second=10)
@@ -41,7 +41,7 @@ def test_data_ok(app, mocker, requests_mocker):
     mocker.patch('laboite.apps.bus.models.timezone.now', return_value=now)
 
     with requests_mocker as m:
-        m.get(AppBus.API_BASE_URL, text=DATA_OK)
+        m.get(settings.STAR_API_BASE_URL, text=DATA_OK)
         assert app.get_app_dictionary() == {
                                             'width': 32,
                                             'height': 16,

@@ -39,34 +39,34 @@ def _get_station_infos(provider_name):
 
 # Common
 @pytest.mark.django_db
-def test_not_enabled(app, requests_mocker):
+def test_not_enabled(app, requests_mocker, settings):
     app.enabled = False
     app.save()
     with requests_mocker as m:
-        m.get(StarProvider.STAR_API_BASE_URL, status_code=500, text='')
+        m.get(settings.STAR_API_BASE_URL, status_code=500, text='')
         assert app.get_app_dictionary() is None
 
 
 # Star
-def test_search_results_ok_star(requests_mocker):
+def test_search_results_ok_star(requests_mocker, settings):
     with requests_mocker as m:
-        m.get(StarProvider.STAR_API_BASE_URL, text=STAR_SEARCH_RESULTS)
+        m.get(settings.STAR_API_BASE_URL, text=STAR_SEARCH_RESULTS)
         assert _get_stations('star') == [(24, 'Place de Bretagne'),
                                          (4, 'Place Hoche')]
 
 
-def test_search_results_ko_star(requests_mocker):
+def test_search_results_ko_star(requests_mocker, settings):
     with requests_mocker as m:
-        m.get(StarProvider.STAR_API_BASE_URL, status_code=500, text='')
+        m.get(settings.STAR_API_BASE_URL, status_code=500, text='')
         assert len(_get_stations('star')) == 0
 
 
 @pytest.mark.django_db
-def test_station_infos_ok_star(app, requests_mocker):
+def test_station_infos_ok_star(app, requests_mocker, settings):
     app.provider = 'star'
     app.save()
     with requests_mocker as m:
-        m.get(StarProvider.STAR_API_BASE_URL, text=STAR_STATION_INFOS)
+        m.get(settings.STAR_API_BASE_URL, text=STAR_STATION_INFOS)
         assert app.get_app_dictionary() == {
                                             'width': 32,
                                             'height': 10,
@@ -97,34 +97,34 @@ def test_station_infos_ok_star(app, requests_mocker):
                                                 'content': '18'}}
 
 @pytest.mark.django_db
-def test_station_infos_ko_star(app, requests_mocker):
+def test_station_infos_ko_star(app, requests_mocker, settings):
     app.provider = 'star'
     app.save()
     with requests_mocker as m:
-        m.get(StarProvider.STAR_API_BASE_URL, status_code=500, text='')
+        m.get(settings.STAR_API_BASE_URL, status_code=500, text='')
         assert app.get_app_dictionary() is None
 
 
 # Velib
-def test_search_results_ok_velib(requests_mocker):
+def test_search_results_ok_velib(requests_mocker, settings):
     with requests_mocker as m:
-        m.get(VelibProvider.VELIB_BASE_URL, text=VELIB_SEARCH_RESULTS)
+        m.get(settings.VELIB_API_BASE_URL, text=VELIB_SEARCH_RESULTS)
         assert _get_stations('velib') == [(8020, '08020 - METRO ROME'),
                                           (22401, '22401 - DE GAULLE (MALAKOFF)')]
 
 
-def test_search_results_ko_velib(requests_mocker):
+def test_search_results_ko_velib(requests_mocker, settings):
     with requests_mocker as m:
-        m.get(VelibProvider.VELIB_BASE_URL, status_code=500, text='')
+        m.get(settings.VELIB_API_BASE_URL, status_code=500, text='')
         assert len(_get_stations('velib')) == 0
 
 
 @pytest.mark.django_db
-def test_station_infos_ok_velib(app, requests_mocker):
+def test_station_infos_ok_velib(app, requests_mocker, settings):
     app.provider = 'velib'
     app.save()
     with requests_mocker as m:
-        m.get(VelibProvider.VELIB_BASE_URL, text=VELIB_STATION_INFOS)
+        m.get(settings.VELIB_API_BASE_URL, text=VELIB_STATION_INFOS)
         assert app.get_app_dictionary() == {
                                             'width': 32,
                                             'height': 10,
@@ -155,9 +155,9 @@ def test_station_infos_ok_velib(app, requests_mocker):
                                                 'content': '7'}}
 
 @pytest.mark.django_db
-def test_station_infos_ko_velib(app, requests_mocker):
+def test_station_infos_ko_velib(app, requests_mocker, settings):
     app.provider = 'velib'
     app.save()
     with requests_mocker as m:
-        m.get(VelibProvider.VELIB_BASE_URL, status_code=500, text='')
+        m.get(settings.VELIB_API_BASE_URL, status_code=500, text='')
         assert app.get_app_dictionary() is None

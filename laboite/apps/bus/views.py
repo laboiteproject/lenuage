@@ -6,11 +6,11 @@ import json
 
 import requests
 from dal.autocomplete import Select2ListView
+from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 
 from boites.views import AppCreateView, AppUpdateView, AppDeleteView
-from . import settings
 from .forms import AppBusForm
 from .models import AppBus
 
@@ -30,8 +30,6 @@ class AppBusDeleteView(AppDeleteView):
 
 
 class BusStopAutocomplete(Select2ListView):
-    API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
-
     def get(self, request, *args, **kwargs):
         directions = []
         if self.q:
@@ -40,7 +38,7 @@ class BusStopAutocomplete(Select2ListView):
                 'apikey': settings.STAR_API_KEY,
                 'q': self.q
             }
-            r = requests.get(self.API_BASE_URL, params=params)
+            r = requests.get(settings.STAR_API_BASE_URL, params=params)
 
             records = list(r.json()['records'])
             for record in records:
