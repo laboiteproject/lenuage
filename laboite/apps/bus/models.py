@@ -3,18 +3,17 @@
 from __future__ import unicode_literals
 
 import requests
+from django.conf import settings
 from django.db import models
 from django.utils import dateparse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
 from boites.models import App, MINUTES
-from . import settings
 
 
 class AppBus(App):
     UPDATE_INTERVAL = 1 * MINUTES
-    API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
 
     stop = models.PositiveSmallIntegerField(_('Arrêt'), help_text=_("Veuillez saisir l'identifiant Timeo de votre arrêt de bus"), default=None, null=True)
     route0 = models.CharField(_('Prochain bus'), max_length=4, default=None, null=True)
@@ -40,7 +39,7 @@ class AppBus(App):
         self.route1 = None
         self.departure1 = None
 
-        r = requests.get(self.API_BASE_URL, params=params)
+        r = requests.get(settings.STAR_API_BASE_URL, params=params)
 
         now = timezone.now()
         records = r.json().get('records')

@@ -3,16 +3,15 @@
 from __future__ import unicode_literals
 
 import requests
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from boites.models import App, MINUTES
-from . import settings
 
 
 class AppParking(App):
     UPDATE_INTERVAL = 5 * MINUTES
-    API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
 
     CAR_PARK_CHOICES = (
         ('HFR', "Henri Fréville"),
@@ -46,7 +45,7 @@ class AppParking(App):
         self.available = None
         self.occupied = None
 
-        r = requests.get(self.API_BASE_URL, params=params)
+        r = requests.get(settings.STAR_API_BASE_URL, params=params)
 
         records = r.json().get('records')
         if records:

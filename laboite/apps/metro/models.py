@@ -3,15 +3,14 @@
 from __future__ import unicode_literals
 
 import requests
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext as _
 
 from boites.models import App, MINUTES
-from . import settings
 
 
 class AppMetro(App):
-    BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
     UPDATE_INTERVAL = 30 * MINUTES
 
     failure = models.BooleanField(_('Problème en cours ?'), default=False, null=False)
@@ -24,7 +23,7 @@ class AppMetro(App):
         self.failure = False
         self.recovery_time = 0
 
-        r = requests.get(self.BASE_URL, params=params)
+        r = requests.get(settings.STAR_API_BASE_URL, params=params)
         records = r.json().get('records')
         if records:
             records = list(records)
