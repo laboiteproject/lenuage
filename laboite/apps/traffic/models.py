@@ -1,4 +1,5 @@
 # coding: utf-8
+from __future__ import division
 from __future__ import unicode_literals
 
 import requests
@@ -35,7 +36,7 @@ class AppTraffic(App):
         routes = r.json().get('routes')
         all_routes = []
         for route in routes:
-            duration = sum(leg['duration']['value'] for leg in route['legs']) / 60
+            duration = sum(leg['duration']['value'] for leg in route['legs']) // 60
             all_routes.append({'trajectory_name': route['summary'],
                                'trip_duration': duration})
         if all_routes:
