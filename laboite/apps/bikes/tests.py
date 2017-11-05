@@ -1,9 +1,10 @@
 # coding: utf-8
+from __future__ import unicode_literals
 
 from __future__ import unicode_literals
 
 from datetime import timedelta
-import json
+from operator import itemgetter
 
 from django.utils import timezone
 import pytest
@@ -67,34 +68,25 @@ def test_station_infos_ok_star(app, requests_mocker, settings):
     app.save()
     with requests_mocker as m:
         m.get(settings.STAR_API_BASE_URL, text=STAR_STATION_INFOS)
-        assert app.get_app_dictionary() == {
-                                            'width': 32,
-                                            'height': 10,
-                                            'update-interval': 600,
-                                            'icon-bikes': {
-                                                'type': 'icon',
-                                                'width': 12,
-                                                'height': 10,
-                                                'x': 5,
-                                                'y': 1,
-                                                'content': [
-                                                            0,0,0,0,0,0,0,0,1,1,0,0,
-                                                            0,0,0,1,1,1,0,0,0,0,1,0,
-                                                            0,0,0,0,1,0,0,0,1,1,0,0,
-                                                            0,0,0,0,1,1,1,1,1,0,0,0,
-                                                            0,1,1,1,1,0,0,0,1,1,1,0,
-                                                            1,0,1,0,1,0,1,1,1,0,0,1,
-                                                            1,0,1,1,1,1,0,1,0,1,0,1,
-                                                            1,0,0,0,1,0,0,1,0,0,0,1,
-                                                            0,1,1,1,0,0,0,0,1,1,1,0,
-                                                            ]},
-                                            'text-bikes': {
-                                                'type': 'text',
-                                                'width': 10,
-                                                'height': 10,
-                                                'x': 18,
-                                                'y': 3,
-                                                'content': '18'}}
+        result = app.get_app_dictionary()
+        assert len(result) == 3
+        assert result['height'] == 10
+        assert result['width'] == 32
+        result['data'].sort(key=itemgetter('type'))
+        assert len(result['data']) == 2
+        assert result['data'] == [{'content': '0x00c1c208c0f878eab9bd589170e',
+                                   'height': 10,
+                                   'type': 'icon',
+                                   'width': 12,
+                                   'x': 5,
+                                   'y': 1},
+                                  {'content': '18',
+                                   'height': 10,
+                                   'type': 'text',
+                                   'width': 10,
+                                   'x': 18,
+                                   'y': 3}]
+
 
 @pytest.mark.django_db
 def test_station_infos_ko_star(app, requests_mocker, settings):
@@ -125,34 +117,25 @@ def test_station_infos_ok_velib(app, requests_mocker, settings):
     app.save()
     with requests_mocker as m:
         m.get(settings.VELIB_API_BASE_URL, text=VELIB_STATION_INFOS)
-        assert app.get_app_dictionary() == {
-                                            'width': 32,
-                                            'height': 10,
-                                            'update-interval': 600,
-                                            'icon-bikes': {
-                                                'type': 'icon',
-                                                'width': 12,
-                                                'height': 10,
-                                                'x': 5,
-                                                'y': 1,
-                                                'content': [
-                                                            0,0,0,0,0,0,0,0,1,1,0,0,
-                                                            0,0,0,1,1,1,0,0,0,0,1,0,
-                                                            0,0,0,0,1,0,0,0,1,1,0,0,
-                                                            0,0,0,0,1,1,1,1,1,0,0,0,
-                                                            0,1,1,1,1,0,0,0,1,1,1,0,
-                                                            1,0,1,0,1,0,1,1,1,0,0,1,
-                                                            1,0,1,1,1,1,0,1,0,1,0,1,
-                                                            1,0,0,0,1,0,0,1,0,0,0,1,
-                                                            0,1,1,1,0,0,0,0,1,1,1,0,
-                                                            ]},
-                                            'text-bikes': {
-                                                'type': 'text',
-                                                'width': 10,
-                                                'height': 10,
-                                                'x': 18,
-                                                'y': 3,
-                                                'content': '7'}}
+        result = app.get_app_dictionary()
+        assert len(result) == 3
+        assert result['height'] == 10
+        assert result['width'] == 32
+        result['data'].sort(key=itemgetter('type'))
+        assert len(result['data']) == 2
+        assert result['data'] == [{'content': '0x00c1c208c0f878eab9bd589170e',
+                                   'height': 10,
+                                   'type': 'icon',
+                                   'width': 12,
+                                   'x': 5,
+                                   'y': 1},
+                                  {'content': '7',
+                                   'height': 10,
+                                   'type': 'text',
+                                   'width': 10,
+                                   'x': 18,
+                                   'y': 3}]
+
 
 @pytest.mark.django_db
 def test_station_infos_ko_velib(app, requests_mocker, settings):
