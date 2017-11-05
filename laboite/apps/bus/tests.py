@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from datetime import timedelta
 
 import pytest
@@ -42,38 +44,14 @@ def test_data_ok(app, mocker, requests_mocker, settings):
 
     with requests_mocker as m:
         m.get(settings.STAR_API_BASE_URL, text=DATA_OK)
-        assert app.get_app_dictionary() == {
-                                            'width': 32,
-                                            'height': 16,
-                                            'update-interval': 60,
-                                            'icon-bus': {
-                                                'type': 'icon',
-                                                'width': 8,
-                                                'height': 9,
-                                                'x': 4,
-                                                'y': 0,
-                                                'content': [
-                                                            0,1,1,1,1,1,1,0,
-                                                            1,1,0,0,0,0,1,1,
-                                                            1,1,1,1,1,1,1,1,
-                                                            1,0,0,0,0,0,0,1,
-                                                            1,0,0,0,0,0,0,1,
-                                                            1,1,1,1,1,1,1,1,
-                                                            1,0,1,1,1,1,0,1,
-                                                            1,1,1,1,1,1,1,1,
-                                                            0,1,0,0,0,0,1,0,]},
-                                            'text-bus': {
-                                                'type': 'text',
-                                                'width': 10,
-                                                'height': 8,
-                                                'x': 14,
-                                                'y': 1,
-                                                'content': "bus"},
-                                            'text-departures': {
-                                                'type': 'text',
-                                                'width': 32,
-                                                'height': 8,
-                                                'scrolling': True,
-                                                'x': 0,
-                                                'y': 10,
-                                                'content': "64:0' 52:1303'"}}
+        result = app.get_app_dictionary()
+        assert len(result) == 3
+        assert result['height'] == 8
+        assert result['width'] == 32
+        assert result['data'] == [{'content': "64:0' 52:1303'",
+                                   'type': 'text',
+                                   'width': 32,
+                                   'height': 8,
+                                   'scrolling': True,
+                                   'x': 0,
+                                   'y': 0}]
