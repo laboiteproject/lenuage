@@ -1,61 +1,8 @@
-{% extends "apps/app_form.html" %}
+{% extends "custom_create_form.html" %}
 
 {% load static %}
 {% load i18n %}
 {% load bootstrap %}
-
-{% block body %}
-    <style>
-        .led ul li {
-            float: left;
-            width: 16px;
-            height: 16px;
-            margin-right: 4px;
-            margin-top: 4px;
-        }
-    </style>
-    <div class="row">
-        <ul class="breadcrumb hidden-xs hidden-sm">
-            <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
-            <li><a href="{% url 'boites:update' boite_id %}">{{ boite.name }}</a></li>
-            <li><a href="{% url 'boites:apps' boite_id %}">Apps</a></li>
-            <li class="active">{% if verbose_name %}{{ verbose_name }}{% else %}{% trans "Créer une app" %}{% endif %}</li>
-        </ul>
-        <div class="col-md-5">
-            <form method="POST" action="">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="control-label" for="id_message">{% trans "Éditeur d'icône" %}</label>
-                    <div class=" ">
-                        <div class="led">
-                            <ul></ul>
-                        </div>
-                        <div class="btn-group btn-group-centered pull-right" style="margin-top: 4px;">
-                            <a id="previous" class="btn btn-sm btn-info" href="#"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
-                            <a id="next" class="btn btn-sm btn-info" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                            <a id="add" class="btn btn-sm btn-info" href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                        </div>
-                        <p class="help-block">
-                            {% trans "Concevez votre icône en cliquant sur les pixels sur l'écran virtuel ci-dessus." %}
-                        </p>
-                    </div>
-                </div>
-                {{ form|bootstrap }}
-                <div id="bitmaps">
-                    {% for bitmap in bitmaps %}
-                        <textarea name="id_bitmap{{ bitmap.id }}" id="id_bitmap{{ bitmap.id }}" rows="16"  cols="32">{{ bitmap.bitmap }}</textarea>
-                    {% endfor %}
-                </div>
-                <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
-            </form>
-        </div>
-    </div>
-    <style media="screen">
-        .checkbox label {
-            padding-left: 0px;
-        }
-    </style>
-{% endblock %}
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
@@ -72,9 +19,8 @@
         var matrixWidth = $("#id_width").val(),
             matrixHeight= $("#id_height").val();
 
-        var bitmaps_ids= [{% for bitmap in bitmaps %}{{ bitmap.id }},{% endfor %}],
+        var bitmaps_ids= [{% if bitmaps %}{% for bitmap in bitmaps %}{{ bitmap.id }},{% endfor %}{% else %}1{% endif %}],
             bitmap_index = 0;
-        console.log(bitmaps_ids);
         for(var pixels = 0; pixels < matrixWidth*matrixHeight;	pixels++)
             $(".led ul").append("<li></li>");
 
@@ -116,7 +62,7 @@
                 var new_bitmap_id = last_bitmap_id + 1;
                 bitmaps_ids.push(new_bitmap_id);
                 var bitmap_html = $("#id_bitmap" + last_bitmap_id).text();
-                $("#bitmaps").append('<textarea name="id_bitmap' + new_bitmap_id + '" id="id_bitmap' + new_bitmap_id + '" rows="16"  cols="32">' + bitmap_html + '</textarea>');
+                $("#bitmaps").append('<textarea style="display: none;" name="id_bitmap' + new_bitmap_id + '" id="id_bitmap' + new_bitmap_id + '" rows="16"  cols="32">' + bitmap_html + '</textarea>');
             }
         );
 
@@ -135,7 +81,6 @@
         }
 
         function draw_bitmap(id) {
-            console.log(bitmap_index);
             var bitmap_text = $("#id_bitmap" + id).text();
             var i = 0;
             for (var j = 0; j < bitmap_text.length; j++) {

@@ -15,8 +15,11 @@
         <a class="list-group-item boite-update" href="{% url 'boites:update' boite_id %}">
             {% trans "Configurer votre boîte" %}
         </a>
+        <a class="list-group-item boite-pushbutton" href="{% url 'boites:pushbutton' boite_id %}">
+            {% trans "Configurer votre bouton" %}
+        </a>
         <a class="list-group-item boite-delete" href="{% url 'boites:delete' boite_id %}">
-            {% trans "Supprimer la boîte" %}
+            {% trans "Supprimer votre boîte" %}
         </a>
     </div>
 </div>

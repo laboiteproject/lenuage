@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from datetime import timedelta
 
 import pytest
@@ -26,14 +28,14 @@ def test_should_update(app):
     assert app.should_update() is False
 
 
-def test_data_ko(app, requests_mocker):
+def test_data_ko(app, requests_mocker, settings):
     assert app.should_update() is True
     with requests_mocker as m:
-        m.get(AppBus.API_BASE_URL, status_code=500, text='')
+        m.get(settings.STAR_API_BASE_URL, status_code=500, text='')
         assert app.get_app_dictionary() is None
 
 
-def test_data_ok(app, mocker, requests_mocker):
+def test_data_ok(app, mocker, requests_mocker, settings):
     assert app.should_update() is True
     now = timezone.now()
     now = now.replace(year=2017, month=7, day=22, hour=20, minute=19, second=10)
@@ -41,39 +43,15 @@ def test_data_ok(app, mocker, requests_mocker):
     mocker.patch('laboite.apps.bus.models.timezone.now', return_value=now)
 
     with requests_mocker as m:
-        m.get(AppBus.API_BASE_URL, text=DATA_OK)
-        assert app.get_app_dictionary() == {
-                                            'width': 32,
-                                            'height': 16,
-                                            'update-interval': 60,
-                                            'icon-bus': {
-                                                'type': 'icon',
-                                                'width': 8,
-                                                'height': 9,
-                                                'x': 4,
-                                                'y': 0,
-                                                'content': [
-                                                            0,1,1,1,1,1,1,0,
-                                                            1,1,0,0,0,0,1,1,
-                                                            1,1,1,1,1,1,1,1,
-                                                            1,0,0,0,0,0,0,1,
-                                                            1,0,0,0,0,0,0,1,
-                                                            1,1,1,1,1,1,1,1,
-                                                            1,0,1,1,1,1,0,1,
-                                                            1,1,1,1,1,1,1,1,
-                                                            0,1,0,0,0,0,1,0,]},
-                                            'text-bus': {
-                                                'type': 'text',
-                                                'width': 10,
-                                                'height': 8,
-                                                'x': 14,
-                                                'y': 1,
-                                                'content': "bus"},
-                                            'text-departures': {
-                                                'type': 'text',
-                                                'width': 32,
-                                                'height': 8,
-                                                'scrolling': True,
-                                                'x': 0,
-                                                'y': 10,
-                                                'content': "64:0' 52:1303'"}}
+        m.get(settings.STAR_API_BASE_URL, text=DATA_OK)
+        result = app.get_app_dictionary()
+        assert len(result) == 3
+        assert result['height'] == 8
+        assert result['width'] == 32
+        assert result['data'] == [{'content': "64:0' 52:1303'",
+                                   'type': 'text',
+                                   'width': 32,
+                                   'height': 8,
+                                   'scrolling': True,
+                                   'x': 0,
+                                   'y': 0}]

@@ -6,7 +6,7 @@
 
 {% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} · {% endif %}{% block head_title %}{% endblock %}{% endblock %}
 
-{% block site_brand %}<a class="navbar-brand" href="{% url "home" %}" style="font-family: 'Kreon', serif; font-size: 150%">{{ SITE_NAME }}</a>{% endblock %}
+{% block site_brand %}<a class="navbar-brand" href="{% url "home" %}" style="font-family: 'Kreon', serif; font-size: 150%"><i class="fa fa-cloud" aria-hidden="true"></i> {{ SITE_NAME }}</a>{% endblock %}
 
 {% block styles %}
     {% include "_styles.html" %}

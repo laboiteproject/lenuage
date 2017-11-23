@@ -3,11 +3,11 @@
 from __future__ import unicode_literals
 
 import pyowm
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from boites.models import App, MINUTES
-from . import settings
 
 ICON_CHOICES = (
     (0, 'Temps clair'),
@@ -50,7 +50,7 @@ class AppWeather(App):
     def convert_owm_icon(self, owm_icon):
         # clouds
         icon = "1"
-        owm_icon = owm_icon[:3]
+        owm_icon = owm_icon[:2]
 
         # clear sky
         if owm_icon == '01':

@@ -2,12 +2,12 @@
 from __future__ import unicode_literals
 
 import requests
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from boites.exceptions import ExternalDataError
 from boites.models import App, MINUTES
-from . import settings
 
 MODES = (
     ('driving', 'En voiture'),
@@ -19,7 +19,6 @@ MODES = (
 
 class AppTraffic(App):
     UPDATE_INTERVAL = 15 * MINUTES
-    BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 
     mode = models.CharField(_('Mode de transport'), choices=MODES, max_length=32, null=True, default='driving')
     start = models.CharField(_('Point de départ'), max_length=1024,  null=True, default=None)
@@ -32,7 +31,7 @@ class AppTraffic(App):
                   'destination': self.dest,
                   'mode': self.mode,
                   'key': settings.GOOGLE_MAPS_API_KEY}
-        r = requests.get(self.BASE_URL, params=params)
+        r = requests.get(settings.GOOGLE_MAPS_BASE_URL, params=params)
         routes = r.json().get('routes')
         all_routes = []
         for route in routes:

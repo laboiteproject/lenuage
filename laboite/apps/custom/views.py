@@ -6,7 +6,6 @@ from boites.views import AppCreateView, AppUpdateView, AppDeleteView
 
 class AppCustomCreateView(AppCreateView):
     model = AppCustom
-    template_name = 'custom_form.html'
     fields = ['width', 'height']
 
 
@@ -26,7 +25,10 @@ class AppCustomUpdateView(AppUpdateView):
     def form_valid(self, form):
         for key in self.request.POST:
             if key.startswith("id_bitmap"):
-                id = int(key[9:])
+                try:
+                    id = int(key[9:])
+                except ValueError:
+                    id = 1
                 bitmap = Bitmap(id=id, app_id=self.kwargs.get('pk'), bitmap=self.request.POST.get(key))
                 bitmap.save()
         return super(AppCustomUpdateView, self).form_valid(form)

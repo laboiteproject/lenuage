@@ -3,16 +3,15 @@
 from __future__ import unicode_literals
 
 import requests
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from boites.models import App, MINUTES
-from . import settings
 
 
 class AppParking(App):
     UPDATE_INTERVAL = 5 * MINUTES
-    API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
 
     CAR_PARK_CHOICES = (
         ('HFR', "Henri Fréville"),
@@ -46,7 +45,7 @@ class AppParking(App):
         self.available = None
         self.occupied = None
 
-        r = requests.get(self.API_BASE_URL, params=params)
+        r = requests.get(settings.STAR_API_BASE_URL, params=params)
 
         records = r.json().get('records')
         if records:
@@ -60,10 +59,31 @@ class AppParking(App):
         self.save()
 
     def _get_data(self):
-        return {'parking': self.parking,
-                'open': self.open,
-                'available': self.available,
-                'occupied': self.occupied}
+        result = {
+            'width': 32,
+            'height': 10,
+            'data': [
+                {
+                    'type': 'icon',
+                    'width': 8,
+                    'height': 9,
+                    'x': 0,
+                    'y': 0,
+                    'content': '0xff839999839f9f9fff'
+                },
+                {
+                    'type': 'text',
+                    'width': len(str(self.available)) * 5,
+                    'height': 8,
+                    'x': 9,
+                    'y': 2,
+                    'content': '%s' % self.available,
+                }
+            ]
+        }
+        if not self.open:
+            result['text-parking']['content'] = "Closed"
+        return result
 
     class Meta:
         verbose_name = _('Configuration : parkings')

@@ -35,34 +35,24 @@ class AppBikes(App):
         return {
             'width': 32,
             'height': 10,
-            'update-interval': self.UPDATE_INTERVAL,
-            'icon-bikes': {
-                'type': 'icon',
-                'width': 12,
-                'height': 10,
-                'x': 5,
-                'y': 1,
-                'content':
-                    [
-                        0,0,0,0,0,0,0,0,1,1,0,0,
-                        0,0,0,1,1,1,0,0,0,0,1,0,
-                        0,0,0,0,1,0,0,0,1,1,0,0,
-                        0,0,0,0,1,1,1,1,1,0,0,0,
-                        0,1,1,1,1,0,0,0,1,1,1,0,
-                        1,0,1,0,1,0,1,1,1,0,0,1,
-                        1,0,1,1,1,1,0,1,0,1,0,1,
-                        1,0,0,0,1,0,0,1,0,0,0,1,
-                        0,1,1,1,0,0,0,0,1,1,1,0,
-                    ]
-            },
-            'text-bikes': {
-                'type': 'text',
-                'width': 10,
-                'height': 10,
-                'x': 18,
-                'y': 3,
-                'content': '%d' % self.bikes
-            }
+            'data': [
+                {
+                    'type': 'icon',
+                    'width': 12,
+                    'height': 10,
+                    'x': 5,
+                    'y': 1,
+                    'content': '0x00c1c208c0f878eab9bd589170e'
+                },
+                {
+                    'type': 'text',
+                    'width': 10,
+                    'height': 10,
+                    'x': 18,
+                    'y': 3,
+                    'content': '%s' % self.bikes
+                }
+            ]
         }
 
     class Meta:

@@ -1,1 +1,0 @@
-STAR_API_KEY = ''

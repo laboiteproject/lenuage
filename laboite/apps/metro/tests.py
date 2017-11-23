@@ -109,21 +109,21 @@ def test_not_enabled(app):
 
 
 @pytest.mark.django_db
-def test_failed_request(app, requests_mocker):
+def test_failed_request(app, requests_mocker, settings):
     with requests_mocker as m:
-        m.get(AppMetro.BASE_URL, status_code=500, text='')
+        m.get(settings.STAR_API_BASE_URL, status_code=500, text='')
         assert app.get_app_dictionary() is None
 
 
 @pytest.mark.django_db
-def test_successful_request_no_failure(app, requests_mocker):
+def test_successful_request_no_failure(app, requests_mocker, settings):
     with requests_mocker as m:
-        m.get(AppMetro.BASE_URL, text=NO_FAILURE)
+        m.get(settings.STAR_API_BASE_URL, text=NO_FAILURE)
         assert app.get_app_dictionary() is None
 
 
 @pytest.mark.django_db
-def test_no_data_successful_request_with_failure(app, requests_mocker):
+def test_no_data_successful_request_with_failure(app, requests_mocker, settings):
     with requests_mocker as m:
-        m.get(AppMetro.BASE_URL, text=WITH_FAILURE)
+        m.get(settings.STAR_API_BASE_URL, text=WITH_FAILURE)
         assert app.get_app_dictionary() == {'failure': True, 'recovery_time': 50}

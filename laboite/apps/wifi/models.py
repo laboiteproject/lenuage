@@ -15,40 +15,33 @@ class AppWifi(App):
         return {
             'width': 32,
             'height': 16,
-            'update-interval': self.UPDATE_INTERVAL,
-            'icon-wifi': {
-                'type': 'icon',
-                'width': 7,
-                'height': 6,
-                'x': 2,
-                'y': 0,
-                'content':
-                    [
-                        0,0,1,1,1,0,0,
-                        0,1,0,0,0,1,0,
-                        1,0,0,1,0,0,1,
-                        0,0,1,0,1,0,0,
-                        0,0,0,0,0,0,0,
-                        0,0,0,1,0,0,0,
-                    ]
-            },
-            'text-wifi': {
-                'type': 'text',
-                'width': 10,
-                'height': 8,
-                'x': 10,
-                'y': 1,
-                'content': "wifi",
-            },
-            'text-ssid': {
-                'type': 'text',
-                'width': 32,
-                'height': 8,
-                'scrolling': True,
-                'x': 0,
-                'y': 9,
-                'content': self.ssid + '/' + self.preshared_key,
-            }
+            'data':[
+                {
+                    'type': 'icon',
+                    'width': 8,
+                    'height': 6,
+                    'x': 2,
+                    'y': 0,
+                    'content': '0x384492280010'
+                },
+                {
+                    'type': 'text',
+                    'width': 10,
+                    'height': 8,
+                    'x': 10,
+                    'y': 1,
+                    'content': "wifi",
+                },
+                {
+                    'type': 'text',
+                    'width': 32,
+                    'height': 8,
+                    'scrolling': True,
+                    'x': 0,
+                    'y': 9,
+                    'content': self.ssid + '/' + self.preshared_key,
+                }
+            ]
         }
     class Meta:
         verbose_name = _('Configuration : wifi')

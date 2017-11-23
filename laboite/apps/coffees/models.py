@@ -21,33 +21,24 @@ class AppCoffees(App):
         return {
             'width': 32,
             'height': 8,
-            'update-interval': self.UPDATE_INTERVAL,
-            'icon-coffee': {
-                'type': 'icon',
-                'width': 8,
-                'height': 8,
-                'x': 1,
-                'y': 0,
-                'content':
-                    [
-                        0,1,0,0,1,0,0,0,
-                        0,0,1,0,0,1,0,0,
-                        0,1,0,0,1,0,0,0,
-                        1,1,1,1,1,1,1,1,
-                        1,0,0,0,0,1,0,1,
-                        1,0,0,0,0,1,1,0,
-                        1,0,0,0,0,1,0,0,
-                        0,1,1,1,1,0,0,0,
-                    ],
-            },
-            'text-coffee': {
-                'type': 'text',
-                'width': 10,
-                'height': 8,
-                'x': 11,
-                'y': 1,
-                'content':  '%d/%d' % (self.daily, self.monthly),
-            },
+            'data': [
+                {
+                    'type': 'icon',
+                    'width': 8,
+                    'height': 8,
+                    'x': 1,
+                    'y': 0,
+                    'content': '0x482448ff85868478',
+                },
+                {
+                    'type': 'text',
+                    'width': 10,
+                    'height': 8,
+                    'x': 11,
+                    'y': 1,
+                    'content':  '%s/%s' % (self.daily, self.monthly),
+                },
+            ]
         }
 
     def update_data(self):

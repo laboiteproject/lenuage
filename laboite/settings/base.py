@@ -218,6 +218,7 @@ ACCOUNT_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL = "home"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
 ACCOUNT_USE_AUTH_AUTHENTICATE = True
+LOGIN_URL = '/account/login/'
 
 AUTHENTICATION_BACKENDS = [
     "social.backends.twitter.TwitterOAuth",
@@ -226,3 +227,23 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_TWITTER_KEY = ""
 SOCIAL_AUTH_TWITTER_SECRET = ""
+
+# Apps settings
+# Bikes
+STAR_API_BASE_URL = 'https://data.explore.star.fr/api/records/1.0/search'
+STAR_API_KEY = ''
+VELIB_API_BASE_URL = 'http://opendata.paris.fr/api/records/1.0/search'
+VELIB_API_KEY = ''
+
+# Likes
+FACEBOOK_ACCESS_TOKEN = ''
+
+# Traffic
+GOOGLE_MAPS_API_KEY = ''
+GOOGLE_MAPS_BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json'
+
+# Weather
+OWM_APIKEY = ''
+
+# IFTT
+IFTTT_API_BASE_URL = 'https://maker.ifttt.com/trigger/'
