@@ -183,10 +183,13 @@ class Tile(models.Model):
 
         last_activities = []
         for app in apps:
-            app.content_object.get_app_dictionary()
-            last_activity = app.content_object.last_activity.replace(tzinfo=None) - app.content_object.last_activity.utcoffset()
-            last_activity = (last_activity - datetime(1970, 1, 1)).total_seconds()
-            last_activities.append(int(last_activity))
+            try:
+                app.content_object.get_app_dictionary()
+                last_activity = app.content_object.last_activity.replace(tzinfo=None) - app.content_object.last_activity.utcoffset()
+                last_activity = (last_activity - datetime(1970, 1, 1)).total_seconds()
+                last_activities.append(int(last_activity))
+            except AttributeError:
+                logger.exception('App {} may not exist'.format(app.content_object))
 
         return max(last_activities)
 
