@@ -15,7 +15,7 @@ def get_provider(key):
 
 
 def get_providers():
-    ret = [(key, provider_class.verbose_name) for key, provider_class in PROVIDERS.iteritems()]
+    ret = [(key, provider_class.verbose_name) for key, provider_class in PROVIDERS.items()]
     ret.sort(key=operator.itemgetter(1))
     return ret
 

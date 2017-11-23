@@ -3,8 +3,8 @@
 from __future__ import unicode_literals
 from datetime import timedelta, datetime
 
+from io import BytesIO
 import logging
-import StringIO
 import uuid
 
 from django.apps import apps
@@ -61,12 +61,12 @@ class Boite(models.Model):
         url += str(self.api_key)
         img = qrcode.make(url)
 
-        buffer = StringIO.StringIO()
+        buffer = BytesIO()
         img.save(buffer)
 
         filename = 'qrcode-%s.png' % str(self.api_key)
-        file_buffer = filebuffer = InMemoryUploadedFile(
-            buffer, None, filename, 'image/png', buffer.len, None)
+        filebuffer = InMemoryUploadedFile(buffer, None, filename,
+                                          'image/png', len(buffer.getvalue()), None)
         self.qrcode.save(filename, filebuffer)
 
     def belongs_to(self, user):
@@ -77,7 +77,8 @@ class Boite(models.Model):
         for model in apps.get_models():
             if issubclass(model, App):
                 applications = model.objects.filter(boite=self, enabled=True)
-                dicts = filter(lambda r: r is not None, [a.get_app_dictionary() for a in applications])
+                dicts = [a.get_app_dictionary() for a in applications]
+                dicts = [dct for dct in dicts if dct is not None]
                 if dicts:
                     apps_dict[model.get_label()] = dicts
         return apps_dict

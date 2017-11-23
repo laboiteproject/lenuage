@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from __future__ import division
 from __future__ import unicode_literals
 
 import requests
@@ -52,7 +53,7 @@ class AppBus(App):
                 if departure.total_seconds() < 0:
                     self.departure0 = 0
                 else:
-                    self.departure0 = departure.seconds / 60
+                    self.departure0 = departure.seconds // 60
             except IndexError:
                 self.route0 = None
                 self.departure0 = None
@@ -60,7 +61,7 @@ class AppBus(App):
             try:
                 self.route1 = records[1]['fields']['nomcourtligne']
                 departure = dateparse.parse_datetime(records[1]['fields']['depart']) - now
-                self.departure1 = departure.seconds / 60
+                self.departure1 = departure.seconds // 60
             except IndexError:
                 self.route1 = None
                 self.departure1 = None
