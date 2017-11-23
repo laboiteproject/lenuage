@@ -21,7 +21,6 @@
 
         var bitmaps_ids= [{% if bitmaps %}{% for bitmap in bitmaps %}{{ bitmap.id }},{% endfor %}{% else %}1{% endif %}],
             bitmap_index = 0;
-        console.log(bitmaps_ids);
         for(var pixels = 0; pixels < matrixWidth*matrixHeight;	pixels++)
             $(".led ul").append("<li></li>");
 
@@ -82,7 +81,6 @@
         }
 
         function draw_bitmap(id) {
-            console.log(bitmap_index);
             var bitmap_text = $("#id_bitmap" + id).text();
             var i = 0;
             for (var j = 0; j < bitmap_text.length; j++) {
