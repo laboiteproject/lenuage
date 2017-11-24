@@ -13,6 +13,7 @@ from django.contrib.sites.models import Site
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
@@ -158,6 +159,7 @@ class App(models.Model):
 
 class Tile(models.Model):
     boite = models.ForeignKey(Boite, on_delete=models.CASCADE)
+    brightness = models.PositiveSmallIntegerField(_("Luminosité de la tuile"), help_text=_("Veuillez saisir la luminosité souhaitée pour cette tuile"), default=15, validators=[MaxValueValidator(15)])
     duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en secondes)"), default=5)
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
 

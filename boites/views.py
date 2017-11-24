@@ -48,7 +48,7 @@ def json_view(request, api_key):
 
     tiles = []
     for tile in  boite_tiles:
-        tiles.append({'id':tile.id,'last_activity':tile.get_last_activity()})
+        tiles.append({'id':tile.id,'brightness':tile.brightness,'last_activity':tile.get_last_activity()})
 
     json = {'id': boite.id, 'tiles' : tiles}
 
@@ -331,7 +331,7 @@ class AppDeleteView(DeleteView):
 class TileUpdateView(UpdateView):
     model = Tile
     template_name = 'tiles/tile_form.html'
-    fields = ['duration']
+    fields = ['duration', 'brightness']
 
     def get_context_data(self, **kwargs):
         context = super(TileUpdateView, self).get_context_data(**kwargs)
