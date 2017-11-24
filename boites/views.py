@@ -48,7 +48,7 @@ def json_view(request, api_key):
 
     tiles = []
     for tile in  boite_tiles:
-        tiles.append({'id':tile.id,'brightness':tile.brightness,'last_activity':tile.get_last_activity()})
+        tiles.append({'id':tile.id,'last_activity':tile.get_last_activity()})
 
     json = {'id': boite.id, 'tiles' : tiles}
 
