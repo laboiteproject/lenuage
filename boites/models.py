@@ -175,6 +175,7 @@ class Tile(models.Model):
         tile = {
             'id': self.id,
             'duration': self.duration,
+            'brightness': self.brightness,
             'items': items,
         }
 
