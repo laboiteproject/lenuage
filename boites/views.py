@@ -2,10 +2,8 @@
 
 from __future__ import unicode_literals
 import json
-import requests
 
 from django.apps import apps
-from django.conf import settings
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
@@ -14,7 +12,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from django.utils import timezone
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
 from pygments import highlight
@@ -38,22 +35,6 @@ class BoiteListView(ListView):
         return Boite.objects.filter(user=self.request.user).order_by("created_date")
 
 
-def json_view(request, api_key):
-    boite = get_object_or_404(Boite, api_key=api_key)
-    boite.last_activity = timezone.now()
-    boite.last_connection = request.META.get("REMOTE_ADDR", "")
-    boite.save()
-
-    boite_tiles = Tile.objects.filter(boite=boite).order_by('id')
-
-    tiles = []
-    for tile in  boite_tiles:
-        tiles.append({'id':tile.id,'last_activity':tile.get_last_activity()})
-
-    json = {'id': boite.id, 'tiles' : tiles}
-
-    return JsonResponse(json)
-
 def create_app_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
 
@@ -66,6 +47,7 @@ def create_app_view(request, pk):
                 apps_list.append({'verbose_name':verbose_name[16:], 'pk':'create', 'app_label': model._meta.app_label})
 
     return render(request, 'boites/boite_create_app.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
+
 
 def create_app_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
@@ -94,20 +76,12 @@ def tiles_view(request, pk):
 
     return render(request, 'boites/tiles_form.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
 
+
 def tile_editor_view(request, boite_pk):
     boite = get_object_or_404(Boite, pk=boite_pk, user=request.user)
 
     return render(request, 'boites/tile_editor.html', {'boite': boite, 'boite_id': boite.id})
 
-def tile_json_view(request, api_key, pk):
-    boite = get_object_or_404(Boite, api_key=api_key)
-    boite.last_activity = timezone.now()
-    boite.last_connection = request.META.get("REMOTE_ADDR", "")
-    boite.save()
-
-    tile = get_object_or_404(Tile, pk=pk)
-
-    return JsonResponse(tile.get_data())
 
 def apps_view(request, pk):
     boite = get_object_or_404(Boite, pk=pk, user=request.user)
@@ -133,6 +107,7 @@ def apps_view(request, pk):
             apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label, 'instance': app_instances.first()})
 
     return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list, 'show_create_button' : len(apps_list) > enabled_apps})
+
 
 def redirect_view(request, api_key):
     boite = get_object_or_404(Boite, api_key=api_key)
@@ -219,6 +194,7 @@ class BoiteCreateView(SuccessMessageMixin, CreateView):
         form.instance.user = user
         return super(BoiteCreateView, self).form_valid(form)
 
+
 class PushButtonUpdateView(UpdateView):
     model = PushButton
     fields = ['api_key']
@@ -242,23 +218,8 @@ class PushButtonUpdateView(UpdateView):
 
         return context
 
-def trigger_pushbutton_view(request, api_key):
-    boite = get_object_or_404(Boite, api_key=api_key)
-    boite.last_activity = timezone.now()
-    boite.last_connection = request.META.get("REMOTE_ADDR", "")
-    boite.save()
-
-    pushbutton = get_object_or_404(PushButton, boite=boite)
-
-    url = settings.IFTTT_API_BASE_URL
-    url += boite.api_key + '/with/key/'
-    url += pushbutton.api_key + '/'
-
-    r = requests.get(url, params={'value1': boite.name.lower() })
-
-    return JsonResponse({'status_code':r.status_code})
-
 # Apps
+
 
 class AppCreateView(SuccessMessageMixin, CreateView):
     template_name = 'apps/app_form.html'
@@ -279,6 +240,7 @@ class AppCreateView(SuccessMessageMixin, CreateView):
         form.instance.boite = boite
         form.save()
         return super(AppCreateView, self).form_valid(form)
+
 
 class JSONResponseMixin(object):
     def render_to_json_response(self, context, **response_kwargs):
@@ -312,6 +274,7 @@ class AppUpdateView(UpdateView, JSONResponseMixin):
                 return super(AppUpdateView, self).render_to_response(context)
             else:
                 redirect('/account/login/?next=%s' % self.request.path)
+
 
 class AppDeleteView(DeleteView):
     template_name = 'apps/app_confirm_delete.html'
@@ -376,6 +339,7 @@ class TileUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('boites:tile', kwargs={'boite_pk': self.kwargs.get('boite_pk'), 'pk': self.kwargs.get('pk')})
 
+
 class TileDeleteView(DeleteView):
     model = Tile
     template_name = 'tiles/tile_confirm_delete.html'
@@ -397,6 +361,7 @@ class TileDeleteView(DeleteView):
 
         return context
 
+
 def tileapp_view(request, boite_pk, pk):
     tile = get_object_or_404(Tile, pk=pk)
 
@@ -412,12 +377,14 @@ def tileapp_view(request, boite_pk, pk):
 
     return redirect('boites:tile', boite_pk= boite_pk, pk=pk)
 
+
 def create_tile_view(request, boite_pk, pk):
     boite = get_object_or_404(Boite, pk=boite_pk, user=request.user)
     tile = Tile(boite=boite)
     tile.save()
 
     return redirect('boites:tile', boite_pk= boite_pk, pk=tile.pk)
+
 
 class TileAppDeleteView(DeleteView):
     model = TileApp
