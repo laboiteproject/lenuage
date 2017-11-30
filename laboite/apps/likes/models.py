@@ -21,7 +21,7 @@ class AppLikes(App):
 
     def update_data(self):
         graph = facebook.GraphAPI(access_token=settings.FACEBOOK_ACCESS_TOKEN)
-        graph = graph.get_object(id='cafealbertinerennes', fields='fan_count')
+        graph = graph.get_object(id=self.page_name, fields='fan_count')
         self.likes = int(graph.get('fan_count'))
         self.save()
 
