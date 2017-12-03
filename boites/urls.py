@@ -4,17 +4,16 @@ from django.conf.urls.static import static
 
 from django.contrib.auth.decorators import login_required
 
+from .api import boite_json_view, tile_json_view, trigger_pushbutton_json_view
 from .views import (
     BoiteListView,
     BoiteCreateView,
     BoiteUpdateView,
     BoiteDeleteView,
-    json_view,
     generate_api_key,
     redirect_view,
     apps_view,
     create_app_view,
-    tiles_view,
     tile_editor_view,
     TileUpdateView,
     TileDeleteView,
@@ -22,8 +21,6 @@ from .views import (
     create_tile_view,
     TileAppDeleteView,
     PushButtonUpdateView,
-    trigger_pushbutton_view,
-    tile_json_view,
 )
 
 urlpatterns = [
@@ -35,7 +32,7 @@ urlpatterns = [
     url(r"^(?P<pk>\d+)/apps/$", login_required(apps_view), name="apps"),
     url(r"^(?P<pk>\d+)/apps/create/$", login_required(create_app_view), name="create_app"),
     url(r"^(?P<pk>\d+)/pushbutton/$", login_required(PushButtonUpdateView.as_view()), name="pushbutton"),
-    url(r'^(?P<api_key>[0-9a-z-]+)/pushbutton/$', trigger_pushbutton_view, name='trigger_pushbutton'),
+    url(r'^(?P<api_key>[0-9a-z-]+)/pushbutton/$', trigger_pushbutton_json_view, name='trigger_pushbutton'),
     url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/$", TileUpdateView.as_view(), name="tile"),
     url(r"^(?P<api_key>[0-9a-z-]+)/tiles/(?P<pk>\d+)/$", tile_json_view, name="tile_json"),
     url(r"^(?P<boite_pk>\d+)/tiles/(?P<pk>\d+)/create/$", login_required(create_tile_view), name="create_tile"),
@@ -60,7 +57,7 @@ urlpatterns = [
     url(r"^(?P<boite_pk>\d+)/apps/custom/", include('laboite.apps.custom.urls', namespace="app_custom")),
     url(r"^(?P<boite_pk>\d+)/apps/parking/", include('laboite.apps.parking.urls', namespace="app_parking")),
     url(r"^(?P<boite_pk>\d+)/apps/coffees/", include('laboite.apps.coffees.urls', namespace="app_coffees")),
-    url(r'^(?P<api_key>[0-9a-z-]+)/$', json_view, name='json'),
+    url(r'^(?P<api_key>[0-9a-z-]+)/$', boite_json_view, name='json'),
     url(r'^redirect/(?P<api_key>[0-9a-z-]+)/$', login_required(redirect_view), name="redirect"),
 ]
 
