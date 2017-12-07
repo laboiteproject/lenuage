@@ -25,7 +25,7 @@ class AppTasks(App):
     UPDATE_INTERVAL = 30 * MINUTES
 
     asana_personal_access_token = models.CharField(_("Clé d'API Asana"), help_text=_("Veuillez indiquer votre clé d'API personnelle Asana (Personal Access Token)"), max_length=64, default=None, null=True)
-    asana_project_id = models.PositiveIntegerField(_('Identifiant projet Asana'), help_text=_("Veuillez indiquer l'identifiant du projet Asana dans lequel vous souhaitez travailler"), default=None, null=True)
+    asana_project_id = models.BigIntegerField(_('Identifiant projet Asana'), help_text=_("Veuillez indiquer l'identifiant du projet Asana dans lequel vous souhaitez travailler"), default=None, null=True)
 
     # from https://asana.com/developers/api-reference/tasks
     name = models.CharField(_('Nom de la prochaine tâche'), max_length=128, default=None, null=True)

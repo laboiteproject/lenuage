@@ -15,7 +15,7 @@
                     <thead>
                         <tr>
                             <th>{% trans "Nom" %}</th>
-                            <th>{% trans "Nombre d'apps configurées" %}</th>
+                            <th>{% trans "Apps" %}</th>
                             <th>{% trans "Clé d'API" %}</th>
                             <th>{% trans "Connectée ?" %}</th>
                             <th>{% trans "Actions" %}</th>
@@ -26,7 +26,7 @@
                             <tr>
                                 <td>{{ boite.name }}</td>
                                 <td><span class="badge">{{ boite.get_apps_dictionary|length }}</span></td>
-                                <td><code><a style="text-decoration:none;" href="/boites/{{ boite.api_key }}">{{ boite.api_key|truncatechars:9 }}</a></code></td>
+                                <td><samp>{{ boite.api_key }}</samp></td>
                                 <td style ="color: {% if boite.was_active_recently %}#18bc9c{% else %}#e74c3c{% endif %};"><i class="fa fa-circle"></i></td>
                                 <td>
                                     <a href="{% url 'boites:apps' boite.id %}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
@@ -37,10 +37,16 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <a href="{% url 'boites:create' %}" class="btn btn-success">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> {% trans "Ajouter boîte" %}
+                </a>
+            {% else %}
+                <div class="jumbotron">
+                    <h1><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Pas encore de boîte</h1>
+                    <p>{% trans "Veuillez cliquer sur le bouton ci-dessous pour ajouter une boîte." %}</p>
+                    <p><a class="btn btn-primary btn-lg"><i class="fa fa-plus-circle" aria-hidden="true"></i> {% trans "Ajouter boîte" %}</a></p>
+                </div>
             {% endif %}
-            <a href="{% url 'boites:create' %}" class="btn btn-success">
-                {% trans "Ajouter boîte" %}
-            </a>
         </div>
     </section>
 {% endblock %}
