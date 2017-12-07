@@ -57,6 +57,7 @@ urlpatterns = [
     url(r"^(?P<boite_pk>\d+)/apps/custom/", include('laboite.apps.custom.urls', namespace="app_custom")),
     url(r"^(?P<boite_pk>\d+)/apps/parking/", include('laboite.apps.parking.urls', namespace="app_parking")),
     url(r"^(?P<boite_pk>\d+)/apps/coffees/", include('laboite.apps.coffees.urls', namespace="app_coffees")),
+    url(r"^(?P<boite_pk>\d+)/apps/cryptocurrency/", include('laboite.apps.cryptocurrency.urls', namespace="app_cryptocurrency")),
     url(r'^(?P<api_key>[0-9a-z-]+)/$', boite_json_view, name='json'),
     url(r'^redirect/(?P<api_key>[0-9a-z-]+)/$', login_required(redirect_view), name="redirect"),
 ]

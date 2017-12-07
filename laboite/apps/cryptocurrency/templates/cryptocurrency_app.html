@@ -1,0 +1,10 @@
+{% extends "boites/boite_app.html" %}
+
+{% load i18n %}
+{% load humanize %}
+
+{% block app_icon %}bitcoin{% endblock %}
+{% block app_data %}
+  <span class="badge">{{ app.instance.value|intcomma|default:"0" }}{% if app.instance.currency == 'EUR' %}&euro;{% else %}&dollar;{% endif %}</span>
+{% endblock %}
+{% block app_description %}{% trans "Affiche la valeur actuelle d'une crypto-monnaie" %}{% endblock %}

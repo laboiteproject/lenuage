@@ -137,6 +137,7 @@ LABOITE_APPS = [
     "laboite.apps.custom",
     "laboite.apps.parking",
     "laboite.apps.coffees",
+    "laboite.apps.cryptocurrency",
 ]
 
 INSTALLED_APPS = [
@@ -247,3 +248,6 @@ OWM_APIKEY = ''
 
 # IFTT
 IFTTT_API_BASE_URL = 'https://maker.ifttt.com/trigger/'
+
+# Cryptocurrency
+COINMARKETCAP_BASE_URL = 'https://api.coinmarketcap.com/v1/ticker/'
