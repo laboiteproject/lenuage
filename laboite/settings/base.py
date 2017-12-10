@@ -138,6 +138,7 @@ LABOITE_APPS = [
     "laboite.apps.parking",
     "laboite.apps.coffees",
     "laboite.apps.cryptocurrency",
+    "laboite.apps.data",
 ]
 
 INSTALLED_APPS = [
