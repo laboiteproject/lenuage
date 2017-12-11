@@ -16,7 +16,7 @@ admin.site.register(Boite, BoiteAdmin)
 
 class TileAdmin(admin.ModelAdmin):
     readonly_fields = ['created_date']
-    list_display = ('id', 'boite', 'duration')
+    list_display = ('id', 'boite', 'duration', 'transition')
 
     search_fields = ['boite']
 
