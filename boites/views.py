@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 import json
+import logging
 
 from django.apps import apps
 from django.contrib.messages.views import SuccessMessageMixin
@@ -17,6 +18,8 @@ from django.views.generic.list import ListView
 from pygments import highlight
 from pygments.lexers import JsonLexer
 from pygments.formatters import HtmlFormatter
+
+logger = logging.getLogger('laboite.apps')
 
 from .models import App, Boite, Tile, TileApp, PushButton
 
@@ -329,9 +332,13 @@ class TileUpdateView(UpdateView):
         apps_list = []
         tile_apps = TileApp.objects.filter(tile=self.object)
         for app in tile_apps:
-            pk = app.pk
-            verbose_name =  app.content_object._meta.verbose_name.title()
-            apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'app_label': app.content_object._meta.app_label, 'data': app.content_object.get_data()})
+            try:
+                pk = app.pk
+                verbose_name =  app.content_object._meta.verbose_name.title()
+                apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'app_label': app.content_object._meta.app_label, 'data': app.content_object.get_data()})
+            except:
+                logger.exception('Tile app {} does not exist anymore'.format(app))
+                app.delete()
         context['tile_apps'] = apps_list
 
         return context
