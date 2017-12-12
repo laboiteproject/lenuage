@@ -158,9 +158,19 @@ class App(models.Model):
         abstract = True
 
 class Tile(models.Model):
+    TRANSITION_CHOICES = (
+        (0, _('Aucune')),
+        (1, _('Fondu')),
+        (2, _('Défilement ←')),
+        (3, _('Défilement →')),
+        (4, _('Défilement ↑')),
+        (5, _('Défilement ↓')),
+    )
+
     boite = models.ForeignKey(Boite, on_delete=models.CASCADE)
     brightness = models.PositiveSmallIntegerField(_("Luminosité de la tuile"), help_text=_("Veuillez saisir la luminosité souhaitée pour cette tuile"), default=15, validators=[MaxValueValidator(15)])
     duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en secondes)"), default=5)
+    transition = models.PositiveSmallIntegerField(_('Transition'), help_text=_("Veuillez sélectionner la transition que vous souhaitez pour passer à la prochaine tuile"), choices=TRANSITION_CHOICES, default=0)
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
 
     def __str__(self):
@@ -221,7 +231,7 @@ class TileApp(models.Model):
                     value += self.y
                 shifted_item[key] = value
             shifted_items.append(shifted_item)
-            
+
         return shifted_items
 
     class Meta:

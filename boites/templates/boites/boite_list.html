@@ -44,7 +44,7 @@
                 <div class="jumbotron">
                     <h1><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Pas encore de boîte</h1>
                     <p>{% trans "Veuillez cliquer sur le bouton ci-dessous pour ajouter une boîte." %}</p>
-                    <p><a class="btn btn-primary btn-lg"><i class="fa fa-plus-circle" aria-hidden="true"></i> {% trans "Ajouter boîte" %}</a></p>
+                    <p><a class="btn btn-primary btn-lg" href="{% url 'boites:create' %}"><i class="fa fa-plus-circle" aria-hidden="true"></i> {% trans "Ajouter boîte" %}</a></p>
                 </div>
             {% endif %}
         </div>
