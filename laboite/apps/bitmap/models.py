@@ -7,7 +7,7 @@ from django.db import models
 from boites.models import App
 
 
-class AppCustom(App):
+class AppBitmap(App):
     width = models.PositiveIntegerField(verbose_name=_("Largeur de l'icône"), default=16)
     height = models.PositiveIntegerField(verbose_name=_("Hauteur de l'icône"), default=16)
 
@@ -20,32 +20,38 @@ class AppCustom(App):
 
     def _get_data(self):
         bitmaps = Bitmap.objects.filter(app_id=self.id)
-        bitmap_list = []
-        for bitmap in bitmaps:
-            bitmap_list.append(bitmap.bitmap)
-
+        if len(bitmaps) == 1:
+            bitmap = bitmaps.first()
+            bitmap_list = hex(int(bitmap.bitmap, 2))
+            type = 'icon'
+        else:
+            bitmap_list = []
+            for bitmap in bitmaps:
+                bitmap_list.append(hex(int(bitmap.bitmap, 2)))
+            type = 'animation'
         return {
             'width': self.width,
             'height': self.height,
-            'update-interval': self.UPDATE_INTERVAL,
-            'icon-custom': {
-                'type': 'animation',
-                'width': self.width,
-                'height': self.height,
-                'x': 0,
-                'y': 0,
-                'content': bitmap_list
-            }
+            'data': [
+                {
+                    'type': type,
+                    'width': self.width,
+                    'height': self.height,
+                    'x': 0,
+                    'y': 0,
+                    'content':  bitmap_list,
+                },
+            ]
         }
 
     def delete(self, *args, **kwargs):
         bitmaps = Bitmap.objects.filter(app_id=self.id)
         bitmaps.delete()
-        super(AppCustom, self).delete(*args, **kwargs)
+        super(AppBitmap, self).delete(*args, **kwargs)
 
     class Meta:
-        verbose_name = _('Configuration : app personnalisée')
-        verbose_name_plural = _('Configurations : app personnalisée')
+        verbose_name = _('Configuration : icône personnalisée')
+        verbose_name_plural = _('Configurations : icône personnalisée')
 
 
 class Bitmap(models.Model):

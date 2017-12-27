@@ -306,8 +306,8 @@ class TileUpdateView(UpdateView):
 
         if self.request.GET.get('app'):
             #TODO : fix this MultipleObjectsReturned exception
-            if self.request.GET.get('app') == "laboite.apps.custom":
-                content_type = ContentType.objects.get(app_label="laboite.apps.custom", model="appcustom")
+            if self.request.GET.get('app') == "laboite.apps.bitmap":
+                content_type = ContentType.objects.get(app_label="laboite.apps.bitmap", model="appbitmap")
             else:
                 content_type = ContentType.objects.get(app_label=self.request.GET.get('app'))
             tile_app = TileApp(tile= self.object, object_id= self.request.GET.get('pk'), content_type=content_type)
