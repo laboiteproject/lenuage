@@ -119,7 +119,7 @@
                                 var i =0;
                                 setInterval(function() {
                                     fillRect(value.x, value.y, value.width, value.height, '#444');
-                                    draw(value.x, value.y, value.content[i], value.width, value.height, '#fff');
+                                    drawHex(value.x, value.y, value.content[i], value.width, value.height, '#fff');
                                     i++;
                                     if(i >= value.content.length)
                                         i=0;
