@@ -34,6 +34,8 @@ function hexToBinary(s) {
 }
 
 function printText(x, y, text, color, bg) {
+    drawFastHLine(x-1, y-1, 11, bg);
+    drawFastVLine(x-1, y-1, 8, bg);
     for(var i = 0; i < text.length; i++) {
         drawChar(x + i*5, y, text[i], color, bg);
     }

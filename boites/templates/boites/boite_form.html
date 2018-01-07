@@ -126,8 +126,13 @@
                                 }, {{ current_tile.duration }} * 1000 / value.content.length);
                             }
                             if(value.type == 'text') {
-                                if(!value.scrolling)
-                                    printText(value.x, value.y, value.content.toString(), '#fff');
+                                if(!value.scrolling) {
+                                    if(value.color == 'invert')
+                                        printText(value.x, value.y, value.content.toString(), '#000', '#fff');
+                                    else
+                                        printText(value.x, value.y, value.content.toString(), '#fff');
+                                }
+
                                 else {
                                     x = matrixWidth;
                                     setInterval(function() {
