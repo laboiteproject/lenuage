@@ -61,14 +61,34 @@ class AppEnergy(App):
         self.save()
 
     def _get_data(self):
-        return {'power': self.power,
-                'day0': self.day0,
-                'day1': self.day1,
-                'day2': self.day2,
-                'day3': self.day3,
-                'day4': self.day4,
-                'day5': self.day5,
-                'day6': self.day6}
+        icon_content = '0xf87020'
+        try:
+            if self.day6 > self.day5:
+                icon_content = '0x2070f8'
+        except :
+            self.day6 = 0
+        return {
+            'width': 32,
+            'height': 8,
+            'data': [
+                {
+                    'type': 'icon',
+                    'width': 8,
+                    'height': 3,
+                    'x': 0,
+                    'y': 1,
+                    'content': icon_content,
+                },
+                {
+                    'type': 'text',
+                    'width': 32,
+                    'height': 8,
+                    'x': 6,
+                    'y': 0,
+                    'content': '%skWh' % self.day6,
+                },
+            ]
+        }
 
     class Meta:
         verbose_name = _("Configuration : énergie")
