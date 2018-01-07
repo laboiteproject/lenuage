@@ -38,10 +38,29 @@ class AppMetro(App):
         self.save()
 
     def _get_data(self):
-        if not self.failure:
-            return None
-        return {'failure': self.failure,
-                'recovery_time': self.recovery_time}
+        recovery_time = str(self.recovery_time) + "'" if self.failure else 'OK'
+        return {
+            'width': 32,
+            'height': 8,
+            'data': [
+                {
+                    'type': 'icon',
+                    'width': 12,
+                    'height': 8,
+                    'x': 0,
+                    'y': 0,
+                    'content': '0x2401207f8924924f3cffc528'
+                },
+                {
+                    'type': 'text',
+                    'width': 20,
+                    'height': 8,
+                    'x': 11,
+                    'y': 1,
+                    'content': recovery_time,
+                },
+            ]
+        }
 
     class Meta:
         verbose_name = _("Configuration : métro")
