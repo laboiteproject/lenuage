@@ -49,10 +49,37 @@ class AppTraffic(App):
             raise ExternalDataError('No route found')
 
     def _get_data(self):
-        return {'start': self.start,
-                'dest': self.dest,
-                'trajectory_name': self.trajectory_name,
-                'trip_duration': self.trip_duration}
+        return {
+            'width': 32,
+            'height': 16,
+            'data': [
+                {
+                    'type': 'icon',
+                    'width': 8,
+                    'height': 8,
+                    'x': 6,
+                    'y': 0,
+                    'content': '0x3c4242ffbdff42'
+                },
+                {
+                    'type': 'text',
+                    'width': len(str(self.trip_duration)) * 5+1,
+                    'height': 8,
+                    'x': 14,
+                    'y': 1,
+                    'content': "%s'" % self.trip_duration,
+                },
+                {
+                    'type': 'text',
+                    'width': len(str(self.trajectory_name)) * 5,
+                    'height': 8,
+                    'x': 0,
+                    'y': 9,
+                    'scrolling': True,
+                    'content': '%s' % self.trajectory_name,
+                }
+            ]
+        }
 
     class Meta:
         verbose_name = _('Configuration : trafic')
