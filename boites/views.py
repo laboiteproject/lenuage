@@ -65,7 +65,7 @@ def apps_view(request, pk):
     apps_list = []
     for model in apps.get_models():
         if issubclass(model, App):
-            app_instances = model.objects.filter(boite=boite, enabled=True)
+            app_instances = model.objects.filter(boite=boite)
             if app_instances:
                 for i, instance in enumerate(app_instances):
                     verbose_name =  model._meta.verbose_name.title()
