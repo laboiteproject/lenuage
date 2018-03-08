@@ -82,7 +82,7 @@ class AppParking(App):
             ]
         }
         if not self.open:
-            result['text-parking']['content'] = "Closed"
+            result['data'][1]['content'] = "Closed"
         return result
 
     class Meta:
