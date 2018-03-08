@@ -110,7 +110,7 @@ class App(models.Model):
     """Base app model"""
     UPDATE_INTERVAL = None  # Subclasses can redefine it as a number of seconds between updates
 
-    boite = models.OneToOneField(Boite, verbose_name=_('Boîte'))
+    boite = models.ForeignKey(Boite, verbose_name=_('Boîte'))
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
     enabled = models.BooleanField(_('App activée ?'), help_text=_('Indique si cette app est activée sur votre boîte'), default=True)
     last_activity = models.DateTimeField(_('Dernière activité'), null=True)
