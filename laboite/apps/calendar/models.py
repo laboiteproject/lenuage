@@ -105,23 +105,15 @@ class AppCalendar(App):
         else:
             return {
                 'width': 32,
-                'height': 8,
+                'height': 16,
                 'data': [
-                    {
-                        'type': 'text',
-                        'width': 10,
-                        'height': 8,
-                        'x': 0,
-                        'y': 1,
-                        'content': '0',
-                    },
                     {
                         'type': 'icon',
                         'width': 8,
                         'height': 8,
-                        'x': 6,
-                        'y': 0,
-                        'content': '0xfefe8292929282fe'
+                        'x': 12,
+                        'y': 4,
+                        'content': '0xffff8185a99181ff'
                     },
                 ]
             }
