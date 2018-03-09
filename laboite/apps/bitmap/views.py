@@ -27,11 +27,7 @@ class AppBitmapUpdateView(AppUpdateView):
         for key in self.request.POST:
             # if this is a bitmap
             if key.startswith("id_bitmap"):
-                try:
-                    id = int(key[9:])
-                except ValueError:
-                    id = 1
-                bitmap = Bitmap(id=id, app_id=self.kwargs.get('pk'), bitmap=self.request.POST.get(key))
+                bitmap = Bitmap(app_id=self.kwargs.get('pk'), bitmap=self.request.POST.get(key))
                 bitmap.save()
         return super(AppBitmapUpdateView, self).form_valid(form)
 

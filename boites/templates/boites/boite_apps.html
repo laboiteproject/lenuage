@@ -10,6 +10,7 @@
 {% block head_title %}{% trans "Apps" %}{% endblock %}
 
 {% block body %}
+    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
     <div class="row">
         <ul class="breadcrumb hidden-xs hidden-sm">
             <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
@@ -41,29 +42,5 @@
 
 
 {% block scripts %}
-    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/font.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/gfx.js' %}"></script>
     {% include "_scripts.html" %}
-    <script type="text/javascript">
-        $(document).ready(function(){
-            for(var pixels = 0; pixels < matrixWidth*matrixHeight;	pixels++)
-                $(".led ul").append("<li></li>");
-
-            var i = 0;
-            setInterval(function() {
-                for(var j=0; j< matrixWidth*matrixHeight; j++)
-                    $(".led ul li").eq(j).css("background","transparent");
-                draw(0, 0, bitmaps[i], matrixWidth, matrixHeight, 'rgba(255, 255, 255, 0.7)');
-                i++;
-                if(i >= bitmaps.length)
-                    i=0;
-            }, 200);
-
-            // each .led pixel is 5×5px (including margin) and we need a bit of
-            // margin-right and margin-bottom on the .led div
-            $(".led").css("width", matrixWidth * (4 + 1) + 6);
-            $(".led").css("height", matrixHeight * (4 + 1) + 7);
-        });
-    </script>
 {% endblock %}
