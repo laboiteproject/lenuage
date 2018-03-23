@@ -23,6 +23,10 @@ class AppBitmapUpdateView(AppUpdateView):
         return context
 
     def form_valid(self, form):
+        #delete all previous bitmaps
+        bitmaps = Bitmap.objects.filter(app_id=self.object.id)
+        bitmaps.delete()
+        
         # save bitmap(s) from form
         for key in self.request.POST:
             # if this is a bitmap

@@ -25,7 +25,7 @@
             for(var y = 0; y <= bitmap.length/height+1; y++) {
                 for(var x = 0; x <= width-1; x++) {
                     if(bitmap[x+y*width]==1)
-                        $("#bitmaps_" + id + " ul li").eq(x+matrixWidth_{{ app.instance.id }}*y).css("background",color);
+                        $("#bitmaps_" + id + " ul li").eq(x+width*y).css("background",color);
                 }
             }
         }
@@ -50,6 +50,9 @@
 
             // each .led pixel is 5×5px (including margin) and we need a bit of
             // margin-right and margin-bottom on the .led div
+            console.log(matrixWidth_{{ app.instance.id }} * (4 + 1) + 6);
+            console.log(matrixHeight_{{ app.instance.id }} * (4 + 1) + 7);
+
             $("#bitmaps_{{ app.instance.id }}").css("width", matrixWidth_{{ app.instance.id }} * (4 + 1) + 6);
             $("#bitmaps_{{ app.instance.id }}").css("height", matrixHeight_{{ app.instance.id }} * (4 + 1) + 7);
         });
