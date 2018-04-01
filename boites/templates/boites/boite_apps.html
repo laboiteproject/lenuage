@@ -17,15 +17,16 @@
             <li><a href="{% url 'boites:update' boite.id %}">{{ boite.name }}</a></li>
             <li class="active">Apps</li>
         </ul>
-        {% if apps %}
-            <div class="row">
-            {% for app in apps %}
-                {% if app.pk %}
-                    {% with app.app_label|slice:"13:"|add:"_app.html" as template %}
-                        {% include template %}
-                    {% endwith %}
-                {% endif %}
-            {% endfor %}
+        <div class="row">
+            {% if apps %}
+                {% for app in apps %}
+                    {% if app.pk %}
+                        {% with app.app_label|slice:"13:"|add:"_app.html" as template %}
+                            {% include template %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <a href="create">
                 <div class="col-xs-6 col-md-3">
                     <div class="panel panel-success">
@@ -36,7 +37,6 @@
                 </div>
             </a>
         </div>
-        {% endif %}
     </div>
 {% endblock %}
 
