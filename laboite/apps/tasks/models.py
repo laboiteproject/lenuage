@@ -50,37 +50,53 @@ class AppTasks(App):
         self.save()
 
     def _get_data(self):
-        return {
-            'width': 32,
-            'height': 16,
-            'data': [
-                {
-                    'type': 'icon',
-                    'width': 8,
-                    'height': 8,
-                    'x': 8,
-                    'y': 0,
-                    'content': '0xfffffdb993c7efff'
-                },
-                {
-                    'type': 'text',
-                    'width': 10,
-                    'height': 8,
-                    'x': 17,
-                    'y': 1,
-                    'content': '%d' % self.tasks,
-                },
-                {
-                    'type': 'text',
-                    'width': 32,
-                    'height': 8,
-                    'scrolling': True,
-                    'x': 0,
-                    'y': 9,
-                    'content': self.name,
-                }
-            ]
-        }
+        if self.tasks > 0:
+            return {
+                'width': 32,
+                'height': 16,
+                'data': [
+                    {
+                        'type': 'icon',
+                        'width': 8,
+                        'height': 8,
+                        'x': 8,
+                        'y': 0,
+                        'content': '0xfffffdb993c7efff'
+                    },
+                    {
+                        'type': 'text',
+                        'width': 10,
+                        'height': 8,
+                        'x': 17,
+                        'y': 1,
+                        'content': '%d' % self.tasks,
+                    },
+                    {
+                        'type': 'text',
+                        'width': 32,
+                        'height': 8,
+                        'scrolling': True,
+                        'x': 0,
+                        'y': 9,
+                        'content': self.name,
+                    }
+                ]
+            }
+        else:
+            return {
+                'width': 32,
+                'height': 16,
+                'data': [
+                    {
+                        'type': 'icon',
+                        'width': 8,
+                        'height': 8,
+                        'x': 12,
+                        'y': 4,
+                        'content': '0xfffffdb993c7efff'
+                    }
+                ]
+            }
 
     class Meta:
         verbose_name = _('Configuration : tâches')
