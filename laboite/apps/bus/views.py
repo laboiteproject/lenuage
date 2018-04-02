@@ -47,7 +47,7 @@ class BusStopAutocomplete(Select2ListView):
                     'line_short_name': record['fields']['nomcourtligne'],
                     'destination': record['fields']['destination']
                 }
-                destination = _('Arrêt {stop_name} ({line_short_name} direction {destination})')
+                destination = _('Arrêt {stop_name} (direction {destination})')
                 directions.append({'id': record['fields']['idarret'],
                                    'text': destination.format(**data)})
         return HttpResponse(json.dumps({'results': directions}))

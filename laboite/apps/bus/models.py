@@ -16,7 +16,7 @@ from boites.models import App, MINUTES
 class AppBus(App):
     UPDATE_INTERVAL = 1 * MINUTES
 
-    stop = models.PositiveSmallIntegerField(_('Arrêt'), help_text=_("Veuillez saisir l'identifiant Timeo de votre arrêt de bus"), default=None, null=True)
+    stop = models.PositiveSmallIntegerField(_('Arrêt'), help_text=_("Veuillez saisir le nom de votre arrêt de bus"), default=None, null=True)
     route0 = models.CharField(_('Prochain bus'), max_length=4, default=None, null=True)
     departure0 = models.PositiveSmallIntegerField(_('Dans'), default=None, null=True)
 
