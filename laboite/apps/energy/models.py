@@ -15,8 +15,8 @@ class AppEnergy(App):
     UPDATE_INTERVAL = 30 * MINUTES
 
     url = models.URLField(_('URL du serveur emoncms'), help_text=_("Veuillez indiquer l'adresse de votre serveur emoncms"), default='https://emoncms.org/', null=False)
-    power_feedid = models.PositiveSmallIntegerField(_('Identifiant flux puissance instantanée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation instantannée (en watts)'), default=None, null=True)
-    kwhd_feedid = models.PositiveSmallIntegerField(_('Identifiant flux consommation cumulée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation cumulée (en kWh/j)'), default=None, null=True)
+    power_feedid = models.PositiveIntegerField(_('Identifiant flux puissance instantanée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation instantannée (en watts)'), default=None, null=True)
+    kwhd_feedid = models.PositiveIntegerField(_('Identifiant flux consommation cumulée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation cumulée (en kWh/j)'), default=None, null=True)
     emoncms_read_apikey = models.CharField(_("Clé d'API emoncms"), help_text=_("Veuillez indiquer votre clé d'API emoncms (lecture seule)"), max_length=32, default=None, null=True)
     power = models.PositiveSmallIntegerField(_('Consommation instantanée'), default=None, null=True)
     day0 = models.PositiveSmallIntegerField(_('Consommation j-6 (en kWh)'), default=None, null=True)
