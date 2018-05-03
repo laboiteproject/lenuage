@@ -10,12 +10,6 @@
     <div class="row">
         <div class="col-md-4">
             <form method="POST" action="{% url "account_login" %}" autocapitalize="off" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-                <div class="text-center">
-                    <p>
-                        <a class="btn btn-primary btn-lg" href="{% url "social:begin" "twitter" %}">Log in with <i class="fa fa-twitter"></i> Twitter</a>
-                    </p>
-                    <p class="lead" style="margin: 30px 0; font-style: italic;">or</p>
-                </div>
                 <legend>{% trans "Log in to an existing account" %}</legend>
                 {% csrf_token %}
                 {{ form|bootstrap }}
