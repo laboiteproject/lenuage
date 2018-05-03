@@ -61,10 +61,10 @@ class AppEnergy(App):
         self.save()
 
     def _get_data(self):
-        icon_content = '0xf87020'
+        bitmap = '0xf87020'
         try:
             if self.day6 > self.day5:
-                icon_content = '0x2070f8'
+                bitmap = '0x2070f8'
         except :
             self.day6 = 0
         return {
@@ -72,12 +72,12 @@ class AppEnergy(App):
             'height': 8,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 8,
                     'height': 3,
                     'x': 0,
                     'y': 1,
-                    'content': icon_content,
+                    'content': bitmap,
                 },
                 {
                     'type': 'text',

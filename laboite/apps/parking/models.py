@@ -64,7 +64,7 @@ class AppParking(App):
             'height': 10,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 8,
                     'height': 9,
                     'x': 0,

@@ -60,7 +60,7 @@ class AppCalendar(App):
                 'height': 16,
                 'data': [
                     {
-                        'type': 'icon',
+                        'type': 'bitmap',
                         'width': 8,
                         'height': 8,
                         'x': 0,
@@ -92,7 +92,7 @@ class AppCalendar(App):
                 'height': 16,
                 'data': [
                     {
-                        'type': 'icon',
+                        'type': 'bitmap',
                         'width': 8,
                         'height': 8,
                         'x': 12,

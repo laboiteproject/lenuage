@@ -58,7 +58,7 @@ class AppParcel(App):
             'height': 8,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 12,
                     'height': 8,
                     'x': 0,

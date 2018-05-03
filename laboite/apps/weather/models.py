@@ -48,7 +48,7 @@ class AppWeather(App):
             'height': 10,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 16,
                     'height': 10,
                     'x': 0,

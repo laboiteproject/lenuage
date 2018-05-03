@@ -22,7 +22,7 @@ class AppLikes(App):
             'height': 12,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 8,
                     'height': 10,
                     'x': 0,

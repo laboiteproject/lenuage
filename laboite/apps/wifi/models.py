@@ -17,7 +17,7 @@ class AppWifi(App):
             'height': 16,
             'data':[
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 8,
                     'height': 6,
                     'x': 2,

@@ -28,21 +28,23 @@ class AppData(App):
 
     def _get_data(self):
         scrolling = True if len(str(self.data).strip()) > 6 else False
-        return {
-            'width': 32,
-            'height': 8,
-            'data': [
-                {
-                    'type': 'text',
-                    'width': str(self.data).strip() * 5,
-                    'height': 8,
-                    'x': 11,
-                    'y': 1,
-                    'content':  '%s' % str(self.data).strip(),
-                    'scrolling': scrolling,
-                },
-            ]
-        }
+        content = str(self.data).strip()
+        if content:
+            return {
+                'width': 32,
+                'height': 8,
+                'data': [
+                    {
+                        'type': 'text',
+                        'width': len(content) * 5,
+                        'height': 8,
+                        'x': 11,
+                        'y': 1,
+                        'content':  '%s' % content,
+                        'scrolling': scrolling,
+                    },
+                ]
+            }
 
     def update_data(self):
         url = self.url

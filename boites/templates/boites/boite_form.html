@@ -113,7 +113,7 @@
                 $.each(tile, function(key, value) {
                     if(key == 'items') {
                         $.each(value, function(index, value) {
-                            if(value.type == 'icon')
+                            if(value.type == 'bitmap')
                                 drawHex(value.x, value.y, value.content, value.width, value.height, '#fff');
                             if(value.type == 'animation') {
                                 var i =0;

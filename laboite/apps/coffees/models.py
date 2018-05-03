@@ -23,7 +23,7 @@ class AppCoffees(App):
             'height': 8,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 8,
                     'height': 8,
                     'x': 1,

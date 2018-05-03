@@ -32,10 +32,10 @@ class AppCryptocurrency(App):
         width = len(str(self.value)) * 5
 
         # $ symbol
-        icon_content = '0x0040e08060e040'
+        bitmap = '0x0040e08060e040'
         if self.currency == 'EUR':
             # € symbol
-            icon_content = '0x003040e0e04030'
+            bitmap = '0x003040e0e04030'
         return {
             'width': 32,
             'height': 8,
@@ -49,12 +49,12 @@ class AppCryptocurrency(App):
                     'content':  '%s' % self.value,
                 },
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 8,
                     'height': 8,
                     'x': width,
                     'y': 0,
-                    'content': icon_content,
+                    'content': bitmap,
                 },
             ]
         }

@@ -37,7 +37,7 @@ class AppBikes(App):
             'height': 10,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 12,
                     'height': 10,
                     'x': 5,

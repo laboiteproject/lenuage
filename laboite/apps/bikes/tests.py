@@ -76,7 +76,7 @@ def test_station_infos_ok_star(app, requests_mocker, settings):
         assert len(result['data']) == 2
         assert result['data'] == [{'content': '0x00c1c208c0f878eab9bd589170e',
                                    'height': 10,
-                                   'type': 'icon',
+                                   'type': 'bitmap',
                                    'width': 12,
                                    'x': 5,
                                    'y': 1},
@@ -125,7 +125,7 @@ def test_station_infos_ok_velib(app, requests_mocker, settings):
         assert len(result['data']) == 2
         assert result['data'] == [{'content': '0x00c1c208c0f878eab9bd589170e',
                                    'height': 10,
-                                   'type': 'icon',
+                                   'type': 'bitmap',
                                    'width': 12,
                                    'x': 5,
                                    'y': 1},
