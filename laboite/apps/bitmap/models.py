@@ -22,7 +22,7 @@ class AppBitmap(App):
         bitmaps = Bitmap.objects.filter(app_id=self.id)
         if len(bitmaps) == 1:
             bitmap = bitmaps.first()
-            bitmap_list = hex(int(bitmap.bitmap, 2)).zfill(bitmap.bitmap/4)
+            bitmap_list = '%0*x' % ((len(bitmap.bitmap) + 3) // 4, int(bitmap.bitmap, 2))
             type = 'bitmap'
         else:
             bitmap_list = []
