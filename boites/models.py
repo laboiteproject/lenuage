@@ -169,7 +169,7 @@ class Tile(models.Model):
 
     boite = models.ForeignKey(Boite, on_delete=models.CASCADE)
     brightness = models.PositiveSmallIntegerField(_("Luminosité de la tuile"), help_text=_("Veuillez saisir la luminosité souhaitée pour cette tuile"), default=15, validators=[MaxValueValidator(15)])
-    duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en secondes)"), default=5)
+    duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en millisecondes)"), default=5000)
     transition = models.PositiveSmallIntegerField(_('Transition'), help_text=_("Veuillez sélectionner la transition que vous souhaitez pour passer à la prochaine tuile"), choices=TRANSITION_CHOICES, default=0)
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
 
