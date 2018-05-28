@@ -52,6 +52,5 @@ def test_data_ok(app, mocker, requests_mocker, settings):
                                    'type': 'text',
                                    'width': 32,
                                    'height': 8,
-                                   'scrolling': True,
                                    'x': 0,
                                    'y': 0}]

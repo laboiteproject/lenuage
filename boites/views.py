@@ -102,9 +102,9 @@ def get_prettyjson_html(api_key):
 
 class BoiteUpdateView(UpdateView):
     model = Boite
-    fields = ['name']
+    fields = ['name', 'screen']
 
-    success_url = reverse_lazy('boites:list')
+    success_url = './'
 
     def get_queryset(self):
         qs = super(BoiteUpdateView, self).get_queryset()
@@ -123,6 +123,8 @@ class BoiteUpdateView(UpdateView):
 
         if self.request.GET.get('tile') or not tiles:
             current_tile, created = Tile.objects.get_or_create(boite=self.object, pk=self.request.GET.get('tile'))
+            if created and not tiles:
+                content_type = ContentType.objects.get(app_label="laboite.apps.time", model="apptime")
         else:
             current_tile = tiles.first()
 

@@ -7,6 +7,7 @@ from django.db import models
 from boites.models import App, MINUTES
 
 import asana
+import unidecode
 
 
 def get_projects(asana_personal_access_token):
@@ -45,7 +46,7 @@ class AppTasks(App):
                 if task['assignee']['id'] == me['id']:
                     uncompleted_tasks += 1
                     if uncompleted_tasks == 1:
-                        self.name = task['name']
+                        self.name = str(unidecode.unidecode(task['name']))
         self.tasks = uncompleted_tasks
         self.save()
 
@@ -75,7 +76,6 @@ class AppTasks(App):
                         'type': 'text',
                         'width': 32,
                         'height': 8,
-                        'scrolling': True,
                         'x': 0,
                         'y': 9,
                         'content': self.name,

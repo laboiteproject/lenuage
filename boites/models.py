@@ -34,6 +34,13 @@ class Boite(models.Model):
     name = models.CharField(_(u'Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32, default=_('Ma boîte'))
     user = models.ForeignKey(User, verbose_name=_('Utilisateur'), on_delete=models.DO_NOTHING)
 
+    SCREEN_CHOICES = (
+        (1, _('Écran monochrome 32×16')),
+        (2, _('Écran bicolore 32×16')),
+    )
+
+    screen = models.PositiveSmallIntegerField(_("Type d'écran"), help_text=_("Veuillez sélectionner l'écran qui compose votre boîte"), choices=SCREEN_CHOICES, default=1)
+
     api_key = models.CharField(_("Clé d'API"), max_length=36, unique=True)
 
     qrcode = models.ImageField(_('QR code'), upload_to='boites')

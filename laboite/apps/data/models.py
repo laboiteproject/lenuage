@@ -27,7 +27,6 @@ class AppData(App):
     data = models.CharField(_("Chemin de l'élément JSON (JSON Path)"), max_length=32)
 
     def _get_data(self):
-        scrolling = True if len(str(self.data).strip()) > 6 else False
         content = str(self.data).strip()
         if content:
             return {
@@ -41,7 +40,6 @@ class AppData(App):
                         'x': 11,
                         'y': 1,
                         'content':  '%s' % content,
-                        'scrolling': scrolling,
                     },
                 ]
             }

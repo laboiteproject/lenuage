@@ -75,7 +75,6 @@ class AppTraffic(App):
                     'height': 8,
                     'x': 0,
                     'y': 9,
-                    'scrolling': True,
                     'content': '%s' % self.trajectory_name,
                 }
             ]

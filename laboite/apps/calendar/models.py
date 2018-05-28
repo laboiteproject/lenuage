@@ -79,7 +79,6 @@ class AppCalendar(App):
                         'type': 'text',
                         'width': 32,
                         'height': 8,
-                        'scrolling': True,
                         'x': 0,
                         'y': 9,
                         'content': self.summary,

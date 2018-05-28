@@ -28,8 +28,6 @@ class AppMessages(App):
                 },
             ]
         }
-        if len(self.message) > 6:
-            result['data'][0]['scrolling'] = True
         return result
 
     class Meta:

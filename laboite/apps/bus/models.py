@@ -77,7 +77,6 @@ class AppBus(App):
                     'type': 'text',
                     'width': 32,
                     'height': 8,
-                    'scrolling': True,
                     'x': 0,
                     'y': 0,
                     'content':  "%s|%s' %s|%s'" % (self.route0, self.departure0, self.route1, self.departure1)

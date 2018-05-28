@@ -10,6 +10,13 @@
 {% block head_title %}{{ object.name }}{% endblock %}
 
 {% block body %}
+    {% if boite.screen > 1 %}
+    <style media="screen">
+        .led ul li {
+            border-radius: 50%;
+        }
+    </style>
+    {% endif %}
     <div class="row">
         <ul class="breadcrumb hidden-xs hidden-sm">
             <li><a href="{% url 'boites:list' %}">{% trans "Mes boîtes" %}</a></li>
@@ -123,16 +130,55 @@
                                     i++;
                                     if(i >= value.content.length)
                                         i=0;
-                                }, {{ current_tile.duration }} * 1000 / value.content.length);
+                                }, {{ current_tile.duration }} / value.content.length);
                             }
                             if(value.type == 'text') {
-                                if(!value.scrolling) {
-                                    if(value.color == 'invert')
-                                        printText(value.x, value.y, value.content.toString(), '#000', '#fff');
-                                    else
-                                        printText(value.x, value.y, value.content.toString(), '#fff');
+                                if(value.content.length < 6) {
+                                    switch (value.color) {
+                                        case 0:
+                                            printText(value.x, value.y, value.content.toString(), '#000');
+                                            break;
+                                        case 1:
+                                            {% if boite.screen == 1 %}
+                                                printText(value.x, value.y, value.content.toString(), '#fff');
+                                            {% else %}
+                                                printText(value.x, value.y, value.content.toString(), '#e74c3c');
+                                            {% endif %}
+                                            break;
+                                        case 2:
+                                            {% if boite.screen == 1 %}
+                                                printText(value.x, value.y, value.content.toString(), '#000');
+                                            {% else %}
+                                                printText(value.x, value.y, value.content.toString(), '#18bc9c');
+                                            {% endif %}
+                                            break;
+                                        case 3:
+                                            {% if boite.screen == 1 %}
+                                                printText(value.x, value.y, value.content.toString(), '#fff');
+                                            {% else %}
+                                                printText(value.x, value.y, value.content.toString(), '#f39c12');
+                                            {% endif %}
+                                            break;
+                                        case 4:
+                                            printText(value.x, value.y, value.content.toString(), '#000');
+                                            break;
+                                        case 5:
+                                            printText(value.x, value.y, value.content.toString(), '#fff');
+                                            break;
+                                        case 6:
+                                            printText(value.x, value.y, value.content.toString(), '#000');
+                                            break;
+                                        case 7:
+                                            printText(value.x, value.y, value.content.toString(), '#fff');
+                                            break;
+                                        default:
+                                            {% if boite.screen == 1 %}
+                                                printText(value.x, value.y, value.content.toString(), '#fff');
+                                            {% else %}
+                                                printText(value.x, value.y, value.content.toString(), '#e74c3c');
+                                            {% endif %}
+                                    }
                                 }
-
                                 else {
                                     x = matrixWidth;
                                     setInterval(function() {
@@ -141,7 +187,7 @@
                                             x--;
                                         }
                                         else x = matrixWidth;
-                                    }, {{ current_tile.duration }} * 1000 / (value.content.length * 5 + matrixWidth) );
+                                    }, {{ current_tile.duration }} / (value.content.length * 5 + matrixWidth) );
                                 }
                             }
                         });
