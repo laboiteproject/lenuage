@@ -121,7 +121,11 @@
                     if(key == 'items') {
                         $.each(value, function(index, value) {
                             if(value.type == 'bitmap')
-                                drawHex(value.x, value.y, value.content, value.width, value.height, '#fff');
+                                {% if boite.screen == 1 %}
+                                    drawHex(value.x, value.y, value.content, value.width, value.height, '#fff');
+                                {% else %}
+                                    drawHex(value.x, value.y, value.content, value.width, value.height, '#e74c3c');
+                                {% endif %}
                             if(value.type == 'animation') {
                                 var i =0;
                                 setInterval(function() {

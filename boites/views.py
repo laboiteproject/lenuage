@@ -22,6 +22,7 @@ from pygments.formatters import HtmlFormatter
 logger = logging.getLogger('laboite.apps')
 
 from .models import App, Boite, Tile, TileApp, PushButton
+from laboite.apps.time.models import AppTime
 
 
 # Boîtes
@@ -34,6 +35,23 @@ class BoiteListView(ListView):
         for boite in boites:
             boite.generate_qrcode()
             boite.save()
+
+        boites = Boite.objects.filter(user=self.request.user)
+        print(boites)
+        for boite in boites:
+            tiles = Tile.objects.filter(boite=boite)
+            print(tiles)
+            # if this is a new tile on a new boite
+            if not tiles:
+                # then create a AppTime on a new tile
+                tile = Tile(boite=boite)
+                tile.save()
+                app_time = AppTime(boite=boite, tz='Europe/Paris')
+                app_time.save()
+                content_type = ContentType.objects.get(app_label="laboite.apps.time", model="apptime")
+                tile_app = TileApp(tile=tile, object_id=app_time.id, content_type=content_type)
+                tile_app.save()
+                messages.success(self.request, _(u"Une app temps a été créée sur votre boîte !"))
 
         return Boite.objects.filter(user=self.request.user).order_by("created_date")
 
@@ -156,7 +174,7 @@ class BoiteCreateView(SuccessMessageMixin, CreateView):
     model = Boite
     fields = ['name']
     template_name_suffix = '_create_form'
-    success_message = _(u"%(name)s a bien été créé !")
+    success_message = _(u"%(name)s a bien été créée !")
     success_url = reverse_lazy('boites:list')
 
     def form_valid(self, form):
