@@ -11,13 +11,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
-from pygments import highlight
-from pygments.lexers import JsonLexer
-from pygments.formatters import HtmlFormatter
 
 logger = logging.getLogger('laboite.apps')
 
@@ -107,17 +103,6 @@ def generate_api_key(request, pk):
     return redirect('boites:update', pk=pk)
 
 
-def get_prettyjson_html(api_key):
-    boite = get_object_or_404(Boite, api_key=api_key)
-    # Example from https://www.pydanny.com/pretty-formatting-json-django-admin.html
-    response = json.dumps(boite.get_apps_dictionary(), sort_keys=True, indent=2)
-    response = response[:5000]
-    formatter = HtmlFormatter(style='friendly')
-    response = highlight(response, JsonLexer(), formatter)
-    style = "<style>" + formatter.get_style_defs() + "</style><br>"
-    return mark_safe(style + response)
-
-
 class BoiteUpdateView(UpdateView):
     model = Boite
     fields = ['name', 'screen']
@@ -135,7 +120,6 @@ class BoiteUpdateView(UpdateView):
         context['api_key'] = Boite._meta.get_field('api_key')
         context['last_activity'] = Boite._meta.get_field('last_activity')
         context['last_connection'] = Boite._meta.get_field('last_connection')
-        context['pretty_json_html'] = get_prettyjson_html(self.object.api_key)
 
         tiles = Tile.objects.filter(boite= self.object).order_by('id')
 
