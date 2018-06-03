@@ -32,7 +32,7 @@ HOURS = 3600
 @python_2_unicode_compatible
 class Boite(models.Model):
     name = models.CharField(_(u'Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32, default=_('Ma boîte'))
-    user = models.ForeignKey(User, verbose_name=_('Utilisateur'), on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, verbose_name=_('Utilisateur'), on_delete=models.CASCADE)
 
     SCREEN_CHOICES = (
         (1, _('Écran monochrome 32×16')),
@@ -101,7 +101,7 @@ class Boite(models.Model):
 
 class PushButton(models.Model):
     api_key = models.SlugField(_(u"IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
-    boite = models.OneToOneField(Boite, verbose_name=_('Boîte'), on_delete=models.DO_NOTHING)
+    boite = models.OneToOneField(Boite, verbose_name=_('Boîte'), on_delete=models.CASCADE)
 
     last_triggered = models.DateTimeField(_('Dernière activité'), null=True)
 
@@ -117,7 +117,7 @@ class App(models.Model):
     """Base app model"""
     UPDATE_INTERVAL = None  # Subclasses can redefine it as a number of seconds between updates
 
-    boite = models.ForeignKey(Boite, verbose_name=_('Boîte'), on_delete=models.DO_NOTHING)
+    boite = models.ForeignKey(Boite, verbose_name=_('Boîte'), on_delete=models.CASCADE)
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
     enabled = models.BooleanField(_('App activée ?'), help_text=_('Indique si cette app est activée sur votre boîte'), default=True)
     last_activity = models.DateTimeField(_('Dernière activité'), null=True)
