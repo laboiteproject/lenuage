@@ -59,7 +59,9 @@ class AppTraffic(App):
                     'height': 8,
                     'x': 6,
                     'y': 0,
-                    'content': '0x3c4242ffbdff42'
+                    'color': 3,
+					'font': 1,
+					'content': '0x3c4242ffbdff42'
                 },
                 {
                     'type': 'text',
@@ -67,7 +69,9 @@ class AppTraffic(App):
                     'height': 8,
                     'x': 14,
                     'y': 1,
-                    'content': "%s'" % self.trip_duration,
+                    'color': 2,
+					'font': 1,
+					'content': "%s'" % self.trip_duration,
                 },
                 {
                     'type': 'text',
@@ -75,7 +79,9 @@ class AppTraffic(App):
                     'height': 8,
                     'x': 0,
                     'y': 9,
-                    'content': '%s' % self.trajectory_name,
+                    'color': 2,
+					'font': 1,
+					'content': '%s' % self.trajectory_name,
                 }
             ]
         }

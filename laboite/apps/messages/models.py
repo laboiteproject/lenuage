@@ -24,7 +24,9 @@ class AppMessages(App):
                     'height': 8,
                     'x': 0,
                     'y': 1,
-                    'content': '%s' % self.message,
+                    'color': 2,
+					'font': 1,
+					'content': '%s' % self.message,
                 },
             ]
         }

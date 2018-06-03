@@ -79,6 +79,8 @@ class AppBus(App):
                     'height': 8,
                     'x': 0,
                     'y': 0,
+                    'color': 2,
+					'font': 1,
                     'content':  "%s|%s' %s|%s'" % (self.route0, self.departure0, self.route1, self.departure1)
                 }
             ]

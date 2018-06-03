@@ -62,7 +62,9 @@ class AppTasks(App):
                         'height': 8,
                         'x': 8,
                         'y': 0,
-                        'content': '0xfffffdb993c7efff'
+                        'color': 1,
+    					'font': 1,
+    					'content': '0xfffffdb993c7efff'
                     },
                     {
                         'type': 'text',
@@ -70,7 +72,9 @@ class AppTasks(App):
                         'height': 8,
                         'x': 17,
                         'y': 1,
-                        'content': '%d' % self.tasks,
+                        'color': 3,
+    					'font': 1,
+    					'content': '%d' % self.tasks,
                     },
                     {
                         'type': 'text',
@@ -78,7 +82,9 @@ class AppTasks(App):
                         'height': 8,
                         'x': 0,
                         'y': 9,
-                        'content': self.name,
+                        'color': 2,
+    					'font': 1,
+    					'content': self.name,
                     }
                 ]
             }
@@ -93,7 +99,9 @@ class AppTasks(App):
                         'height': 8,
                         'x': 12,
                         'y': 4,
-                        'content': '0xfffffdb993c7efff'
+                        'color': 2,
+    					'font': 1,
+    					'content': '0xfffffdb993c7efff'
                     }
                 ]
             }

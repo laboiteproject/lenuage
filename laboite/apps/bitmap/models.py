@@ -10,6 +10,12 @@ from boites.models import App
 class AppBitmap(App):
     width = models.PositiveIntegerField(verbose_name=_("Largeur de l'icône"), default=16)
     height = models.PositiveIntegerField(verbose_name=_("Hauteur de l'icône"), default=16)
+    COLOR_CHOICES = (
+        (1, _('Rouge')),
+        (2, _('Vert')),
+        (3, _('Orange')),
+    )
+    color = models.PositiveSmallIntegerField(_("Couleur"), help_text=_("Veuillez indiquer la couleur de l'icône (ne fonctionne pas avec les écrans monochromes)"), choices=COLOR_CHOICES, default=1)
 
     def get_bitmaps(self):
         bitmaps = Bitmap.objects.filter(app_id=self.id)
@@ -39,7 +45,9 @@ class AppBitmap(App):
                     'height': self.height,
                     'x': 0,
                     'y': 0,
-                    'content':  bitmap_list,
+                    'color': self.color,
+                    'font': 1,
+                    'content': bitmap_list,
                 },
             ]
         }

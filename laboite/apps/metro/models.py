@@ -49,7 +49,9 @@ class AppMetro(App):
                     'height': 8,
                     'x': 0,
                     'y': 0,
-                    'content': '0x2401207f8924924f3cffc528'
+                    'color': 1,
+					'font': 1,
+					'content': '0x2401207f8924924f3cffc528'
                 },
                 {
                     'type': 'text',
@@ -57,7 +59,9 @@ class AppMetro(App):
                     'height': 8,
                     'x': 11,
                     'y': 1,
-                    'content': recovery_time,
+                    'color': 2,
+					'font': 1,
+					'content': recovery_time,
                 },
             ]
         }

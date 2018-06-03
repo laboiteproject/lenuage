@@ -48,7 +48,9 @@ def test_data_ok(app, mocker, requests_mocker, settings):
         assert len(result) == 3
         assert result['height'] == 8
         assert result['width'] == 32
-        assert result['data'] == [{'content': "64:0' 52:1303'",
+        assert result['data'] == [{'color': 2,
+                                   'font': 1,
+                                   'content': "64:0' 52:1303'",
                                    'type': 'text',
                                    'width': 32,
                                    'height': 8,

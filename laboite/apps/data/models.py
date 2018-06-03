@@ -39,6 +39,8 @@ class AppData(App):
                         'height': 8,
                         'x': 11,
                         'y': 1,
+                        'color': 2,
+                        'font': 1,
                         'content':  '%s' % content,
                     },
                 ]

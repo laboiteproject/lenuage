@@ -46,7 +46,9 @@ class AppCryptocurrency(App):
                     'height': 8,
                     'x': 0,
                     'y': 1,
-                    'content':  '%s' % self.value,
+                    'color': 2,
+					'font': 1,
+					'content':  '%s' % self.value,
                 },
                 {
                     'type': 'bitmap',
@@ -54,7 +56,9 @@ class AppCryptocurrency(App):
                     'height': 8,
                     'x': width,
                     'y': 0,
-                    'content': bitmap,
+                    'color': 2,
+					'font': 1,
+					'content': bitmap,
                 },
             ]
         }

@@ -43,6 +43,8 @@ class AppWeather(App):
         self.save()
 
     def _get_data(self):
+        icon_color=3 if self.icon_now == 0 else 1
+        text_color=2 if self.temperature_now > 0 else 1
         return {
             'width': 32,
             'height': 10,
@@ -53,7 +55,9 @@ class AppWeather(App):
                     'height': 10,
                     'x': 0,
                     'y': 0,
-                        'content': self.get_bitmap_icon(),
+                    'color': icon_color,
+					'font': 1,
+					'content': self.get_bitmap_icon(),
                 },
                 {
                     'type': 'text',
@@ -61,7 +65,9 @@ class AppWeather(App):
                     'height': 8,
                     'x': 15,
                     'y': 2,
-                    'content': '%d*' % self.temperature_now,
+                    'color': text_color,
+					'font': 1,
+					'content': '%d*' % self.temperature_now,
                 },
             ]
         }

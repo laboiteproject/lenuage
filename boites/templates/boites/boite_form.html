@@ -87,7 +87,7 @@
                                     <a href="https://github.com/laboiteproject/lenuage/wiki/laboite-maker">{% trans "ce guide" %}</a>.
                                 </p>
 <pre>
-<font color="#95a5a6">&#47;&#47; Two modules MAX7219 4 in 1 connected in serial to compose a monochrome 32x16 LED matrix</font>
+<font color="#95a5a6">&#47;&#47; Two modules MAX7219 4 in 1 connected in series to compose a monochrome 32x16 LED matrix</font>
 <font color="#5e6d03">#include</font> <font color="#95a5a6">&lt;</font><b><font color="#d35400">Redgick_MatrixMAX72XX</font></b><font color="#95a5a6">.</font><font color="#000000">h</font><font color="#95a5a6">&gt;</font>
 <b><font color="#d35400">Redgick_MatrixMAX72XX</font></b> <font color="#000000">afficheur</font><font color="#000000">;</font>
 
@@ -198,7 +198,20 @@
                                 {% if boite.screen == 1 %}
                                     drawHex(value.x, value.y, value.content, value.width, value.height, '#fff');
                                 {% else %}
-                                    drawHex(value.x, value.y, value.content, value.width, value.height, '#e74c3c');
+                                    switch (value.color) {
+                                        case 0:
+                                            drawHex(value.x, value.y, value.content, value.width, value.height, '#000');
+                                            break;
+                                        case 1:
+                                            drawHex(value.x, value.y, value.content, value.width, value.height, '#e74c3c');
+                                            break;
+                                        case 2:
+                                            drawHex(value.x, value.y, value.content, value.width, value.height, '#18bc9c');
+                                            break;
+                                        case 3:
+                                            drawHex(value.x, value.y, value.content, value.width, value.height, '#f39c12');
+                                            break;
+                                    }
                                 {% endif %}
                             if(value.type == 'animation') {
                                 var i =0;

@@ -27,7 +27,9 @@ class AppLikes(App):
                     'height': 10,
                     'x': 0,
                     'y': 0,
-                    'content': '0xfec2c2ce8686cececefe'
+                    'color': 2,
+					'font': 1,
+					'content': '0xfec2c2ce8686cececefe'
                 },
                 {
                     'type': 'text',
@@ -35,7 +37,9 @@ class AppLikes(App):
                     'height': 8,
                     'x': 8,
                     'y': 2,
-                    'content': '%s' % self.likes,
+                    'color': 2,
+					'font': 1,
+					'content': '%s' % self.likes,
                 },
             ]
         }

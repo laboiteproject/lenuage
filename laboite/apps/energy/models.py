@@ -62,9 +62,11 @@ class AppEnergy(App):
 
     def _get_data(self):
         bitmap = '0xf87020'
+        color = 2
         try:
             if self.day6 > self.day5:
                 bitmap = '0x2070f8'
+                color = 1
         except :
             self.day6 = 0
         return {
@@ -77,7 +79,9 @@ class AppEnergy(App):
                     'height': 3,
                     'x': 0,
                     'y': 1,
-                    'content': bitmap,
+                    'color': color,
+					'font': 1,
+					'content': bitmap,
                 },
                 {
                     'type': 'text',
@@ -85,7 +89,9 @@ class AppEnergy(App):
                     'height': 8,
                     'x': 6,
                     'y': 0,
-                    'content': '%skWh' % self.day6,
+                    'color': color,
+					'font': 1,
+					'content': '%skWh' % self.day6,
                 },
             ]
         }

@@ -28,7 +28,9 @@ class AppCoffees(App):
                     'height': 8,
                     'x': 1,
                     'y': 0,
-                    'content': '0x482448ff85868478',
+                    'color': 3,
+					'font': 1,
+					'content': '0x482448ff85868478',
                 },
                 {
                     'type': 'text',
@@ -36,7 +38,9 @@ class AppCoffees(App):
                     'height': 8,
                     'x': 11,
                     'y': 1,
-                    'content':  '%s/%s' % (self.daily, self.monthly),
+                    'color': 2,
+					'font': 1,
+					'content':  '%s/%s' % (self.daily, self.monthly),
                 },
             ]
         }

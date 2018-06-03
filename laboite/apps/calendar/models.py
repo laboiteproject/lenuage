@@ -65,7 +65,9 @@ class AppCalendar(App):
                         'height': 8,
                         'x': 0,
                         'y': 0,
-                        'content': '0xfefe8292929282fe'
+                        'color': 1,
+    					'font': 1,
+    					'content': '0xfefe8292929282fe'
                     },
                     {
                         'type': 'text',
@@ -73,7 +75,9 @@ class AppCalendar(App):
                         'height': 8,
                         'x': 7,
                         'y': 1,
-                        'content': self.dtstart,
+                        'color': 2,
+    					'font': 1,
+    					'content': self.dtstart,
                     },
                     {
                         'type': 'text',
@@ -81,7 +85,9 @@ class AppCalendar(App):
                         'height': 8,
                         'x': 0,
                         'y': 9,
-                        'content': self.summary,
+                        'color': 1,
+    					'font': 1,
+    					'content': self.summary,
                     }
                 ]
             }
@@ -96,7 +102,9 @@ class AppCalendar(App):
                         'height': 8,
                         'x': 12,
                         'y': 4,
-                        'content': '0xffff8185a99181ff'
+                        'color': 2,
+    					'font': 1,
+    					'content': '0xffff8185a99181ff'
                     },
                 ]
             }

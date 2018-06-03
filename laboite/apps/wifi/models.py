@@ -22,7 +22,9 @@ class AppWifi(App):
                     'height': 6,
                     'x': 2,
                     'y': 0,
-                    'content': '0x384492280010'
+                    'color': 2,
+					'font': 1,
+					'content': '0x384492280010'
                 },
                 {
                     'type': 'text',
@@ -30,7 +32,9 @@ class AppWifi(App):
                     'height': 8,
                     'x': 10,
                     'y': 1,
-                    'content': "wifi",
+                    'color': 2,
+					'font': 1,
+					'content': "wifi",
                 },
                 {
                     'type': 'text',
@@ -38,7 +42,9 @@ class AppWifi(App):
                     'height': 8,
                     'x': 0,
                     'y': 9,
-                    'content': self.ssid + '/' + self.preshared_key,
+                    'color': 2,
+					'font': 1,
+					'content': self.ssid + '/' + self.preshared_key,
                 }
             ]
         }

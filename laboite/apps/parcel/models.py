@@ -63,7 +63,9 @@ class AppParcel(App):
                     'height': 8,
                     'x': 0,
                     'y': 0,
-                    'content': '0xfe0ff8fe4fe2ffe802a0adf6208'
+                    'color': 2,
+					'font': 1,
+					'content': '0xfe0ff8fe4fe2ffe802a0adf6208'
                 },
                 {
                     'type': 'text',
@@ -71,7 +73,9 @@ class AppParcel(App):
                     'height': 8,
                     'x': 12,
                     'y': 2,
-                    'content': "%s" % parcel_status,
+                    'color': 2,
+					'font': 1,
+					'content': "%s" % parcel_status,
                 },
             ]
         }
