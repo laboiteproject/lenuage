@@ -24,7 +24,7 @@
                     <tbody>
                         {% for boite in boite_list %}
                             <tr>
-                                <td>{{ boite.name }}</td>
+                                <td><a style="text-decoration:none;" href="{% url 'boites:apps' boite.id %}">{{ boite.name }}</a></td>
                                 <td><span class="badge">{{ boite.get_apps_dictionary|length }}</span></td>
                                 <td><samp>{{ boite.api_key }}</samp></td>
                                 <td style ="color: {% if boite.was_active_recently %}#18bc9c{% else %}#e74c3c{% endif %};"><i class="fa fa-circle"></i></td>
