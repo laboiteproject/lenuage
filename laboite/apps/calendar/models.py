@@ -66,7 +66,6 @@ class AppCalendar(App):
                         'x': 0,
                         'y': 0,
                         'color': 1,
-    					'font': 1,
     					'content': '0xfefe8292929282fe'
                     },
                     {
@@ -103,7 +102,6 @@ class AppCalendar(App):
                         'x': 12,
                         'y': 4,
                         'color': 2,
-    					'font': 1,
     					'content': '0xffff8185a99181ff'
                     },
                 ]

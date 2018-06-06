@@ -23,7 +23,6 @@ class AppWifi(App):
                     'x': 2,
                     'y': 0,
                     'color': 2,
-					'font': 1,
 					'content': '0x384492280010'
                 },
                 {

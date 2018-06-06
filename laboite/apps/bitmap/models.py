@@ -46,7 +46,6 @@ class AppBitmap(App):
                     'x': 0,
                     'y': 0,
                     'color': self.color,
-                    'font': 1,
                     'content': bitmap_list,
                 },
             ]

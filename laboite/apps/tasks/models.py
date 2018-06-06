@@ -63,7 +63,6 @@ class AppTasks(App):
                         'x': 8,
                         'y': 0,
                         'color': 1,
-    					'font': 1,
     					'content': '0xfffffdb993c7efff'
                     },
                     {

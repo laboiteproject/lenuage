@@ -64,7 +64,6 @@ class AppParcel(App):
                     'x': 0,
                     'y': 0,
                     'color': 2,
-					'font': 1,
 					'content': '0xfe0ff8fe4fe2ffe802a0adf6208'
                 },
                 {

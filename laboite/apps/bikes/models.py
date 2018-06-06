@@ -43,7 +43,6 @@ class AppBikes(App):
                     'x': 5,
                     'y': 1,
                     'color': 3,
-                    'font': 1,
                     'content': '0x00c1c208c0f878eab9bd589170e'
                 },
                 {

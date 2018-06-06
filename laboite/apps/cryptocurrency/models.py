@@ -57,7 +57,6 @@ class AppCryptocurrency(App):
                     'x': width,
                     'y': 0,
                     'color': 2,
-					'font': 1,
 					'content': bitmap,
                 },
             ]

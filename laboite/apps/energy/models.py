@@ -80,7 +80,6 @@ class AppEnergy(App):
                     'x': 0,
                     'y': 1,
                     'color': color,
-					'font': 1,
 					'content': bitmap,
                 },
                 {

@@ -50,7 +50,6 @@ class AppMetro(App):
                     'x': 0,
                     'y': 0,
                     'color': 1,
-					'font': 1,
 					'content': '0x2401207f8924924f3cffc528'
                 },
                 {

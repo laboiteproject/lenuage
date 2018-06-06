@@ -29,7 +29,6 @@ class AppCoffees(App):
                     'x': 1,
                     'y': 0,
                     'color': 3,
-					'font': 1,
 					'content': '0x482448ff85868478',
                 },
                 {

@@ -70,7 +70,6 @@ class AppParking(App):
                     'x': 0,
                     'y': 0,
                     'color': 2,
-					'font': 1,
 					'content': '0xff839999839f9f9fff'
                 },
                 {

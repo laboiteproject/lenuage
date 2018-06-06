@@ -28,7 +28,6 @@ class AppLikes(App):
                     'x': 0,
                     'y': 0,
                     'color': 2,
-					'font': 1,
 					'content': '0xfec2c2ce8686cececefe'
                 },
                 {

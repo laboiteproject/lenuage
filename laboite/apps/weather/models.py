@@ -56,7 +56,6 @@ class AppWeather(App):
                     'x': 0,
                     'y': 0,
                     'color': icon_color,
-					'font': 1,
 					'content': self.get_bitmap_icon(),
                 },
                 {

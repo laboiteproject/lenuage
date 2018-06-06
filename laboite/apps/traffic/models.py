@@ -60,7 +60,6 @@ class AppTraffic(App):
                     'x': 6,
                     'y': 0,
                     'color': 3,
-					'font': 1,
 					'content': '0x3c4242ffbdff42'
                 },
                 {
