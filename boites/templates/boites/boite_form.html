@@ -99,7 +99,7 @@
 <font color="#5e6d03">#include</font> <font color="#95a5a6">&lt;</font><b><font color="#d35400">Redgick_Laboite</font></b><font color="#95a5a6">.</font><font color="#000000">h</font><font color="#95a5a6">&gt;</font>
 
 <font color="#95a5a6">&#47;&#47; Welcome screen</font>
-<b><font color="#d35400">Screen</font></b> <font color="#000000">welcome</font><font color="#000000">(</font><font color="#000000">32</font><font color="#95a5a6">,</font> <font color="#000000">16</font><font color="#95a5a6">,</font> <font color="#00979c">MONOCHROME</font><font color="#000000">)</font><font color="#000000">;</font> <font color="#95a5a6">&#47;&#47; with, height, colors);</font>
+<b><font color="#d35400">Screen</font></b> <font color="#000000">welcome</font><font color="#000000">(</font><font color="#000000">32</font><font color="#95a5a6">,</font> <font color="#000000">{% if boite.screen == 0 %}8{% else %}16{% endif %}</font><font color="#95a5a6">,</font> <font color="#00979c">MONOCHROME</font><font color="#000000">)</font><font color="#000000">;</font> <font color="#95a5a6">&#47;&#47; with, height, colors);</font>
 
 <font color="#95a5a6">&#47;&#47; Backend connection</font>
 <b><font color="#d35400">Lenuage</font></b> <font color="#000000">lenuage</font><font color="#000000">(</font>
@@ -179,8 +179,13 @@
     <script type="text/javascript" src="{% static 'js/font.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/gfx.js' %}"></script>
     <script type="text/javascript">
+        {% if boite.screen == 0 %}
+        var matrixWidth = 32,
+            matrixHeight= 8;
+        {% else %}
         var matrixWidth = 32,
             matrixHeight= 16;
+        {% endif %}
 
         $(document).ready(function(){
             for(var pixels = 0; pixels < matrixWidth*matrixHeight;	pixels++)
@@ -195,7 +200,7 @@
                     if(key == 'items') {
                         $.each(value, function(index, value) {
                             if(value.type == 'bitmap')
-                                {% if boite.screen == 1 %}
+                                {% if boite.screen == 0 or boite.screen == 1  %}
                                     drawHex(value.x, value.y, value.content, value.width, value.height, '#fff');
                                 {% else %}
                                     switch (value.color) {
@@ -230,21 +235,21 @@
                                             printText(value.x, value.y, value.content.toString(), '#000');
                                             break;
                                         case 1:
-                                            {% if boite.screen == 1 %}
+                                            {% if boite.screen == 0 or boite.screen == 1  %}
                                                 printText(value.x, value.y, value.content.toString(), '#fff');
                                             {% else %}
                                                 printText(value.x, value.y, value.content.toString(), '#e74c3c');
                                             {% endif %}
                                             break;
                                         case 2:
-                                            {% if boite.screen == 1 %}
+                                            {% if boite.screen == 0 or boite.screen == 1  %}
                                                 printText(value.x, value.y, value.content.toString(), '#fff');
                                             {% else %}
                                                 printText(value.x, value.y, value.content.toString(), '#18bc9c');
                                             {% endif %}
                                             break;
                                         case 3:
-                                            {% if boite.screen == 1 %}
+                                            {% if boite.screen == 0 or boite.screen == 1  %}
                                                 printText(value.x, value.y, value.content.toString(), '#fff');
                                             {% else %}
                                                 printText(value.x, value.y, value.content.toString(), '#f39c12');
@@ -263,7 +268,7 @@
                                             printText(value.x, value.y, value.content.toString(), '#fff');
                                             break;
                                         default:
-                                            {% if boite.screen == 1 %}
+                                            {% if boite.screen == 0 or boite.screen == 1  %}
                                                 printText(value.x, value.y, value.content.toString(), '#fff');
                                             {% else %}
                                                 printText(value.x, value.y, value.content.toString(), '#e74c3c');

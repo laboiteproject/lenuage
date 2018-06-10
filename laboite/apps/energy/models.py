@@ -88,7 +88,7 @@ class AppEnergy(App):
                     'height': 8,
                     'x': 6,
                     'y': 0,
-                    'color': color,
+                    'color': 2,
 					'font': 1,
 					'content': '%skWh' % self.day6,
                 },

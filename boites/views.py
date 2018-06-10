@@ -33,10 +33,8 @@ class BoiteListView(ListView):
             boite.save()
 
         boites = Boite.objects.filter(user=self.request.user)
-        print(boites)
         for boite in boites:
             tiles = Tile.objects.filter(boite=boite)
-            print(tiles)
             # if this is a new tile on a new boite
             if not tiles:
                 # then create a AppTime on a new tile

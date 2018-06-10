@@ -35,6 +35,7 @@ class Boite(models.Model):
     user = models.ForeignKey(User, verbose_name=_('Utilisateur'), on_delete=models.CASCADE)
 
     SCREEN_CHOICES = (
+        (0, _('Écran monochrome 32×8')),
         (1, _('Écran monochrome 32×16')),
         (2, _('Écran bicolore 32×16')),
     )
