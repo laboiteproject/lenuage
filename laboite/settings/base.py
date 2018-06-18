@@ -251,4 +251,4 @@ OWM_APIKEY = ''
 IFTTT_API_BASE_URL = 'https://maker.ifttt.com/trigger/'
 
 # Cryptocurrency
-COINMARKETCAP_BASE_URL = 'https://api.coinmarketcap.com/v1/ticker/'
+COINMARKETCAP_BASE_URL = 'https://api.coinmarketcap.com/v2/ticker/'
