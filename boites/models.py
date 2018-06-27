@@ -194,6 +194,7 @@ class Tile(models.Model):
             'id': self.id,
             'duration': self.duration,
             'brightness': self.brightness,
+            'transition': self.transition,
             'items': items,
         }
 

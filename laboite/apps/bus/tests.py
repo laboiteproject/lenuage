@@ -42,17 +42,22 @@ def test_data_ok(app, mocker, requests_mocker, settings):
 
     mocker.patch('laboite.apps.bus.models.timezone.now', return_value=now)
 
+    expected_data = {
+        'data': [
+            {'color': 2,
+             'font': 1,
+             'content': "64|0' 52|1303'",
+             'type': 'text',
+             'width': 32,
+             'height': 8,
+             'x': 0,
+             'y': 0}
+        ],
+        'height': 8,
+        'width': 32
+    }
+
     with requests_mocker as m:
         m.get(settings.STAR_API_BASE_URL, text=DATA_OK)
         result = app.get_app_dictionary()
-        assert len(result) == 3
-        assert result['height'] == 8
-        assert result['width'] == 32
-        assert result['data'] == [{'color': 2,
-                                   'font': 1,
-                                   'content': "64:0' 52:1303'",
-                                   'type': 'text',
-                                   'width': 32,
-                                   'height': 8,
-                                   'x': 0,
-                                   'y': 0}]
+        assert result == expected_data
