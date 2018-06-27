@@ -69,6 +69,12 @@ class AppBus(App):
         self.save()
 
     def _get_data(self):
+        if self.route1:
+            content = "{}|{}' {}|{}'".format(self.route0, self.departure0,
+                                           self.route1, self.departure1)
+        else:
+            content = "{}|{}'".format(self.route0, self.departure0)
+
         return {
             'width': 32,
             'height': 8,
@@ -81,7 +87,7 @@ class AppBus(App):
                     'y': 0,
                     'color': 2,
                     'font': 1,
-                    'content':  "%s|%s' %s|%s'" % (self.route0, self.departure0, self.route1, self.departure1)
+                    'content':  content
                 }
             ]
         }
