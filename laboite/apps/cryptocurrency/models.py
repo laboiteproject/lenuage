@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals
 
+import decimal
+
 import requests
 from django.conf import settings
 from django.db import models
@@ -24,12 +26,18 @@ class AppCryptocurrency(App):
         ('USD', _('Dollars')),
         ('EUR', _('Euros')),
     )
-    cryptocurrency = models.CharField(_('Crypto-monnaie'), help_text=_('Veuillez indiquer la crypto-monnaie que vous souhaitez convertir'), max_length=16, default='bitcoin', choices=CRYPTOCURRENCY_CHOICES)
-    currency = models.CharField(_('Monnaie'), help_text=_('Veuillez indiquer la devise dans laquelle vous souhaitez convertir'), max_length=8, default='EUR', choices=CURRENCY_CHOICES)
-    value = models.PositiveSmallIntegerField(_('Valeur'), default=0)
+    cryptocurrency = models.CharField(_('Crypto-monnaie'),
+                                      help_text=_('Veuillez indiquer la crypto-monnaie que vous souhaitez convertir'),
+                                      max_length=16, default='bitcoin', choices=CRYPTOCURRENCY_CHOICES)
+    currency = models.CharField(_('Monnaie'),
+                                help_text=_('Veuillez indiquer la devise dans laquelle vous souhaitez convertir'),
+                                max_length=8, default='EUR', choices=CURRENCY_CHOICES)
+    value = models.DecimalField(_('Valeur'), max_digits=8, decimal_places=3, default=0)
 
     def _get_data(self):
-        width = len(str(self.value)) * 5
+        #  Convert as str and keep only 5 chars max (without decimal separator)
+        value = str(self.value)[:5].rstrip('.')
+        width = len(value) * 5
 
         # $ symbol
         bitmap = '0x0040e08060e040'
@@ -47,8 +55,8 @@ class AppCryptocurrency(App):
                     'x': 0,
                     'y': 1,
                     'color': 2,
-					'font': 1,
-					'content':  '%s' % self.value,
+                    'font': 1,
+                    'content': value,
                 },
                 {
                     'type': 'bitmap',
@@ -57,23 +65,26 @@ class AppCryptocurrency(App):
                     'x': width,
                     'y': 0,
                     'color': 2,
-					'content': bitmap,
+                    'content': bitmap,
                 },
             ]
         }
 
     def update_data(self):
         params = {'convert': self.currency,
-                  'limit': 10}
+                  'structure': 'array',
+                  'limit': 20}
         r = requests.get(settings.COINMARKETCAP_BASE_URL, params=params)
 
-        for i in r.json():
-            if i.get('id') == self.cryptocurrency:
-                if self.currency == 'EUR':
-                    self.value = float(i.get('price_eur'))
-                else:
-                    self.value = float(i.get('price_usd'))
-
+        # FIXME: this means the wanted crypto has to be in the 20 results,
+        # if it is not anymore, we'll never get its value
+        for data in r.json()['data']:
+            if data['website_slug'] == self.cryptocurrency:
+                self.value = decimal.Decimal(data['quotes'][self.currency]['price'])
+                break
+        else:
+            # Crypto not found
+            self.value = 0
         self.save()
 
     class Meta:
