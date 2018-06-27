@@ -117,13 +117,63 @@ def test_failed_request(app, requests_mocker, settings):
 
 @pytest.mark.django_db
 def test_successful_request_no_failure(app, requests_mocker, settings):
+    expected_data = {
+        'width': 32,
+        'height': 8,
+        'data': [
+            {
+                'type': 'bitmap',
+                'width': 12,
+                'height': 8,
+                'x': 0,
+                'y': 0,
+                'color': 1,
+                'content': '0x2401207f8924924f3cffc528'
+            },
+            {
+                'type': 'text',
+                'width': 20,
+                'height': 8,
+                'x': 11,
+                'y': 1,
+                'color': 2,
+                'font': 1,
+                'content': 'OK',
+            },
+        ]
+    }
     with requests_mocker as m:
         m.get(settings.STAR_API_BASE_URL, text=NO_FAILURE)
-        assert app.get_app_dictionary() is None
+        assert app.get_app_dictionary() == expected_data
 
 
 @pytest.mark.django_db
 def test_no_data_successful_request_with_failure(app, requests_mocker, settings):
+    expected_data = {
+        'width': 32,
+        'height': 8,
+        'data': [
+            {
+                'type': 'bitmap',
+                'width': 12,
+                'height': 8,
+                'x': 0,
+                'y': 0,
+                'color': 1,
+                'content': '0x2401207f8924924f3cffc528'
+            },
+            {
+                'type': 'text',
+                'width': 20,
+                'height': 8,
+                'x': 11,
+                'y': 1,
+                'color': 2,
+                'font': 1,
+                'content': "50'",
+            },
+        ]
+    }
     with requests_mocker as m:
         m.get(settings.STAR_API_BASE_URL, text=WITH_FAILURE)
-        assert app.get_app_dictionary() == {'failure': True, 'recovery_time': 50}
+        assert app.get_app_dictionary() == expected_data
