@@ -25,12 +25,11 @@ def boite_json_view(request, api_key):
     boite = get_object_or_404(Boite, api_key=api_key)
     update_activity(boite, request)
 
-    boite_tiles = Tile.objects.filter(boite=boite).order_by('id')
-
     tiles = []
-    for tile in boite_tiles:
+    for tile in boite.get_tiles():
+        last_activity = tile.get_last_activity()
         tiles.append({'id': tile.id,
-                      'last_activity': tile.get_last_activity()})
+                      'last_activity': last_activity})
 
     json = {'id': boite.id, 'tiles': tiles}
 
