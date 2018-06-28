@@ -61,7 +61,7 @@ class AppBus(App):
             try:
                 self.route1 = records[1]['fields']['nomcourtligne']
                 departure = dateparse.parse_datetime(records[1]['fields']['depart']) - now
-                self.departure1 = departure.seconds / 60
+                self.departure1 = departure.seconds // 60
             except IndexError:
                 self.route1 = None
                 self.departure1 = None
@@ -69,6 +69,12 @@ class AppBus(App):
         self.save()
 
     def _get_data(self):
+        if self.route1:
+            content = "{}|{}' {}|{}'".format(self.route0, self.departure0,
+                                           self.route1, self.departure1)
+        else:
+            content = "{}|{}'".format(self.route0, self.departure0)
+
         return {
             'width': 32,
             'height': 8,
@@ -80,8 +86,8 @@ class AppBus(App):
                     'x': 0,
                     'y': 0,
                     'color': 2,
-					'font': 1,
-                    'content':  "%s|%s' %s|%s'" % (self.route0, self.departure0, self.route1, self.departure1)
+                    'font': 1,
+                    'content':  content
                 }
             ]
         }
