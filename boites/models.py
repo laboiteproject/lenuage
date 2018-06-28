@@ -1,11 +1,12 @@
 # coding: utf-8
 
 from __future__ import unicode_literals
-from datetime import timedelta, datetime
 
+from datetime import timedelta
 from io import BytesIO
 import logging
 import uuid
+import time
 
 from django.apps import apps
 from django.contrib.auth.models import User
@@ -52,6 +53,13 @@ class Boite(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_tiles(self):
+        """Get only tiles that contain apps"""
+        query = Tile.objects.filter(boite=self)
+        query = query.annotate(cnt_apps=models.Count('tile_apps'))
+        query = query.filter(cnt_apps__gt=0)
+        return query.order_by('id')
 
     def save(self, *args, **kwargs):
         if not self.api_key:
@@ -165,6 +173,7 @@ class App(models.Model):
     class Meta:
         abstract = True
 
+
 class Tile(models.Model):
     TRANSITION_CHOICES = (
         (0, _('Aucune')),
@@ -201,26 +210,34 @@ class Tile(models.Model):
         return tile
 
     def get_last_activity(self):
-        apps = TileApp.objects.filter(tile=self)
-
-        last_activities = []
-        for app in apps:
+        last_activity = None
+        for app in self.tile_apps.all():
             try:
                 app.content_object.get_app_dictionary()
-                last_activity = app.content_object.last_activity.replace(tzinfo=None) - app.content_object.last_activity.utcoffset()
-                last_activity = (last_activity - datetime(1970, 1, 1)).total_seconds()
-                last_activities.append(int(last_activity))
+                app_last_activity = app.content_object.last_activity
+                if app_last_activity is not None:
+                    # Convert to UTC
+                    app_last_activity = timezone.localtime(app_last_activity,
+                                                           timezone.utc)
+                # Keep it if it is greater than last_activity
+                if last_activity is None or app_last_activity > last_activity:
+                    last_activity = app_last_activity
             except AttributeError:
-                logger.exception('App {} may not exist'.format(app.content_object))
+                logger.exception('App {} may not exist'.format(
+                    app.content_object))
 
-        return max(last_activities)
+        if last_activity is None:
+            return 0
+        # Convert to integer number of seconds since epoch
+        return int(time.mktime(last_activity.timetuple()))
 
     class Meta:
         verbose_name = _('Tuile')
         verbose_name_plural = _('Tuiles')
 
+
 class TileApp(models.Model):
-    tile = models.ForeignKey(Tile, on_delete=models.CASCADE, verbose_name=_('Tuile'))
+    tile = models.ForeignKey(Tile, on_delete=models.CASCADE, verbose_name=_('Tuile'), related_name='tile_apps')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_("Type d'app"))
     object_id = models.PositiveIntegerField(verbose_name=_("Identifiant de l'app"))
     content_object = GenericForeignKey('content_type', 'object_id')
