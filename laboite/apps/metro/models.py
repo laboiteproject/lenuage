@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import requests
 from django.conf import settings
 from django.db import models
+from django.utils.six import text_type
 from django.utils.translation import ugettext as _
 
 from boites.models import App, MINUTES
@@ -38,10 +39,33 @@ class AppMetro(App):
         self.save()
 
     def _get_data(self):
-        if not self.failure:
-            return None
-        return {'failure': self.failure,
-                'recovery_time': self.recovery_time}
+        recovery_time = "{}'".format(text_type(self.recovery_time)) \
+            if self.failure else 'OK'
+        return {
+            'width': 32,
+            'height': 8,
+            'data': [
+                {
+                    'type': 'bitmap',
+                    'width': 12,
+                    'height': 8,
+                    'x': 0,
+                    'y': 0,
+                    'color': 1,
+                    'content': '0x2401207f8924924f3cffc528'
+                },
+                {
+                    'type': 'text',
+                    'width': 20,
+                    'height': 8,
+                    'x': 11,
+                    'y': 1,
+                    'color': 2,
+                    'font': 1,
+                    'content': recovery_time,
+                },
+            ]
+        }
 
     class Meta:
         verbose_name = _("Configuration : métro")

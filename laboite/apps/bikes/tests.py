@@ -74,18 +74,24 @@ def test_station_infos_ok_star(app, requests_mocker, settings):
         assert result['width'] == 32
         result['data'].sort(key=itemgetter('type'))
         assert len(result['data']) == 2
-        assert result['data'] == [{'content': '0x00c1c208c0f878eab9bd589170e',
-                                   'height': 10,
-                                   'type': 'icon',
-                                   'width': 12,
-                                   'x': 5,
-                                   'y': 1},
-                                  {'content': '18',
-                                   'height': 10,
-                                   'type': 'text',
-                                   'width': 10,
-                                   'x': 18,
-                                   'y': 3}]
+        expected_data = [
+            {'color': 3,
+             'content': '0x00c1c208c0f878eab9bd589170e',
+             'height': 10,
+             'type': 'bitmap',
+             'width': 12,
+             'x': 5,
+             'y': 1},
+            {'color': 2,
+             'font': 1,
+             'content': '18',
+             'height': 10,
+             'type': 'text',
+             'width': 10,
+             'x': 18,
+             'y': 3}
+        ]
+        assert result['data'] == expected_data
 
 
 @pytest.mark.django_db
@@ -123,18 +129,24 @@ def test_station_infos_ok_velib(app, requests_mocker, settings):
         assert result['width'] == 32
         result['data'].sort(key=itemgetter('type'))
         assert len(result['data']) == 2
-        assert result['data'] == [{'content': '0x00c1c208c0f878eab9bd589170e',
-                                   'height': 10,
-                                   'type': 'icon',
-                                   'width': 12,
-                                   'x': 5,
-                                   'y': 1},
-                                  {'content': '7',
-                                   'height': 10,
-                                   'type': 'text',
-                                   'width': 10,
-                                   'x': 18,
-                                   'y': 3}]
+        expected_data = [
+            {'color': 3,
+             'content': '0x00c1c208c0f878eab9bd589170e',
+             'height': 10,
+             'type': 'bitmap',
+             'width': 12,
+             'x': 5,
+             'y': 1},
+            {'color': 2,
+             'font': 1,
+             'content': '7',
+             'height': 10,
+             'type': 'text',
+             'width': 10,
+             'x': 18,
+             'y': 3}
+        ]
+        assert result['data'] == expected_data
 
 
 @pytest.mark.django_db

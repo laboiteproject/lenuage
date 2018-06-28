@@ -12,7 +12,7 @@ class AppBitmapCreateView(AppCreateView):
 class AppBitmapUpdateView(AppUpdateView):
     model = AppBitmap
     template_name = 'bitmap_form.html'
-    fields = ['width', 'height', 'enabled']
+    fields = ['width', 'height', 'color', 'enabled']
 
     def get_context_data(self, **kwargs):
         context = super(AppBitmapUpdateView, self).get_context_data(**kwargs)
@@ -23,15 +23,15 @@ class AppBitmapUpdateView(AppUpdateView):
         return context
 
     def form_valid(self, form):
+        #delete all previous bitmaps
+        bitmaps = Bitmap.objects.filter(app_id=self.object.id)
+        bitmaps.delete()
+        
         # save bitmap(s) from form
         for key in self.request.POST:
             # if this is a bitmap
             if key.startswith("id_bitmap"):
-                try:
-                    id = int(key[9:])
-                except ValueError:
-                    id = 1
-                bitmap = Bitmap(id=id, app_id=self.kwargs.get('pk'), bitmap=self.request.POST.get(key))
+                bitmap = Bitmap(app_id=self.kwargs.get('pk'), bitmap=self.request.POST.get(key))
                 bitmap.save()
         return super(AppBitmapUpdateView, self).form_valid(form)
 

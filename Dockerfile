@@ -5,7 +5,6 @@ RUN apt-get install -y build-essential libssl-dev git python python-setuptools l
 EXPOSE 8888
 ADD . /laboite
 RUN cd /laboite \
-    && easy_install pip Pygments \
     && pip install -r requirements/requirements.txt
 CMD cd /laboite \
     && python manage.py makemigrations \

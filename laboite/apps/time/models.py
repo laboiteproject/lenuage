@@ -42,7 +42,9 @@ class AppTime(App):
                     'height': 8,
                     'x': 4,
                     'y': 1,
-                    'content': self.time,
+                    'color': 2,
+					'font': 1,
+					'content': self.time,
                 },
             ]
         }

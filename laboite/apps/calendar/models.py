@@ -60,68 +60,49 @@ class AppCalendar(App):
                 'height': 16,
                 'data': [
                     {
-                        'type': 'icon',
+                        'type': 'bitmap',
                         'width': 8,
                         'height': 8,
-                        'x': 1,
+                        'x': 0,
                         'y': 0,
-                        'content': '0xfefe8292929282fe'
+                        'color': 1,
+    					'content': '0xfefe8292929282fe'
                     },
                     {
                         'type': 'text',
-                        'width': 10,
+                        'width': 25,
                         'height': 8,
-                        'x': 9,
+                        'x': 7,
                         'y': 1,
-                        'content': self.dtstart[:2],
-                    },
-                    {
-
-                        'type': 'text',
-                        'width': 24,
-                        'height': 8,
-                        'x': 18,
-                        'y': 1,
-                        'content': ':',
-                    },
-                    {'type': 'text',
-                        'width': 24,
-                        'height': 8,
-                        'x': 22,
-                        'y': 1,
-                        'content': self.dtstart[-2:],
+                        'color': 2,
+    					'font': 1,
+    					'content': self.dtstart,
                     },
                     {
                         'type': 'text',
                         'width': 32,
                         'height': 8,
-                        'scrolling': True,
                         'x': 0,
                         'y': 9,
-                        'content': self.summary,
+                        'color': 1,
+    					'font': 1,
+    					'content': self.summary,
                     }
                 ]
             }
         else:
             return {
                 'width': 32,
-                'height': 8,
+                'height': 16,
                 'data': [
                     {
-                        'type': 'text',
-                        'width': 10,
-                        'height': 8,
-                        'x': 0,
-                        'y': 1,
-                        'content': '0',
-                    },
-                    {
-                        'type': 'icon',
+                        'type': 'bitmap',
                         'width': 8,
                         'height': 8,
-                        'x': 6,
-                        'y': 0,
-                        'content': '0xfefe8292929282fe'
+                        'x': 12,
+                        'y': 4,
+                        'color': 2,
+    					'content': '0xffff8185a99181ff'
                     },
                 ]
             }

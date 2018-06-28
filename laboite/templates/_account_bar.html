@@ -31,6 +31,9 @@
             <li><a href="{% url 'account_signup' %}">{% trans "Sign up" %}</a></li>
         {% endif %}
     {% endif %}
+    <li>
+        <a href="https://github.com/laboiteproject/lenuage/wiki"><i class="fa fa-question-circle"></i> {% trans "Aide" %}</a>
+    </li>
 </ul>
 
 <form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}" method="POST">

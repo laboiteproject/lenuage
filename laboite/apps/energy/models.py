@@ -15,8 +15,8 @@ class AppEnergy(App):
     UPDATE_INTERVAL = 30 * MINUTES
 
     url = models.URLField(_('URL du serveur emoncms'), help_text=_("Veuillez indiquer l'adresse de votre serveur emoncms"), default='https://emoncms.org/', null=False)
-    power_feedid = models.PositiveSmallIntegerField(_('Identifiant flux puissance instantanée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation instantannée (en watts)'), default=None, null=True)
-    kwhd_feedid = models.PositiveSmallIntegerField(_('Identifiant flux consommation cumulée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation cumulée (en kWh/j)'), default=None, null=True)
+    power_feedid = models.PositiveIntegerField(_('Identifiant flux puissance instantanée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation instantannée (en watts)'), default=None, null=True)
+    kwhd_feedid = models.PositiveIntegerField(_('Identifiant flux consommation cumulée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation cumulée (en kWh/j)'), default=None, null=True)
     emoncms_read_apikey = models.CharField(_("Clé d'API emoncms"), help_text=_("Veuillez indiquer votre clé d'API emoncms (lecture seule)"), max_length=32, default=None, null=True)
     power = models.PositiveSmallIntegerField(_('Consommation instantanée'), default=None, null=True)
     day0 = models.PositiveSmallIntegerField(_('Consommation j-6 (en kWh)'), default=None, null=True)
@@ -61,14 +61,39 @@ class AppEnergy(App):
         self.save()
 
     def _get_data(self):
-        return {'power': self.power,
-                'day0': self.day0,
-                'day1': self.day1,
-                'day2': self.day2,
-                'day3': self.day3,
-                'day4': self.day4,
-                'day5': self.day5,
-                'day6': self.day6}
+        bitmap = '0xf87020'
+        color = 2
+        try:
+            if self.day6 > self.day5:
+                bitmap = '0x2070f8'
+                color = 1
+        except :
+            self.day6 = 0
+        return {
+            'width': 32,
+            'height': 8,
+            'data': [
+                {
+                    'type': 'bitmap',
+                    'width': 8,
+                    'height': 3,
+                    'x': 0,
+                    'y': 1,
+                    'color': color,
+					'content': bitmap,
+                },
+                {
+                    'type': 'text',
+                    'width': 32,
+                    'height': 8,
+                    'x': 6,
+                    'y': 0,
+                    'color': 2,
+					'font': 1,
+					'content': '%skWh' % self.day6,
+                },
+            ]
+        }
 
     class Meta:
         verbose_name = _("Configuration : énergie")

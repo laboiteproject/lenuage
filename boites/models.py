@@ -32,7 +32,15 @@ HOURS = 3600
 @python_2_unicode_compatible
 class Boite(models.Model):
     name = models.CharField(_(u'Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32, default=_('Ma boîte'))
-    user = models.ForeignKey(User, verbose_name=_('Utilisateur'))
+    user = models.ForeignKey(User, verbose_name=_('Utilisateur'), on_delete=models.CASCADE)
+
+    SCREEN_CHOICES = (
+        (0, _('Écran monochrome 32×8')),
+        (1, _('Écran monochrome 32×16')),
+        (2, _('Écran bicolore 32×16')),
+    )
+
+    screen = models.PositiveSmallIntegerField(_("Type d'écran"), help_text=_("Veuillez sélectionner l'écran qui compose votre boîte"), choices=SCREEN_CHOICES, default=1)
 
     api_key = models.CharField(_("Clé d'API"), max_length=36, unique=True)
 
@@ -94,7 +102,7 @@ class Boite(models.Model):
 
 class PushButton(models.Model):
     api_key = models.SlugField(_(u"IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
-    boite = models.OneToOneField(Boite, verbose_name=_('Boîte'))
+    boite = models.OneToOneField(Boite, verbose_name=_('Boîte'), on_delete=models.CASCADE)
 
     last_triggered = models.DateTimeField(_('Dernière activité'), null=True)
 
@@ -110,7 +118,7 @@ class App(models.Model):
     """Base app model"""
     UPDATE_INTERVAL = None  # Subclasses can redefine it as a number of seconds between updates
 
-    boite = models.OneToOneField(Boite, verbose_name=_('Boîte'))
+    boite = models.ForeignKey(Boite, verbose_name=_('Boîte'), on_delete=models.CASCADE)
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
     enabled = models.BooleanField(_('App activée ?'), help_text=_('Indique si cette app est activée sur votre boîte'), default=True)
     last_activity = models.DateTimeField(_('Dernière activité'), null=True)
@@ -169,7 +177,7 @@ class Tile(models.Model):
 
     boite = models.ForeignKey(Boite, on_delete=models.CASCADE)
     brightness = models.PositiveSmallIntegerField(_("Luminosité de la tuile"), help_text=_("Veuillez saisir la luminosité souhaitée pour cette tuile"), default=15, validators=[MaxValueValidator(15)])
-    duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en secondes)"), default=5)
+    duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en millisecondes)"), default=5000)
     transition = models.PositiveSmallIntegerField(_('Transition'), help_text=_("Veuillez sélectionner la transition que vous souhaitez pour passer à la prochaine tuile"), choices=TRANSITION_CHOICES, default=0)
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
 
@@ -186,6 +194,7 @@ class Tile(models.Model):
             'id': self.id,
             'duration': self.duration,
             'brightness': self.brightness,
+            'transition': self.transition,
             'items': items,
         }
 

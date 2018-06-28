@@ -7,6 +7,7 @@ from django.db import models
 from boites.models import App, MINUTES
 
 import asana
+import unidecode
 
 
 def get_projects(asana_personal_access_token):
@@ -45,42 +46,64 @@ class AppTasks(App):
                 if task['assignee']['id'] == me['id']:
                     uncompleted_tasks += 1
                     if uncompleted_tasks == 1:
-                        self.name = task['name']
+                        self.name = str(unidecode.unidecode(task['name']))
         self.tasks = uncompleted_tasks
         self.save()
 
     def _get_data(self):
-        return {
-            'width': 32,
-            'height': 16,
-            'data': [
-                {
-                    'type': 'icon',
-                    'width': 8,
-                    'height': 8,
-                    'x': 8,
-                    'y': 0,
-                    'content': '0xfffffdb993c7efff'
-                },
-                {
-                    'type': 'text',
-                    'width': 10,
-                    'height': 8,
-                    'x': 17,
-                    'y': 1,
-                    'content': '%d' % self.tasks,
-                },
-                {
-                    'type': 'text',
-                    'width': 32,
-                    'height': 8,
-                    'scrolling': True,
-                    'x': 0,
-                    'y': 9,
-                    'content': self.name,
-                }
-            ]
-        }
+        if self.tasks > 0:
+            return {
+                'width': 32,
+                'height': 16,
+                'data': [
+                    {
+                        'type': 'bitmap',
+                        'width': 8,
+                        'height': 8,
+                        'x': 8,
+                        'y': 0,
+                        'color': 1,
+    					'content': '0xfffffdb993c7efff'
+                    },
+                    {
+                        'type': 'text',
+                        'width': 10,
+                        'height': 8,
+                        'x': 17,
+                        'y': 1,
+                        'color': 3,
+    					'font': 1,
+    					'content': '%d' % self.tasks,
+                    },
+                    {
+                        'type': 'text',
+                        'width': 32,
+                        'height': 8,
+                        'x': 0,
+                        'y': 9,
+                        'color': 2,
+    					'font': 1,
+    					'content': self.name,
+                    }
+                ]
+            }
+        else:
+            return {
+                'width': 32,
+                'height': 16,
+                'data': [
+                    {
+                        'type': 'bitmap',
+                        'width': 8,
+                        'height': 8,
+                        'x': 12,
+                        'y': 4,
+                        'color': 2,
+    					'font': 1,
+    					'content': '0xfffffdb993c7efff'
+                    }
+                ]
+            }
 
     class Meta:
         verbose_name = _('Configuration : tâches')

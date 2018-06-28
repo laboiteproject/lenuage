@@ -17,7 +17,31 @@ class AppLikes(App):
     likes = models.PositiveIntegerField(_("Nombre de J'aime"), blank=True, null=True)
 
     def _get_data(self):
-        return {'likes': self.likes}
+        return {
+            'width': 32,
+            'height': 12,
+            'data': [
+                {
+                    'type': 'bitmap',
+                    'width': 8,
+                    'height': 10,
+                    'x': 0,
+                    'y': 0,
+                    'color': 2,
+					'content': '0xfec2c2ce8686cececefe'
+                },
+                {
+                    'type': 'text',
+                    'width': 5 * len(str(self.likes)),
+                    'height': 8,
+                    'x': 8,
+                    'y': 2,
+                    'color': 2,
+					'font': 1,
+					'content': '%s' % self.likes,
+                },
+            ]
+        }
 
     def update_data(self):
         graph = facebook.GraphAPI(access_token=settings.FACEBOOK_ACCESS_TOKEN)

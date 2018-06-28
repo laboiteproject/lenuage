@@ -15,7 +15,8 @@ def test_message(boite):
         'height': 8,
         'x': 0,
         'y': 1,
-        'scrolling': True,
+        'color': 2,
+        'font': 1,
         'content': 'hello world'
     }]
 

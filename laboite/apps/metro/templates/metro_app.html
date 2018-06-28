@@ -6,7 +6,6 @@
 {% block app_data %}
 	{% if app.instance.failure %}
 		{% trans "Rétablissement dans :" %} {{ app.instance.recovery_time|default:"0" }}
-		<i class="fa fa-caret-up text-danger" aria-hidden="true"></i>
 	{% else %}
 		<span class="badge">{% trans "OK" %}</span>
 	{% endif %}

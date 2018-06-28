@@ -52,6 +52,34 @@ class AppParcel(App):
         self.save()
 
     def _get_data(self):
+        parcel_status = 'OK' if self.status == 3 else 'In transit'
+        return {
+            'width': 32,
+            'height': 8,
+            'data': [
+                {
+                    'type': 'bitmap',
+                    'width': 12,
+                    'height': 8,
+                    'x': 0,
+                    'y': 0,
+                    'color': 2,
+					'content': '0xfe0ff8fe4fe2ffe802a0adf6208'
+                },
+                {
+                    'type': 'text',
+                    'width': len(str(parcel_status)) * 5+1,
+                    'height': 8,
+                    'x': 12,
+                    'y': 2,
+                    'color': 2,
+					'font': 1,
+					'content': "%s" % parcel_status,
+                },
+            ]
+        }
+
+
         return {'parcel': self.parcel,
                 'parcel_carrier': self.parcel_carrier,
                 'arrival': self.arrival,

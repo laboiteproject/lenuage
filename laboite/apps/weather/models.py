@@ -43,29 +43,62 @@ class AppWeather(App):
         self.save()
 
     def _get_data(self):
-        return {'temperature_now': self.temperature_now,
-                'humidity_now': self.humidity_now,
-                'icon_now': self.icon_now}
+        icon_color=3 if self.icon_now == 0 else 1
+        text_color=2 if self.temperature_now > 0 else 1
+        return {
+            'width': 32,
+            'height': 10,
+            'data': [
+                {
+                    'type': 'bitmap',
+                    'width': 16,
+                    'height': 10,
+                    'x': 0,
+                    'y': 0,
+                    'color': icon_color,
+					'content': self.get_bitmap_icon(),
+                },
+                {
+                    'type': 'text',
+                    'width': 10,
+                    'height': 8,
+                    'x': 15,
+                    'y': 2,
+                    'color': text_color,
+					'font': 1,
+					'content': '%d*' % self.temperature_now,
+                },
+            ]
+        }
 
     def convert_owm_icon(self, owm_icon):
         # clouds
-        icon = "1"
+        icon = 1
         owm_icon = owm_icon[:2]
 
         # clear sky
         if owm_icon == '01':
-            icon = '0'
+            icon = 0
         # rain
         elif owm_icon in ('09', '10', '11'):
-            icon = '2'
+            icon = 2
         # mist
         elif owm_icon == '50':
-            icon = '3'
+            icon = 3
         # snow
         elif owm_icon == '13':
-            icon = '4'
+            icon = 4
 
         return icon
+
+    def get_bitmap_icon(self):
+        return {
+            0: '0x020002004010272008801040d05810400880',
+            1: '0x00000380046038104410800880087ff00000',
+            2: '0x0380046038104410800880087ff02a002a00',
+            3: '0x00000000fffc0000fffc0000fffc00000000',
+            4: '0x2a001c0088804900ff80490088801c002a00'
+        }.get(self.icon_now)
 
     class Meta:
         verbose_name = _('Configuration : météo')

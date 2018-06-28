@@ -21,12 +21,43 @@
         }
     </style>
     <script type="text/javascript">
-        var bitmaps = {% autoescape off %}{{ app.instance.get_bitmaps }}{% endautoescape %};
+        function drawTile(id, bitmap, width, height, color) {
+            for(var y = 0; y <= bitmap.length/height+1; y++) {
+                for(var x = 0; x <= width-1; x++) {
+                    if(bitmap[x+y*width]==1)
+                        $("#bitmaps_" + id + " ul li").eq(x+width*y).css("background",color);
+                }
+            }
+        }
+        var bitmaps_{{ app.instance.id }} = {% autoescape off %}{{ app.instance.get_bitmaps }}{% endautoescape %};
 
-        var matrixWidth = {{ app.instance.width }},
-            matrixHeight= {{ app.instance.height }};
+        var matrixWidth_{{ app.instance.id }} = {{ app.instance.width }},
+            matrixHeight_{{ app.instance.id }}= {{ app.instance.height }};
+
+        $(document).ready(function(){
+            for(var pixels = 0; pixels < matrixWidth_{{ app.instance.id }}*matrixHeight_{{ app.instance.id }};	pixels++)
+                $("#bitmaps_{{ app.instance.id }} ul").append("<li></li>");
+
+            var i = 0;
+            setInterval(function() {
+                for(var j=0; j< matrixWidth_{{ app.instance.id }}*matrixHeight_{{ app.instance.id }}; j++)
+                    $("#bitmaps_{{ app.instance.id }} ul li").eq(j).css("background","transparent");
+                drawTile({{ app.instance.id }}, bitmaps_{{ app.instance.id }}[i], matrixWidth_{{ app.instance.id }}, matrixHeight_{{ app.instance.id }}, 'rgba(255, 255, 255, 0.7)');
+                i++;
+                if(i >= bitmaps_{{ app.instance.id }}.length)
+                    i=0;
+            }, 200);
+
+            // each .led pixel is 5×5px (including margin) and we need a bit of
+            // margin-right and margin-bottom on the .led div
+            console.log(matrixWidth_{{ app.instance.id }} * (4 + 1) + 6);
+            console.log(matrixHeight_{{ app.instance.id }} * (4 + 1) + 7);
+
+            $("#bitmaps_{{ app.instance.id }}").css("width", matrixWidth_{{ app.instance.id }} * (4 + 1) + 6);
+            $("#bitmaps_{{ app.instance.id }}").css("height", matrixHeight_{{ app.instance.id }} * (4 + 1) + 7);
+        });
     </script>
-    <div class="led">
+    <div id="bitmaps_{{ app.instance.id }}"class="led">
         <ul></ul>
     </div>
 {% endblock %}

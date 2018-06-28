@@ -37,11 +37,12 @@ class AppBikes(App):
             'height': 10,
             'data': [
                 {
-                    'type': 'icon',
+                    'type': 'bitmap',
                     'width': 12,
                     'height': 10,
                     'x': 5,
                     'y': 1,
+                    'color': 3,
                     'content': '0x00c1c208c0f878eab9bd589170e'
                 },
                 {
@@ -50,6 +51,8 @@ class AppBikes(App):
                     'height': 10,
                     'x': 18,
                     'y': 3,
+                    'color': 2,
+                    'font': 1,
                     'content': '%s' % self.bikes
                 }
             ]

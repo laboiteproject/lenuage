@@ -11,17 +11,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
-from pygments import highlight
-from pygments.lexers import JsonLexer
-from pygments.formatters import HtmlFormatter
 
 logger = logging.getLogger('laboite.apps')
 
 from .models import App, Boite, Tile, TileApp, PushButton
+from laboite.apps.time.models import AppTime
 
 
 # Boîtes
@@ -35,6 +32,21 @@ class BoiteListView(ListView):
             boite.generate_qrcode()
             boite.save()
 
+        boites = Boite.objects.filter(user=self.request.user)
+        for boite in boites:
+            tiles = Tile.objects.filter(boite=boite)
+            # if this is a new tile on a new boite
+            if not tiles:
+                # then create a AppTime on a new tile
+                tile = Tile(boite=boite)
+                tile.save()
+                app_time = AppTime(boite=boite, tz='Europe/Paris')
+                app_time.save()
+                content_type = ContentType.objects.get(app_label="laboite.apps.time", model="apptime")
+                tile_app = TileApp(tile=tile, object_id=app_time.id, content_type=content_type)
+                tile_app.save()
+                messages.success(self.request, _(u"Une app temps a été créée sur votre boîte !"))
+
         return Boite.objects.filter(user=self.request.user).order_by("created_date")
 
 
@@ -44,40 +56,10 @@ def create_app_view(request, pk):
     apps_list = []
     for model in apps.get_models():
         if issubclass(model, App):
-            app_instances = model.objects.filter(boite=boite)
             verbose_name =  model._meta.verbose_name.title()
-            if not app_instances:
-                apps_list.append({'verbose_name':verbose_name[16:], 'pk':'create', 'app_label': model._meta.app_label})
+            apps_list.append({'verbose_name':verbose_name[16:], 'pk':'create', 'app_label': model._meta.app_label})
 
     return render(request, 'boites/boite_create_app.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
-
-
-def create_app_view(request, pk):
-    boite = get_object_or_404(Boite, pk=pk, user=request.user)
-
-    apps_list = []
-    for model in apps.get_models():
-        if issubclass(model, App):
-            app_instances = model.objects.filter(boite=boite)
-            verbose_name =  model._meta.verbose_name.title()
-            if not app_instances:
-                apps_list.append({'verbose_name':verbose_name[16:], 'pk':'create', 'app_label': model._meta.app_label})
-
-    return render(request, 'boites/boite_create_app.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
-
-
-def tiles_view(request, pk):
-    boite = get_object_or_404(Boite, pk=pk, user=request.user)
-
-    apps_list = []
-    for model in apps.get_models():
-        if issubclass(model, App):
-            app = model.objects.filter(boite=boite, enabled=True).first()
-            if app:
-                verbose_name =  model._meta.verbose_name.title()
-                apps_list.append({'verbose_name':verbose_name[16:], 'pk':app.pk, 'enabled':True, 'app_label': model._meta.app_label, 'data': first_app.get_data()})
-
-    return render(request, 'boites/tiles_form.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
 
 
 def tile_editor_view(request, boite_pk):
@@ -93,23 +75,18 @@ def apps_view(request, pk):
     boite.get_apps_dictionary()
 
     apps_list = []
-    enabled_apps = 0
     for model in apps.get_models():
         if issubclass(model, App):
             app_instances = model.objects.filter(boite=boite)
-            pk = None
-            enabled = None
-
             if app_instances:
-                first_app = app_instances.first()
-                pk = first_app.pk
-                enabled = first_app.enabled
-                enabled_apps += 1
+                for i, instance in enumerate(app_instances):
+                    verbose_name =  model._meta.verbose_name.title()
+                    app_label = model._meta.app_label
+                    if app_instances.count() > 1:
+                        verbose_name += ' ' + str(i + 1)
+                    apps_list.append({'verbose_name':verbose_name[16:], 'pk':instance.pk, 'enabled':instance.enabled, 'app_label': model._meta.app_label, 'instance': instance})
 
-            verbose_name =  model._meta.verbose_name.title()
-            apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'enabled':enabled, 'app_label': model._meta.app_label, 'instance': app_instances.first()})
-
-    return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list, 'show_create_button' : len(apps_list) > enabled_apps})
+    return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
 
 
 def redirect_view(request, api_key):
@@ -124,22 +101,11 @@ def generate_api_key(request, pk):
     return redirect('boites:update', pk=pk)
 
 
-def get_prettyjson_html(api_key):
-    boite = get_object_or_404(Boite, api_key=api_key)
-    # Example from https://www.pydanny.com/pretty-formatting-json-django-admin.html
-    response = json.dumps(boite.get_apps_dictionary(), sort_keys=True, indent=2)
-    response = response[:5000]
-    formatter = HtmlFormatter(style='friendly')
-    response = highlight(response, JsonLexer(), formatter)
-    style = "<style>" + formatter.get_style_defs() + "</style><br>"
-    return mark_safe(style + response)
-
-
 class BoiteUpdateView(UpdateView):
     model = Boite
-    fields = ['name']
+    fields = ['name', 'screen']
 
-    success_url = reverse_lazy('boites:list')
+    success_url = './'
 
     def get_queryset(self):
         qs = super(BoiteUpdateView, self).get_queryset()
@@ -152,12 +118,13 @@ class BoiteUpdateView(UpdateView):
         context['api_key'] = Boite._meta.get_field('api_key')
         context['last_activity'] = Boite._meta.get_field('last_activity')
         context['last_connection'] = Boite._meta.get_field('last_connection')
-        context['pretty_json_html'] = get_prettyjson_html(self.object.api_key)
 
         tiles = Tile.objects.filter(boite= self.object).order_by('id')
 
         if self.request.GET.get('tile') or not tiles:
             current_tile, created = Tile.objects.get_or_create(boite=self.object, pk=self.request.GET.get('tile'))
+            if created and not tiles:
+                content_type = ContentType.objects.get(app_label="laboite.apps.time", model="apptime")
         else:
             current_tile = tiles.first()
 
@@ -189,7 +156,7 @@ class BoiteCreateView(SuccessMessageMixin, CreateView):
     model = Boite
     fields = ['name']
     template_name_suffix = '_create_form'
-    success_message = _(u"%(name)s a bien été créé !")
+    success_message = _(u"%(name)s a bien été créée !")
     success_url = reverse_lazy('boites:list')
 
     def form_valid(self, form):
@@ -317,15 +284,14 @@ class TileUpdateView(UpdateView):
         apps_list = []
         for model in apps.get_models():
             if issubclass(model, App):
-                app_instances = model.objects.filter(boite=self.object.boite)
-                pk = None
-
+                app_instances = model.objects.filter(boite=self.object.boite, enabled=True)
                 if app_instances:
-                    first_app = app_instances.first()
-                    pk = first_app.pk
-                    verbose_name =  model._meta.verbose_name.title()
-                    if pk:
-                        apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'app_label': model._meta.app_label, 'data': app_instances.first().get_data()})
+                    for i, instance in enumerate(app_instances):
+                        verbose_name =  model._meta.verbose_name.title()
+                        app_label = model._meta.app_label
+                        if app_instances.count() > 1:
+                            verbose_name += ' ' + str(i + 1)
+                        apps_list.append({'verbose_name':verbose_name[16:], 'pk':instance.pk, 'app_label': model._meta.app_label, 'data': instance.get_data()})
 
         context['apps'] = apps_list
 

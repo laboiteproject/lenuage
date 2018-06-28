@@ -25,6 +25,8 @@ def test_all(boite, mocker):
                                    'height': 8,
                                    'x': 4,
                                    'y': 1,
+                                   'color': 2,
+                                   'font': 1,
                                    'content': '14:35'}]
         assert result['height'] == 8
         assert result['width'] == 32
@@ -38,6 +40,8 @@ def test_all(boite, mocker):
                                    'height': 8,
                                    'x': 4,
                                    'y': 1,
+                                   'color': 2,
+                                   'font': 1,
                                    'content': '05:35'}]
         assert result['height'] == 8
         assert result['width'] == 32
@@ -50,6 +54,8 @@ def test_all(boite, mocker):
                                    'height': 8,
                                    'x': 4,
                                    'y': 1,
+                                   'color': 2,
+                                   'font': 1,
                                    'content': '5:35 a.m.'}]
         assert result['height'] == 8
         assert result['width'] == 32
