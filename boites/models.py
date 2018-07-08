@@ -47,6 +47,9 @@ class Boite(models.Model):
 
     qrcode = models.ImageField(_('QR code'), upload_to='boites')
 
+    sleep_time = models.TimeField(_("Début du mode veille"), help_text=_("Spécifiez une heure pour le début du mode veille (laissez vide si toujours allumée)"), null=True, default=None, blank=True)
+    wake_time = models.TimeField(_("Fin du mode veille"), help_text=_("Spécifiez une heure pour le fin du mode veille (laissez vide si toujours allumée)"), null=True, default=None, blank=True)
+
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
     last_activity = models.DateTimeField(_('Dernière activité'), null=True)
     last_connection = models.GenericIPAddressField(_('Dernière connexion'), protocol='both', unpack_ipv4=False, default=None, blank=True, null=True)
@@ -89,6 +92,13 @@ class Boite(models.Model):
     def belongs_to(self, user):
         return user == self.user
 
+    def is_idle(self):
+        if self.sleep_time and self.wake_time:
+            now = timezone.now()
+            print(now.time() > self.wake_time)
+            return now.time() > self.wake_time and now.time() < self.sleep_time
+        return False
+
     def get_apps_dictionary(self):
         apps_dict = {}
         for model in apps.get_models():
@@ -106,6 +116,8 @@ class Boite(models.Model):
     was_active_recently.admin_order_field = 'last_activity'
     was_active_recently.boolean = True
     was_active_recently.short_description = _('Connectée ?')
+    is_idle.boolean = True
+    is_idle.short_description = _('Est en veille ?')
 
 
 class PushButton(models.Model):

@@ -26,10 +26,13 @@ def boite_json_view(request, api_key):
     update_activity(boite, request)
 
     tiles = []
-    for tile in boite.get_tiles():
-        last_activity = tile.get_last_activity()
-        tiles.append({'id': tile.id,
-                      'last_activity': last_activity})
+    if boite.is_idle():
+        tiles.append({'id': 1, 'last_activity': int(timezone.now().timestamp())})
+    else:
+        for tile in boite.get_tiles():
+            last_activity = tile.get_last_activity()
+            tiles.append({'id': tile.id,
+                          'last_activity': last_activity})
 
     json = {'id': boite.id, 'tiles': tiles}
 
@@ -40,7 +43,10 @@ def tile_json_view(request, api_key, pk):
     boite = get_object_or_404(Boite, api_key=api_key)
     update_activity(boite, request)
 
-    tile = get_object_or_404(Tile, pk=pk)
+    if boite.is_idle():
+        tile = Tile(duration=10000)
+    else:
+        tile = get_object_or_404(Tile, pk=pk)
     return CORSJsonResponse(tile.get_data())
 
 

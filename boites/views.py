@@ -103,7 +103,7 @@ def generate_api_key(request, pk):
 
 class BoiteUpdateView(UpdateView):
     model = Boite
-    fields = ['name', 'screen']
+    fields = ['name', 'screen', 'sleep_time', 'wake_time']
 
     success_url = './'
 

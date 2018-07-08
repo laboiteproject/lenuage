@@ -7,7 +7,7 @@ from .models import Boite, Tile, TileApp
 class BoiteAdmin(admin.ModelAdmin):
     readonly_fields = ('api_key','created_date', 'qrcode', 'last_activity', 'last_connection')
 
-    list_display = ('name', 'user', 'screen', 'api_key', 'was_active_recently', 'last_activity', 'last_connection',)
+    list_display = ('name', 'user', 'screen', 'api_key', 'was_active_recently', 'sleep_time', 'wake_time', 'is_idle', 'last_activity', 'last_connection',)
     list_filter = ['last_activity', 'created_date']
 
     search_fields = ['name']
