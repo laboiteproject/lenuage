@@ -84,81 +84,88 @@
                 			<div class="modal-body">
                                 <p>
                                     {% trans "Vous trouverez ci-dessous code Arduino à téléverser dans votre boîte. Si vous ne savez pas comment faire, suivez" %}
-                                    <a href="https://github.com/laboiteproject/lenuage/wiki/laboite-maker">{% trans "ce guide" %}</a>.
+                                    <a href="https://github.com/redgick/Redgick_Laboite#firmware">{% trans "ce guide" %}</a>.
                                 </p>
 <pre>
-<font color="#95a5a6">&#47;&#47; Two modules MAX7219 4 in 1 connected in series to compose a monochrome 32x16 LED matrix</font>
-<font color="#5e6d03">#include</font> <font color="#95a5a6">&lt;</font><b><font color="#d35400">Redgick_MatrixMAX72XX</font></b><font color="#95a5a6">.</font><font color="#000000">h</font><font color="#95a5a6">&gt;</font>
-<b><font color="#d35400">Redgick_MatrixMAX72XX</font></b> <font color="#000000">afficheur</font><font color="#000000">;</font>
+<font color="#95a5a6">&#47;*</font>
+<font color="#95a5a6"> &nbsp;&nbsp;Firmware for the connected display &#34;laboite maker&#34; by Redgick.</font>
+<font color="#95a5a6">*&#47;</font>
 
-<font color="#95a5a6">&#47;&#47; We need a WiFi connection</font>
-<font color="#5e6d03">#include</font> <font color="#95a5a6">&lt;</font><font color="#000000">ESP8266WiFi</font><font color="#95a5a6">.</font><font color="#000000">h</font><font color="#95a5a6">&gt;</font>
-<font color="#5e6d03">#include</font> <font color="#95a5a6">&lt;</font><b><font color="#d35400">WiFiManager</font></b><font color="#95a5a6">.</font><font color="#000000">h</font><font color="#95a5a6">&gt;</font> &nbsp;<font color="#95a5a6">&#47;&#47;</font><u><font color="#95a5a6">https:&#47;&#47;github.com&#47;tzapu&#47;WiFiManager</font></u><font color="#95a5a6"></font>
+<font color="#434f54">&#47;&#47; Two modules MAX7219 4 in 1 connected in series to get 32×16 LED dotmatrix</font>
+<font color="#5e6d03">#include</font> <font color="#434f54">&lt;</font><b><font color="#d35400">Redgick_MatrixMAX72XX</font></b><font color="#434f54">.</font><font color="#000000">h</font><font color="#434f54">&gt;</font>
+<b><font color="#d35400">Redgick_MatrixMAX72XX</font></b> <font color="#000000">matrix</font><font color="#000000">;</font>
 
-<font color="#95a5a6">&#47;&#47; laboite library !</font>
-<font color="#5e6d03">#include</font> <font color="#95a5a6">&lt;</font><b><font color="#d35400">Redgick_Laboite</font></b><font color="#95a5a6">.</font><font color="#000000">h</font><font color="#95a5a6">&gt;</font>
+<font color="#434f54">&#47;&#47; We need a WiFi connection</font>
+<font color="#5e6d03">#include</font> <font color="#434f54">&lt;</font><font color="#d35400">ESP8266WiFi</font><font color="#434f54">.</font><font color="#000000">h</font><font color="#434f54">&gt;</font>
+<font color="#5e6d03">#include</font> <font color="#434f54">&lt;</font><b><font color="#d35400">WiFiManager</font></b><font color="#434f54">.</font><font color="#000000">h</font><font color="#434f54">&gt;</font> &nbsp;<font color="#434f54">&#47;&#47;</font><u><font color="#434f54">https:&#47;&#47;github.com&#47;tzapu&#47;WiFiManager</font></u><font color="#434f54"></font>
 
-<font color="#95a5a6">&#47;&#47; Welcome screen</font>
-<b><font color="#d35400">Screen</font></b> <font color="#000000">welcome</font><font color="#000000">(</font><font color="#000000">32</font><font color="#95a5a6">,</font> <font color="#000000">{% if boite.screen == 0 %}8{% else %}16{% endif %}</font><font color="#95a5a6">,</font> <font color="#00979c">MONOCHROME</font><font color="#000000">)</font><font color="#000000">;</font> <font color="#95a5a6">&#47;&#47; with, height, colors);</font>
+<font color="#434f54">&#47;&#47; laboite library !</font>
+<font color="#5e6d03">#include</font> <font color="#434f54">&lt;</font><b><font color="#d35400">Redgick_Laboite</font></b><font color="#434f54">.</font><font color="#000000">h</font><font color="#434f54">&gt;</font>
 
-<font color="#95a5a6">&#47;&#47; Backend connection</font>
+<font color="#434f54">&#47;&#47; Welcome screen</font>
+<b><font color="#d35400">Screen</font></b> <font color="#000000">welcome</font><font color="#000000">(</font><font color="#000000">32</font><font color="#434f54">,</font> <font color="#000000">16</font><font color="#434f54">,</font> <font color="#00979c">MONOCHROME</font><font color="#000000">)</font><font color="#000000">;</font> <font color="#434f54">&#47;&#47; with, height, colors);</font>
+
+<font color="#434f54">&#47;&#47; Backend connection</font>
 <b><font color="#d35400">Lenuage</font></b> <font color="#000000">lenuage</font><font color="#000000">(</font>
- &nbsp;<font color="#005c5f">&#34;http:&#47;&#47;lenuage.io&#34;</font><font color="#95a5a6">,</font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#95a5a6">&#47;&#47; server url</font>
- &nbsp;<font color="#005c5f">&#34;{{ boite.api_key }}&#34;</font><font color="#95a5a6">,</font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#95a5a6">&#47;&#47; api key</font>
- &nbsp;<font color="#005c5f">&#34;5B:BE:97:10:EB:11:05:EC:FA:1C:18:5F:09:C6:6B:26:28:C7:DE:C9&#34;</font>&nbsp;<font color="#95a5a6">&#47;&#47; SHA1 fingerprint</font>
+ &nbsp;<font color="#005c5f">&#34;http:&#47;&#47;lenuage.io&#34;</font><font color="#434f54">,</font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; server url</font>
+ &nbsp;<font color="#005c5f">&#34;{{ boite.api_key }}&#34;</font><font color="#434f54">,</font> &nbsp;&nbsp;<font color="#434f54">&#47;&#47; api key</font>
+ &nbsp;<font color="#434f54">&#47;&#47; the server ssl fingerprint is needed for a HTTPS connection</font>
+ &nbsp;<font color="#434f54">&#47;&#47; get it using the following command in a terminal:</font>
+ &nbsp;<font color="#434f54">&#47;&#47; echo | openssl s_client -connect lenuage.io:443 |&amp; openssl x509 -fingerprint -noout</font>
+ &nbsp;<font color="#005c5f">&#34;AD:4D:92:32:D3:D2:5A:C4:5B:62:B6:B4:94:BF:10:94:4F:71:A5:5A&#34;</font>
 <font color="#000000">)</font><font color="#000000">;</font>
 
 <font color="#00979c">void</font> <font color="#5e6d03">setup</font><font color="#000000">(</font><font color="#000000">)</font> <font color="#000000">{</font>
- &nbsp;<font color="#95a5a6">&#47;&#47; Serial initialization for debugging</font>
- &nbsp;<b><font color="#d35400">Serial</font></b><font color="#95a5a6">.</font><font color="#d35400">begin</font><font color="#000000">(</font><font color="#000000">115200</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#434f54">&#47;&#47; Serial initialization for debugging</font>
+ &nbsp;<b><font color="#d35400">Serial</font></b><font color="#434f54">.</font><font color="#d35400">begin</font><font color="#000000">(</font><font color="#000000">9600</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; Display initialization</font>
- &nbsp;<font color="#000000">afficheur</font><font color="#95a5a6">.</font><font color="#d35400">init</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
- &nbsp;<font color="#000000">afficheur</font><font color="#95a5a6">.</font><font color="#d35400">intensity</font><font color="#000000">(</font><font color="#000000">10</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#434f54">&#47;&#47; Display initialization</font>
+ &nbsp;<font color="#000000">matrix</font><font color="#434f54">.</font><font color="#d35400">init</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#000000">matrix</font><font color="#434f54">.</font><font color="#d35400">intensity</font><font color="#000000">(</font><font color="#000000">10</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; message d&#39;accueil</font>
- &nbsp;<font color="#000000">welcome</font><font color="#95a5a6">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">0</font><font color="#95a5a6">,</font> <font color="#000000">2</font><font color="#95a5a6">,</font> <font color="#005c5f">&#34;la&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
- &nbsp;<font color="#000000">welcome</font><font color="#95a5a6">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">1</font><font color="#95a5a6">,</font> <font color="#000000">9</font><font color="#95a5a6">,</font> <font color="#005c5f">&#34;boite&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
- &nbsp;<font color="#000000">afficheur</font><font color="#95a5a6">.</font><font color="#d35400">display</font><font color="#000000">(</font><font color="#000000">welcome</font><font color="#95a5a6">.</font><font color="#d35400">getBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#434f54">&#47;&#47; Welcome message</font>
+ &nbsp;<font color="#000000">welcome</font><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">0</font><font color="#434f54">,</font> <font color="#000000">2</font><font color="#434f54">,</font> <font color="#005c5f">&#34;la&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#000000">welcome</font><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">1</font><font color="#434f54">,</font> <font color="#000000">9</font><font color="#434f54">,</font> <font color="#005c5f">&#34;boite&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#000000">matrix</font><font color="#434f54">.</font><font color="#d35400">display</font><font color="#000000">(</font><font color="#000000">welcome</font><font color="#434f54">.</font><font color="#d35400">getBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; we start by connecting to a WiFi network</font>
+ &nbsp;<font color="#434f54">&#47;&#47; Connecting to a wifi network using WiFiManager</font>
  &nbsp;<b><font color="#d35400">WiFiManager</font></b> <font color="#000000">wifiManager</font><font color="#000000">;</font>
- &nbsp;<font color="#000000">wifiManager</font><font color="#95a5a6">.</font><font color="#d35400">autoConnect</font><font color="#000000">(</font><font color="#005c5f">&#34;laboite&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#000000">wifiManager</font><font color="#434f54">.</font><font color="#d35400">autoConnect</font><font color="#000000">(</font><font color="#005c5f">&#34;laboite&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; We get a connection !</font>
- &nbsp;<font color="#000000">welcome</font><font color="#95a5a6">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">27</font><font color="#95a5a6">,</font> <font color="#000000">0</font><font color="#95a5a6">,</font> <font color="#005c5f">&#34;c&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
- &nbsp;<font color="#000000">afficheur</font><font color="#95a5a6">.</font><font color="#d35400">display</font><font color="#000000">(</font><font color="#000000">welcome</font><font color="#95a5a6">.</font><font color="#d35400">getBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#434f54">&#47;&#47; We get a connection !</font>
+ &nbsp;<font color="#000000">welcome</font><font color="#434f54">.</font><font color="#d35400">print</font><font color="#000000">(</font><font color="#000000">27</font><font color="#434f54">,</font> <font color="#000000">0</font><font color="#434f54">,</font> <font color="#005c5f">&#34;c&#34;</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#000000">matrix</font><font color="#434f54">.</font><font color="#d35400">display</font><font color="#000000">(</font><font color="#000000">welcome</font><font color="#434f54">.</font><font color="#d35400">getBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; First tiles buffer update</font>
- &nbsp;<font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">updateBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#434f54">&#47;&#47; First tiles buffer update</font>
+ &nbsp;<font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">updateBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
 <font color="#000000">}</font>
 
-<font color="#00979c">int</font> <font color="#000000">current_id</font> <font color="#95a5a6">=</font> <font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">getNextTile</font><font color="#000000">(</font><font color="#000000">0</font><font color="#000000">)</font><font color="#000000">;</font>
-
+<font color="#00979c">int</font> <font color="#000000">currentId</font> <font color="#434f54">=</font> <font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">getNextTile</font><font color="#000000">(</font><font color="#000000">0</font><font color="#000000">)</font><font color="#000000">;</font>
 <font color="#00979c">void</font> <font color="#5e6d03">loop</font><font color="#000000">(</font><font color="#000000">)</font> <font color="#000000">{</font>
- &nbsp;<font color="#95a5a6">&#47;&#47; Current tile displaying</font>
- &nbsp;<font color="#000000">afficheur</font><font color="#95a5a6">.</font><font color="#d35400">intensity</font><font color="#000000">(</font><font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">getTile</font><font color="#000000">(</font><font color="#000000">current_id</font><font color="#000000">)</font><font color="#95a5a6">.</font><font color="#d35400">getBrightness</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
- &nbsp;<font color="#000000">afficheur</font><font color="#95a5a6">.</font><font color="#d35400">display</font><font color="#000000">(</font><font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">getTile</font><font color="#000000">(</font><font color="#000000">current_id</font><font color="#000000">)</font><font color="#95a5a6">.</font><font color="#d35400">getScreen</font><font color="#000000">(</font><font color="#000000">)</font><font color="#95a5a6">.</font><font color="#d35400">getBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#434f54">&#47;&#47; Current tile displaying</font>
+ &nbsp;<font color="#000000">matrix</font><font color="#434f54">.</font><font color="#d35400">intensity</font><font color="#000000">(</font><font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">getTile</font><font color="#000000">(</font><font color="#000000">currentId</font><font color="#000000">)</font><font color="#434f54">.</font><font color="#d35400">getBrightness</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#000000">matrix</font><font color="#434f54">.</font><font color="#d35400">display</font><font color="#000000">(</font><font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">getTile</font><font color="#000000">(</font><font color="#000000">currentId</font><font color="#000000">)</font><font color="#434f54">.</font><font color="#d35400">getScreen</font><font color="#000000">(</font><font color="#000000">)</font><font color="#434f54">.</font><font color="#d35400">getBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; Top !</font>
- &nbsp;<font color="#00979c">unsigned</font> <font color="#00979c">long</font> <font color="#000000">top</font> <font color="#95a5a6">=</font> <font color="#d35400">millis</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#434f54">&#47;&#47; Top !</font>
+ &nbsp;<font color="#00979c">unsigned</font> <font color="#00979c">long</font> <font color="#000000">top</font> <font color="#434f54">=</font> <font color="#d35400">millis</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; Tiles buffer update</font>
- &nbsp;<font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">updateBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
-
- &nbsp;<font color="#95a5a6">&#47;&#47; Debugging :</font>
- &nbsp;<font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">printBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
-
- &nbsp;<font color="#95a5a6">&#47;&#47; We wait before displaying the next tile</font>
- &nbsp;<font color="#00979c">unsigned</font> <font color="#00979c">int</font> <font color="#000000">delai</font> <font color="#95a5a6">=</font> <font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">getTile</font><font color="#000000">(</font><font color="#000000">current_id</font><font color="#000000">)</font><font color="#95a5a6">.</font><font color="#d35400">getDuration</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
- &nbsp;<font color="#5e6d03">while</font> <font color="#000000">(</font><font color="#d35400">millis</font><font color="#000000">(</font><font color="#000000">)</font> <font color="#95a5a6">&lt;</font> <font color="#000000">top</font> <font color="#95a5a6">+</font> <font color="#000000">delai</font><font color="#000000">)</font> <font color="#000000">{</font>
- &nbsp;&nbsp;&nbsp;<font color="#d35400">delay</font><font color="#000000">(</font><font color="#000000">50</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#5e6d03">if</font><font color="#000000">(</font><font color="#000000">currentId</font> <font color="#434f54">==</font> <font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">getNextTile</font><font color="#000000">(</font><font color="#000000">0</font><font color="#000000">)</font><font color="#000000">)</font> <font color="#000000">{</font>
+ &nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Tiles buffer update</font>
+ &nbsp;&nbsp;&nbsp;<font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">updateBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;
+ &nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Debugging :</font>
+ &nbsp;&nbsp;&nbsp;<font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">printBuffer</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
  &nbsp;<font color="#000000">}</font>
+ &nbsp;
+ &nbsp;<font color="#434f54">&#47;&#47; We wait before displaying the next tile</font>
+ &nbsp;<font color="#00979c">unsigned</font> <font color="#00979c">int</font> <font color="#000000">duration</font> <font color="#434f54">=</font> <font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">getTile</font><font color="#000000">(</font><font color="#000000">currentId</font><font color="#000000">)</font><font color="#434f54">.</font><font color="#d35400">getDuration</font><font color="#000000">(</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#5e6d03">while</font> <font color="#000000">(</font><font color="#d35400">millis</font><font color="#000000">(</font><font color="#000000">)</font> <font color="#434f54">&lt;</font> <font color="#000000">top</font> <font color="#434f54">+</font> <font color="#000000">duration</font><font color="#000000">)</font>
+ &nbsp;&nbsp;&nbsp;<font color="#d35400">delay</font><font color="#000000">(</font><font color="#000000">50</font><font color="#000000">)</font><font color="#000000">;</font>
 
- &nbsp;<font color="#95a5a6">&#47;&#47; Which is the next tile ?</font>
- &nbsp;<font color="#000000">current_id</font> <font color="#95a5a6">=</font> <font color="#000000">lenuage</font><font color="#95a5a6">.</font><font color="#d35400">getNextTile</font><font color="#000000">(</font><font color="#000000">current_id</font><font color="#000000">)</font><font color="#000000">;</font>
-
+ &nbsp;<font color="#434f54">&#47;&#47; Which is the next tile ?</font>
+ &nbsp;<font color="#000000">currentId</font> <font color="#434f54">=</font> <font color="#000000">lenuage</font><font color="#434f54">.</font><font color="#d35400">getNextTile</font><font color="#000000">(</font><font color="#000000">currentId</font><font color="#000000">)</font><font color="#000000">;</font>
 <font color="#000000">}</font>
+
 </pre>
                 			</div>
                 			<div class="modal-footer">
