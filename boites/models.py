@@ -95,7 +95,7 @@ class Boite(models.Model):
     def is_idle(self):
         if self.sleep_time and self.wake_time:
             now = timezone.now()
-            return now.time() < self.wake_time and now.time() > self.sleep_time
+            return now.time() < self.wake_time or now.time() > self.sleep_time
         return False
 
     def get_apps_dictionary(self):
