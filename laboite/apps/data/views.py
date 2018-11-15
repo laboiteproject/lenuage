@@ -10,11 +10,11 @@ from pygments.formatters import HtmlFormatter
 
 class AppDataCreateView(AppCreateView):
     model = AppData
-    fields = ['url']
+    fields = ['url', 'prepend', 'append']
 
 class AppDataUpdateView(AppUpdateView):
     model = AppData
-    fields = ['url', 'json_path', 'enabled']
+    fields = ['url', 'prepend', 'append', 'json_path', 'enabled']
 
 class AppDataDeleteView(AppDeleteView):
     model = AppData

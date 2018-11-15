@@ -6,7 +6,7 @@ from .models import AppData
 class AppDataAdmin(admin.ModelAdmin):
     readonly_fields = ('data',)
 
-    list_display = ('data', 'boite', 'enabled', 'created_date', 'last_activity')
+    list_display = ('data', 'prepend', 'append', 'boite', 'enabled', 'created_date', 'last_activity')
 
 
 admin.site.register(AppData, AppDataAdmin)

@@ -4,6 +4,6 @@
 
 {% block app_icon %}database{% endblock %}
 {% block app_data %}
-  <span class="badge">{{ app.instance.data }}</span>
+  <span class="badge">{{ app.instance.prepend }}{{ app.instance.data }}{{ app.instance.append }}</span>
 {% endblock %}
 {% block app_description %}{% trans "Affiche une donnée provenant d'une API web de votre choix" %}{% endblock %}
