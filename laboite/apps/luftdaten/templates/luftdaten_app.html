@@ -1,0 +1,9 @@
+{% extends "boites/boite_app.html" %}
+
+{% load i18n %}
+
+{% block app_icon %}home{% endblock %}
+{% block app_data %}
+<span class="badge">{{ app.instance.get_aqi_display }}</span>
+{% endblock %}
+{% block app_description %}{% trans "Affiche la qualité de l'air dans votre ville" %}{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "boites/boite_app.html" %}
+
+{% load i18n %}
+
+{% block app_icon %}leaf{% endblock %}
+{% block app_data %}
+{% with aqi=app.instance.aqi_today %}
+  {% if aqi < 5 %}
+    <span class="badge">{{ app.instance.aqi_today }} {% trans "(Bon)" %}</span>
+  {% elif aqi < 8 %}
+    <span class="badge">{{ app.instance.aqi_today }} {% trans "(Moyen)" %}</span>
+  {% else %}
+    <span class="badge">{{ app.instance.aqi_today }} {% trans "(Mauvais)" %}</span>
+  {% endif %}
+{% endwith %}
+{% endblock %}
+{% block app_description %}{% trans "Affiche la qualité de l'air dans votre ville" %}{% endblock %}

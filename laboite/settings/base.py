@@ -139,6 +139,8 @@ LABOITE_APPS = [
     "laboite.apps.coffees",
     "laboite.apps.cryptocurrency",
     "laboite.apps.data",
+    "laboite.apps.airquality",
+    "laboite.apps.luftdaten",
 ]
 
 INSTALLED_APPS = [
@@ -246,6 +248,10 @@ GOOGLE_MAPS_BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 
 # Weather
 OWM_APIKEY = ''
+
+# Airquality
+AIRBZH_URL = 'http://data.airbreizh.asso.fr/geoserver/airbreizh_ind_bretagne/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=airbreizh_ind_bretagne:airbreizh_ind_prevision_bretagne&outputFormat=application%2Fjson'
+LUFTDATEN_URL = 'https://api.luftdaten.info/v1/sensor/'
 
 # IFTT
 IFTTT_API_BASE_URL = 'https://maker.ifttt.com/trigger/'
