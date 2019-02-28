@@ -32,7 +32,16 @@ class AppLuftdaten(App):
                     'x': 0,
                     'y': 0,
                     'color': 1,
-					'content': '0x080502210494954411fc',
+                    'content': '0x081422419455417f',
+                },
+                {
+                    'type': 'bitmap',
+                    'width': 2,
+                    'height': 2,
+                    'x': 8,
+                    'y': 12,
+                    'color': 1,
+                    'content': '0x800',
                 },
                 {
                     'type': 'text',

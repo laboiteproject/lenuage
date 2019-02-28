@@ -23,12 +23,12 @@ class AppAirQuality(App):
             'data': [
                 {
                     'type': 'bitmap',
-                    'width': 10,
+                    'width': 8,
                     'height': 10,
                     'x': 0,
                     'y': 0,
                     'color': 1,
-					'content': '0x18010f8802ff000fc00804000',
+					'content': '0x6010e202fc00f0081000',
                 },
                 {
                     'type': 'text',
