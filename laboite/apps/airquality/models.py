@@ -24,7 +24,7 @@ class AppAirQuality(App):
                 {
                     'type': 'bitmap',
                     'width': 10,
-                    'height': 8,
+                    'height': 10,
                     'x': 0,
                     'y': 0,
                     'color': 1,

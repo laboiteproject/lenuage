@@ -32,7 +32,7 @@ class AppLuftdaten(App):
                     'x': 0,
                     'y': 0,
                     'color': 1,
-					'content': '0x080502210494954411fc0',
+					'content': '0x080502210494954411fc',
                 },
                 {
                     'type': 'text',
