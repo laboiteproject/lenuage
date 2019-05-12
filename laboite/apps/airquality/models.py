@@ -28,7 +28,7 @@ class AppAirQuality(App):
                     'x': 0,
                     'y': 0,
                     'color': 1,
-					'content': '0x6010e202fc00f0081000',
+                    'content': '0x6010e202fc00f0081000',
                 },
                 {
                     'type': 'text',
@@ -37,8 +37,7 @@ class AppAirQuality(App):
                     'x': 10,
                     'y': 1,
                     'color': 2,
-					'font': 1,
-					'content':  self.convert_airbzh_atmo(self.aqi_today),
+                    'content':  self.convert_airbzh_atmo(self.aqi_today),
                 },
             ]
         }
