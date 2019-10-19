@@ -14,7 +14,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-switch": "^3.3.4",
     "font-awesome": "^4.7.0",
-    "jquery": "^2.2.4",
+    "jquery": "^3.4.1",
     "watch": "^1.0.2"
   },
   "babel": {
