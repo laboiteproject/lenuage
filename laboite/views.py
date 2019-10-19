@@ -11,3 +11,6 @@ def home_view(request):
             apps_list.append({'verbose_name':verbose_name[16:], 'pk':'homepage', 'app_label': model._meta.app_label})
 
     return render(request, 'homepage.html', {'apps': apps_list})
+
+def help_view(request):
+    return render(request, 'help.html')

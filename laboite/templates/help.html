@@ -1,0 +1,34 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }}{% endif %}{% endblock %}
+
+{% block body_class %}help{% endblock %}
+
+{% block body_base %}
+  {% include "_messages.html" %}
+  <section class="jumbotron" style="background: white">
+
+  <div class="container">
+    <p class="lead">{% blocktrans %}Besoin d'aide ? Merci de choisir quel sujet
+      vous intéresse :{% endblocktrans %}
+    </p>
+    <div class="row">
+      <div class="col-lg-6 text-center">
+        <a href="https://github.com/laboiteproject/lenuage/wiki/Guide">
+          <img src="{% static 'img/lenuage.svg' %}" class="img-fluid" width=480px alt="lenuage" ><br>
+          <p>Guides lenuage</p>
+        </a>
+      </div>
+      <div class="col-lg-6 text-center">
+        <a href="https://github.com/laboiteproject/laboite-maker/wiki">
+          <img src="{% static 'img/laboite.svg' %}" class="img-fluid" width=480px alt="laboite" ><br>
+          <p>Guides laboite</p>
+        </a>
+      </div>
+    </div>
+  </div>
+  </section>
+{% endblock %}
