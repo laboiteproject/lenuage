@@ -257,4 +257,4 @@ LUFTDATEN_URL = 'https://api.luftdaten.info/v1/sensor/'
 IFTTT_API_BASE_URL = 'https://maker.ifttt.com/trigger/'
 
 # Cryptocurrency
-COINMARKETCAP_BASE_URL = 'https://api.coinmarketcap.com/v2/ticker/'
+BLOCKCHAIN_BASE_URL = 'https://blockchain.info/ticker'

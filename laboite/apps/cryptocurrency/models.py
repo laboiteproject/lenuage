@@ -13,7 +13,7 @@ from boites.models import App, MINUTES
 
 
 class AppCryptocurrency(App):
-    UPDATE_INTERVAL = 10 * MINUTES
+    UPDATE_INTERVAL = 30 * MINUTES
 
     CRYPTOCURRENCY_CHOICES = (
         ('bitcoin', _('Bitcoin')),
@@ -71,17 +71,10 @@ class AppCryptocurrency(App):
         }
 
     def update_data(self):
-        params = {'convert': self.currency,
-                  'structure': 'array',
-                  'limit': 20}
-        r = requests.get(settings.COINMARKETCAP_BASE_URL, params=params)
-
-        # FIXME: this means the wanted crypto has to be in the 20 results,
-        # if it is not anymore, we'll never get its value
-        for data in r.json()['data']:
-            if data['website_slug'] == self.cryptocurrency:
-                self.value = decimal.Decimal(data['quotes'][self.currency]['price'])
-                break
+        r = requests.get(settings.BLOCKCHAIN_BASE_URL)
+        most_recent_market_price = r.json().get(self.currency).get('15m')
+        if most_recent_market_price:
+            self.value = most_recent_market_price
         else:
             # Crypto not found
             self.value = 0
