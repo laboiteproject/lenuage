@@ -1,9 +1,5 @@
 language: python
 sudo: false
-addons:
-  code_climate:
-    repo_token:
-      secure: "WFLmcRXis4SKFy4XOLagkmjcF7lBL8fJlBBHCwy1nhEZfZjv2jwuIRgUAYgjUp1w+osRNXUjuOdNqI386Ch1UHEgLVv6wm1dWpcnkAu/McwmlhthLk/pX5ZUdvDwZ0o5y917+M6vTEnHr0yP7yLRnOnqx0uQrsrns26vDENH2P/MuTf0oSe6sf1iIVKCngj8z1Dt4TseCWVQQgkEhW13cDyYteochUTU7HNUF/ThxVu2mtcK4NvlwQcVCGIanV+V+OMIS7fB+ao6ICZbgRgbUA2eDVf3O/+Gu9EJJL9rsb6GlDwITRRyYPKImQSprRnk3KbGCceGWCb+35ZWKjcBzjrkVGx3J5H3G6mta5FVJMgytRHBtfCQM7m/cER+9COZ7ds+p5RJAVLdwuCxm7Ag9Q3K4rhyvFBqbBIW6HRCp/TWJUjKZuhUQclxdoBzvRMybtOT8PMCKNCNcEk90Xpasn+qzsu8TdEFd6Ada/3pIdj2oQDgT0UE6XtbHEb6yNtqv8IoP0BnD5BDmn4foqtN+QGnOplzcTxxOqqNCcIogRPffDNgv9dEXHpDBrzLBigUCMIMjfJ3UNwLZRQ1YB6x1Ji3beG7J2WmdL5JH8/LkYYJrGq1uXy7Mw79MZsJKkwI3CELGU71m5eG3IctcIniqE5J3XXUPt5/J/xbWuFAFtE="
 python:
   - '3.6'
   - '3.7'
@@ -12,7 +8,5 @@ python:
 install:
   - pip install -r requirements/requirements.txt
   - pip install -r requirements/tests.txt
-  - pip install codeclimate-test-reporter
 script:
   - pytest
-  - codeclimate-test-reporter
