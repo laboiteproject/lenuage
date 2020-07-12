@@ -7,7 +7,7 @@ django-gravatar2==1.4.0
 Django<2
 pinax-theme-bootstrap==7.10.2
 pyowm==2.4.0
-requests==2.9.2
+requests==2.24.0
 icalendar>=3.10
 unidecode>=0.04.21
 asana==0.5.1
