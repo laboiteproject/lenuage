@@ -1,0 +1,42 @@
+---
+name: Continuous Integration
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+
+jobs:
+  flake8:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install flake8
+        run: pip3 install flake8
+      - name: Run flake8
+        run: flake8
+
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - 3.6
+          - 3.7
+          - 3.8
+    name: pytest with Python ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip3 install -r requirements/requirements.txt -r requirements/tests.txt
+      - name: Run pytest
+        run: py.test
