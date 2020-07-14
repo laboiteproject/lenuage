@@ -12,10 +12,28 @@ import requests
 class AppEnergy(App):
     UPDATE_INTERVAL = 30 * MINUTES
 
-    url = models.URLField(_('URL du serveur emoncms'), help_text=_("Veuillez indiquer l'adresse de votre serveur emoncms"), default='https://emoncms.org/', null=False)
-    power_feedid = models.PositiveIntegerField(_('Identifiant flux puissance instantanée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation instantannée (en watts)'), default=None, null=True)
-    kwhd_feedid = models.PositiveIntegerField(_('Identifiant flux consommation cumulée'), help_text=_('Veuillez saisir le numéro du flux lié à votre consommation cumulée (en kWh/j)'), default=None, null=True)
-    emoncms_read_apikey = models.CharField(_("Clé d'API emoncms"), help_text=_("Veuillez indiquer votre clé d'API emoncms (lecture seule)"), max_length=32, default=None, null=True)
+    url = models.URLField(_('URL du serveur emoncms'),
+                          help_text=_("Veuillez indiquer l'adresse de votre serveur emoncms"),
+                          default='https://emoncms.org/', null=False)
+    power_feedid = models.PositiveIntegerField(
+        _('Identifiant flux puissance instantanée'),
+        help_text=_('Veuillez saisir le numéro du flux lié à votre consommation instantannée (en watts)'),
+        default=None,
+        null=True
+    )
+    kwhd_feedid = models.PositiveIntegerField(
+        _('Identifiant flux consommation cumulée'),
+        help_text=_('Veuillez saisir le numéro du flux lié à votre consommation cumulée (en kWh/j)'),
+        default=None,
+        null=True
+    )
+    emoncms_read_apikey = models.CharField(
+        _("Clé d'API emoncms"),
+        help_text=_("Veuillez indiquer votre clé d'API emoncms (lecture seule)"),
+        max_length=32,
+        default=None,
+        null=True
+    )
     power = models.PositiveSmallIntegerField(_('Consommation instantanée'), default=None, null=True)
     day0 = models.PositiveSmallIntegerField(_('Consommation j-6 (en kWh)'), default=None, null=True)
     day1 = models.PositiveSmallIntegerField(_('Consommation j-5 (en kWh)'), default=None, null=True)
@@ -65,7 +83,7 @@ class AppEnergy(App):
             if self.day6 > self.day5:
                 bitmap = '0x2070f8'
                 color = 1
-        except :
+        except Exception:
             self.day6 = 0
         return {
             'width': 32,
@@ -78,7 +96,7 @@ class AppEnergy(App):
                     'x': 0,
                     'y': 1,
                     'color': color,
-					'content': bitmap,
+                    'content': bitmap,
                 },
                 {
                     'type': 'text',
@@ -87,8 +105,8 @@ class AppEnergy(App):
                     'x': 6,
                     'y': 0,
                     'color': 2,
-					'font': 1,
-					'content': '%skWh' % self.day6,
+                    'font': 1,
+                    'content': '%skWh' % self.day6,
                 },
             ]
         }

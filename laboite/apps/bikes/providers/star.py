@@ -18,11 +18,11 @@ class StarProvider(base.BaseProvider):
             # Querying idstation with a string value raises an error, we remove this field
             query = 'nom:{}'.format(query)
         req = requests.get(settings.STAR_API_BASE_URL, params={'apikey': settings.STAR_API_KEY,
-                                                          'dataset': 'vls-stations-etat-tr',
-                                                          'fields': 'idstation,nom',
-                                                          'q': query,
-                                                          'sort': 'nom',
-                                                          'timezone': timezone.get_current_timezone_name()})
+                                                               'dataset': 'vls-stations-etat-tr',
+                                                               'fields': 'idstation,nom',
+                                                               'q': query,
+                                                               'sort': 'nom',
+                                                               'timezone': timezone.get_current_timezone_name()})
         if not req.ok:
             return ()
         data = req.json()

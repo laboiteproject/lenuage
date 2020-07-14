@@ -7,7 +7,6 @@ from boites.models import MINUTES, App
 from weboob.core import Weboob
 from weboob.capabilities.base import NotLoaded
 
-
 WEBOOB_MODULES_CHOICES = (
     ('chronopost', _('Chronopost')),
     ('colisprive', _('Colis privé')),
@@ -18,7 +17,6 @@ WEBOOB_MODULES_CHOICES = (
     ('itella', _('Itella')),
     ('ups', _('UPS')),
 )
-
 
 WEBOOB_PARCEL_STATUS_CHOICES = (
     (0, _('Inconnu')),
@@ -31,10 +29,14 @@ WEBOOB_PARCEL_STATUS_CHOICES = (
 class AppParcel(App):
     UPDATE_INTERVAL = 10 * MINUTES
 
-    parcel = models.CharField(_('Identifiant du colis'), help_text=_("Veuillez saisir l'identifiant de votre colis"), max_length=64, default=_('XX123456789FR'), null=False, blank=False)
-    parcel_carrier = models.CharField(_('Transporteur'), help_text=_('Veuillez indiquer le transporteur de votre colis'), max_length=16, default='chronopost', choices=WEBOOB_MODULES_CHOICES)
+    parcel = models.CharField(_('Identifiant du colis'), help_text=_("Veuillez saisir l'identifiant de votre colis"),
+                              max_length=64, default=_('XX123456789FR'), null=False, blank=False)
+    parcel_carrier = models.CharField(_('Transporteur'),
+                                      help_text=_('Veuillez indiquer le transporteur de votre colis'), max_length=16,
+                                      default='chronopost', choices=WEBOOB_MODULES_CHOICES)
     arrival = models.DateTimeField(_('Date de livraison'), null=True, default=None)
-    status = models.PositiveSmallIntegerField(_('Statut'), choices=WEBOOB_PARCEL_STATUS_CHOICES, default=None, null=True)
+    status = models.PositiveSmallIntegerField(_('Statut'), choices=WEBOOB_PARCEL_STATUS_CHOICES, default=None,
+                                              null=True)
     info = models.CharField(_('Informations'), max_length=64, null=True, blank=True)
     url = models.URLField(_('Lien vers le site du transporteur'), default=None, null=True)
 
@@ -62,21 +64,20 @@ class AppParcel(App):
                     'x': 0,
                     'y': 0,
                     'color': 2,
-					'content': '0xfe0ff8fe4fe2ffe802a0adf6208'
+                    'content': '0xfe0ff8fe4fe2ffe802a0adf6208'
                 },
                 {
                     'type': 'text',
-                    'width': len(str(parcel_status)) * 5+1,
+                    'width': len(str(parcel_status)) * 5 + 1,
                     'height': 8,
                     'x': 12,
                     'y': 2,
                     'color': 2,
-					'font': 1,
-					'content': "%s" % parcel_status,
+                    'font': 1,
+                    'content': "%s" % parcel_status,
                 },
             ]
         }
-
 
         return {'parcel': self.parcel,
                 'parcel_carrier': self.parcel_carrier,

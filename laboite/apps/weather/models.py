@@ -17,7 +17,8 @@ ICON_CHOICES = (
 
 class AppWeather(App):
     UPDATE_INTERVAL = 30 * MINUTES
-    city_name = models.CharField(_('Ville'), help_text=_('Veuillez saisir la ville où se trouve votre boîte'), max_length=64, default=_('Paris'))
+    city_name = models.CharField(_('Ville'), help_text=_('Veuillez saisir la ville où se trouve votre boîte'),
+                                 max_length=64, default=_('Paris'))
     temperature_now = models.PositiveSmallIntegerField(_('Température actuelle'), null=True)
     humidity_now = models.PositiveSmallIntegerField(_('Humidité actuelle'), null=True)
     icon_now = models.PositiveSmallIntegerField(_('Icône'), choices=ICON_CHOICES, default=1)
@@ -40,8 +41,8 @@ class AppWeather(App):
         self.save()
 
     def _get_data(self):
-        icon_color=3 if self.icon_now == 0 else 1
-        text_color=2 if self.temperature_now > 0 else 1
+        icon_color = 3 if self.icon_now == 0 else 1
+        text_color = 2 if self.temperature_now > 0 else 1
         return {
             'width': 32,
             'height': 10,
@@ -53,7 +54,7 @@ class AppWeather(App):
                     'x': 0,
                     'y': 0,
                     'color': icon_color,
-					'content': self.get_bitmap_icon(),
+                    'content': self.get_bitmap_icon(),
                 },
                 {
                     'type': 'text',
@@ -62,8 +63,8 @@ class AppWeather(App):
                     'x': 15,
                     'y': 2,
                     'color': text_color,
-					'font': 1,
-					'content': '%d*' % self.temperature_now,
+                    'font': 1,
+                    'content': '%d*' % self.temperature_now,
                 },
             ]
         }

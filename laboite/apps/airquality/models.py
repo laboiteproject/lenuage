@@ -12,7 +12,6 @@ class AppAirQuality(App):
     UPDATE_INTERVAL = 30 * MINUTES
 
     aqi_today = models.PositiveSmallIntegerField(_("Qualité de l'air pour aujourd'hui"), default=0)
-    #tomorrow = models.PositiveSmallIntegerField(_("Qualité de l'air pour demain"), default=0)
 
     def _get_data(self):
         return {
@@ -35,7 +34,7 @@ class AppAirQuality(App):
                     'x': 10,
                     'y': 1,
                     'color': 2,
-                    'content':  self.convert_airbzh_atmo(self.aqi_today),
+                    'content': self.convert_airbzh_atmo(self.aqi_today),
                 },
             ]
         }
@@ -51,9 +50,9 @@ class AppAirQuality(App):
         self.save()
 
     def convert_airbzh_atmo(self, aqi):
-        if aqi<5:
+        if aqi < 5:
             return "Bon"
-        elif aqi<8:
+        elif aqi < 8:
             return "Moyen"
         else:
             return "Mauvais"

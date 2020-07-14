@@ -9,96 +9,96 @@ from .models import AppCryptocurrency
 PAYLOAD = '''{
     "data": [
         {
-            "id": 1, 
-            "name": "Bitcoin", 
-            "symbol": "BTC", 
-            "website_slug": "bitcoin", 
-            "rank": 1, 
-            "circulating_supply": 17101312.0, 
-            "total_supply": 17101312.0, 
-            "max_supply": 21000000.0, 
+            "id": 1,
+            "name": "Bitcoin",
+            "symbol": "BTC",
+            "website_slug": "bitcoin",
+            "rank": 1,
+            "circulating_supply": 17101312.0,
+            "total_supply": 17101312.0,
+            "max_supply": 21000000.0,
             "quotes": {
                 "USD": {
-                    "price": 6741.72, 
-                    "volume_24h": 4027740000.0, 
-                    "market_cap": 115292257137.0, 
-                    "percent_change_1h": -0.12, 
-                    "percent_change_24h": 2.94, 
+                    "price": 6741.72,
+                    "volume_24h": 4027740000.0,
+                    "market_cap": 115292257137.0,
+                    "percent_change_1h": -0.12,
+                    "percent_change_24h": 2.94,
                     "percent_change_7d": -0.84
-                }, 
+                },
                 "EUR": {
-                    "price": 5809.3235674278, 
-                    "volume_24h": 3470693666.5230503, 
-                    "market_cap": 99347054836.0, 
-                    "percent_change_1h": -0.12, 
-                    "percent_change_24h": 2.94, 
+                    "price": 5809.3235674278,
+                    "volume_24h": 3470693666.5230503,
+                    "market_cap": 99347054836.0,
+                    "percent_change_1h": -0.12,
+                    "percent_change_24h": 2.94,
                     "percent_change_7d": -0.84
                 }
-            }, 
+            },
             "last_updated": 1529352875
-        }, 
+        },
         {
-            "id": 1027, 
-            "name": "Ethereum", 
-            "symbol": "ETH", 
-            "website_slug": "ethereum", 
-            "rank": 2, 
-            "circulating_supply": 100157190.0, 
-            "total_supply": 100157190.0, 
-            "max_supply": null, 
+            "id": 1027,
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "website_slug": "ethereum",
+            "rank": 2,
+            "circulating_supply": 100157190.0,
+            "total_supply": 100157190.0,
+            "max_supply": null,
             "quotes": {
                 "USD": {
-                    "price": 517.807, 
-                    "volume_24h": 1517790000.0, 
-                    "market_cap": 51862093855.0, 
-                    "percent_change_1h": -0.31, 
-                    "percent_change_24h": 2.96, 
+                    "price": 517.807,
+                    "volume_24h": 1517790000.0,
+                    "market_cap": 51862093855.0,
+                    "percent_change_1h": -0.31,
+                    "percent_change_24h": 2.96,
                     "percent_change_7d": -1.23
-                }, 
+                },
                 "EUR": {
-                    "price": 446.1930202499, 
-                    "volume_24h": 1307875915.5536406, 
-                    "market_cap": 44689438910.0, 
-                    "percent_change_1h": -0.31, 
-                    "percent_change_24h": 2.96, 
+                    "price": 446.1930202499,
+                    "volume_24h": 1307875915.5536406,
+                    "market_cap": 44689438910.0,
+                    "percent_change_1h": -0.31,
+                    "percent_change_24h": 2.96,
                     "percent_change_7d": -1.23
                 }
-            }, 
+            },
             "last_updated": 1529352861
-        }, 
+        },
         {
-            "id": 52, 
-            "name": "Ripple", 
-            "symbol": "XRP", 
-            "website_slug": "ripple", 
-            "rank": 3, 
-            "circulating_supply": 39245304677.0, 
-            "total_supply": 99991944394.0, 
-            "max_supply": 100000000000.0, 
+            "id": 52,
+            "name": "Ripple",
+            "symbol": "XRP",
+            "website_slug": "ripple",
+            "rank": 3,
+            "circulating_supply": 39245304677.0,
+            "total_supply": 99991944394.0,
+            "max_supply": 100000000000.0,
             "quotes": {
                 "USD": {
-                    "price": 0.537735, 
-                    "volume_24h": 269810000.0, 
-                    "market_cap": 21103573910.0, 
-                    "percent_change_1h": -1.04, 
-                    "percent_change_24h": 1.3, 
+                    "price": 0.537735,
+                    "volume_24h": 269810000.0,
+                    "market_cap": 21103573910.0,
+                    "percent_change_1h": -1.04,
+                    "percent_change_24h": 1.3,
                     "percent_change_7d": -8.05
-                }, 
+                },
                 "EUR": {
-                    "price": 0.4633649289, 
-                    "volume_24h": 232494614.39034897, 
-                    "market_cap": 18184897812.0, 
-                    "percent_change_1h": -1.04, 
-                    "percent_change_24h": 1.3, 
+                    "price": 0.4633649289,
+                    "volume_24h": 232494614.39034897,
+                    "market_cap": 18184897812.0,
+                    "percent_change_1h": -1.04,
+                    "percent_change_24h": 1.3,
                     "percent_change_7d": -8.05
                 }
-            }, 
+            },
             "last_updated": 1529353142
         }
-    ], 
+    ],
     "metadata": {
-        "timestamp": 1529352860, 
-        "num_cryptocurrencies": 1629, 
+        "timestamp": 1529352860,
+        "num_cryptocurrencies": 1629,
         "error": null
     }
 }'''
@@ -241,7 +241,6 @@ def test_format_price(app):
     app.value = decimal.Decimal('255.23333333')
     app.save()
     assert app.get_app_dictionary()['data'][0]['content'] == '255.2'
-
 
     app.value = decimal.Decimal('6340.23')
     app.save()

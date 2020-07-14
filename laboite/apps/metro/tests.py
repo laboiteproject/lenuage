@@ -1,10 +1,9 @@
-import json
 from datetime import timedelta
 
 import pytest
 from django.utils import timezone
 
-from .models import AppMetro, requests
+from .models import AppMetro
 
 PAST = timezone.now() - timedelta(minutes=31)
 NO_FAILURE = """

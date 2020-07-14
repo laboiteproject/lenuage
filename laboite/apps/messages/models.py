@@ -6,7 +6,9 @@ from boites.models import App
 
 
 class AppMessages(App):
-    message = models.TextField(_('Message'), help_text=_('Veuillez indiquer le message pour votre boîte (max. 140 caractères)'), max_length=140, default='', blank=True)
+    message = models.TextField(_('Message'),
+                               help_text=_('Veuillez indiquer le message pour votre boîte (max. 140 caractères)'),
+                               max_length=140, default='', blank=True)
 
     def _get_data(self):
         if not self.message:
@@ -22,8 +24,8 @@ class AppMessages(App):
                     'x': 0,
                     'y': 1,
                     'color': 2,
-					'font': 1,
-					'content': '%s' % self.message,
+                    'font': 1,
+                    'content': '%s' % self.message,
                 },
             ]
         }

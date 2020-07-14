@@ -67,7 +67,7 @@ class AppParking(App):
                     'x': 0,
                     'y': 0,
                     'color': 2,
-					'content': '0xff839999839f9f9fff'
+                    'content': '0xff839999839f9f9fff'
                 },
                 {
                     'type': 'text',
@@ -76,8 +76,8 @@ class AppParking(App):
                     'x': 9,
                     'y': 2,
                     'color': 2,
-					'font': 1,
-					'content': '%s' % self.available,
+                    'font': 1,
+                    'content': self.available,
                 }
             ]
         }

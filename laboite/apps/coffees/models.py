@@ -10,8 +10,11 @@ import requests
 class AppCoffees(App):
     UPDATE_INTERVAL = 5 * MINUTES
 
-    url = models.URLField(_('URL du serveur laclef'), help_text=_("Veuillez indiquer l'adresse de votre serveur laclef"), default='http://demo.laclef.cc/', null=False)
-    uid = models.CharField(_('Identifiant utilisateur'), help_text=_("Veuillez indiquer votre identifiant utilisateur"), max_length=32)
+    url = models.URLField(_('URL du serveur laclef'),
+                          help_text=_("Veuillez indiquer l'adresse de votre serveur laclef"),
+                          default='http://demo.laclef.cc/', null=False)
+    uid = models.CharField(_('Identifiant utilisateur'), help_text=_("Veuillez indiquer votre identifiant utilisateur"),
+                           max_length=32)
     daily = models.PositiveSmallIntegerField(_('Nombre de cafés consommés aujourd\'hui'), default=0)
     monthly = models.PositiveSmallIntegerField(_('Nombre de cafés consommés ce mois'), default=0)
 
@@ -27,7 +30,7 @@ class AppCoffees(App):
                     'x': 1,
                     'y': 0,
                     'color': 3,
-					'content': '0x482448ff85868478',
+                    'content': '0x482448ff85868478',
                 },
                 {
                     'type': 'text',
@@ -36,8 +39,8 @@ class AppCoffees(App):
                     'x': 11,
                     'y': 1,
                     'color': 2,
-					'font': 1,
-					'content':  '%s/%s' % (self.daily, self.monthly),
+                    'font': 1,
+                    'content': '%s/%s' % (self.daily, self.monthly),
                 },
             ]
         }

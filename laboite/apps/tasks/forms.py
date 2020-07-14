@@ -17,7 +17,7 @@ class ProjectIdWidget(forms.Select):
             self.choices = [(proj['id'], proj['name']) for proj in get_projects(asana_personal_access_token)]
             self.enable()
             return True
-        except:
+        except Exception:
             self.disable()
             return False
 

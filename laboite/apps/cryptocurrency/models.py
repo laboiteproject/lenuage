@@ -1,6 +1,4 @@
 # coding: utf-8
-import decimal
-
 import requests
 from django.conf import settings
 from django.db import models
