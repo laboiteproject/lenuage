@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.utils import translation, timezone
 
 from .models import AppTime

@@ -1,7 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
-
 from datetime import timedelta
 from io import BytesIO
 import logging
@@ -17,7 +14,6 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 import qrcode
 
@@ -30,9 +26,8 @@ MINUTES = 60
 HOURS = 3600
 
 
-@python_2_unicode_compatible
 class Boite(models.Model):
-    name = models.CharField(_(u'Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32, default=_('Ma boîte'))
+    name = models.CharField(_('Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32, default=_('Ma boîte'))
     user = models.ForeignKey(User, verbose_name=_('Utilisateur'), on_delete=models.CASCADE)
 
     SCREEN_CHOICES = (
@@ -120,7 +115,7 @@ class Boite(models.Model):
 
 
 class PushButton(models.Model):
-    api_key = models.SlugField(_(u"IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
+    api_key = models.SlugField(_("IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
     boite = models.OneToOneField(Boite, verbose_name=_('Boîte'), on_delete=models.CASCADE)
 
     last_triggered = models.DateTimeField(_('Dernière activité'), null=True)

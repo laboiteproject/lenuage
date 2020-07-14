@@ -1,5 +1,4 @@
 # coding: utf-8
-from __future__ import unicode_literals
 from django.utils.safestring import mark_safe
 from .models import AppData
 from boites.views import AppCreateView, AppUpdateView, AppDeleteView

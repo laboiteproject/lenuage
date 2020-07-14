@@ -1,6 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
 import json
 import logging
 
@@ -45,7 +43,7 @@ class BoiteListView(ListView):
                 content_type = ContentType.objects.get(app_label="laboite.apps.time", model="apptime")
                 tile_app = TileApp(tile=tile, object_id=app_time.id, content_type=content_type)
                 tile_app.save()
-                messages.success(self.request, _(u"Une app temps a été créée sur votre boîte !"))
+                messages.success(self.request, _("Une app temps a été créée sur votre boîte !"))
 
         return Boite.objects.filter(user=self.request.user).order_by("created_date")
 
@@ -156,7 +154,7 @@ class BoiteCreateView(SuccessMessageMixin, CreateView):
     model = Boite
     fields = ['name']
     template_name_suffix = '_create_form'
-    success_message = _(u"%(name)s a bien été créée !")
+    success_message = _("%(name)s a bien été créée !")
     success_url = reverse_lazy('boites:list')
 
     def form_valid(self, form):
@@ -217,7 +215,7 @@ class JSONResponseMixin(object):
         return JsonResponse(self.get_data(context), **response_kwargs)
 
     def get_data(self, context):
-        return context.get(u'object').get_data()
+        return context.get('object').get_data()
 
 
 class AppUpdateView(UpdateView, JSONResponseMixin):
