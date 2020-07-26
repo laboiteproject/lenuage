@@ -1,11 +1,11 @@
-from django.conf.urls import url
+from django.urls import path
 from django.contrib.auth.decorators import login_required
 
 from .views import AppBusUpdateView, AppBusCreateView, AppBusDeleteView, BusStopAutocomplete
 
 urlpatterns = [
-    url(r"^create/$", login_required(AppBusCreateView.as_view()), name="create"),
-    url(r"^(?P<pk>\d+)/$", login_required(AppBusUpdateView.as_view()), name="update"),
-    url(r"^(?P<pk>\d+)/delete/$", login_required(AppBusDeleteView.as_view()), name="delete"),
-    url(r"^stop-autocomplete/$", BusStopAutocomplete.as_view(), name="stop-autocomplete"),
+    path("create/", login_required(AppBusCreateView.as_view()), name="create"),
+    path("<int:pk>/", login_required(AppBusUpdateView.as_view()), name="update"),
+    path("<int:pk>/delete/", login_required(AppBusDeleteView.as_view()), name="delete"),
+    path("stop-autocomplete/", BusStopAutocomplete.as_view(), name="stop-autocomplete"),
 ]
