@@ -40,28 +40,3 @@ jobs:
         run: pip3 install -r requirements/requirements.txt -r requirements/tests.txt
       - name: Run pytest
         run: py.test
-
-  pytest-next-django-release:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      matrix:
-        python-version:
-          - 3.6
-          - 3.7
-          - 3.8
-        django-version:
-          - 2.0.13
-    name: "[Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }}] pytest"
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: pip3 install -r requirements/requirements.txt -r requirements/tests.txt
-      - name: Install Django ${{ matrix.django-version }}
-        run: pip install "Django==${{ matrix.django-version }}"
-      - name: Run pytest
-        run: py.test
