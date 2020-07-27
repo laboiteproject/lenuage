@@ -39,4 +39,4 @@ jobs:
       - name: Install dependencies
         run: pip3 install -r requirements/requirements.txt -r requirements/tests.txt
       - name: Run pytest
-        run: py.test
+        run: pytest
