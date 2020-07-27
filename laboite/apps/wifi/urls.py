@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from .views import AppWifiCreateView, AppWifiUpdateView, AppWifiDeleteView
 
+app_name = "laboite"
 
 urlpatterns = [
     path("create/", login_required(AppWifiCreateView.as_view()), name="create"),

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from .views import AppCryptocurrencyCreateView, AppCryptocurrencyUpdateView, AppCryptocurrencyDeleteView
 
+app_name = "laboite"
 
 urlpatterns = [
     path("create/", login_required(AppCryptocurrencyCreateView.as_view()), name="create"),

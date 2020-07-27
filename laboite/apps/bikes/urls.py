@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from .views import StationAutoComplete, AppBikesCreateView, AppBikesUpdateView, AppBikesDeleteView
 
+app_name = "laboite"
 
 urlpatterns = [
     path("station-autocomplete/",

@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 from .views import AppTasksUpdateView, AppTasksCreateView, AppTasksDeleteView, get_projects_view
 
+app_name = "laboite"
+
 urlpatterns = [
     path("create/", login_required(AppTasksCreateView.as_view()), name="create"),
     path("<int:pk>/", login_required(AppTasksUpdateView.as_view()), name="update"),

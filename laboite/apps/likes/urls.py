@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from .views import AppLikesCreateView, AppLikesUpdateView, AppLikesDeleteView
 
+app_name = "laboite"
 
 urlpatterns = [
     path("create/", login_required(AppLikesCreateView.as_view()), name="create"),

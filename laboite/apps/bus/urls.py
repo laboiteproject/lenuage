@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 
 from .views import AppBusUpdateView, AppBusCreateView, AppBusDeleteView, BusStopAutocomplete
 
+app_name = "laboite"
+
+
 urlpatterns = [
     path("create/", login_required(AppBusCreateView.as_view()), name="create"),
     path("<int:pk>/", login_required(AppBusUpdateView.as_view()), name="update"),

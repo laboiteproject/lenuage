@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 from .views import AppMetroUpdateView, AppMetroCreateView, AppMetroDeleteView
 
+app_name = "laboite"
+
 urlpatterns = [
     path("create/", login_required(AppMetroCreateView.as_view()), name="create"),
     path("<int:pk>/", login_required(AppMetroUpdateView.as_view()), name="update"),

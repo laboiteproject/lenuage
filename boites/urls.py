@@ -23,6 +23,8 @@ from .views import (
     PushButtonUpdateView,
 )
 
+app_name = "boites"
+
 urlpatterns = [
     path("", login_required(BoiteListView.as_view()), name="list"),
     path("create", login_required(BoiteCreateView.as_view()), name="create"),
