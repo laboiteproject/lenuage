@@ -9,7 +9,7 @@ class AppCalendarCreateView(AppCreateView):
 
 class AppCalendarUpdateView(AppUpdateView):
     model = AppCalendar
-    fields = ['ics_url',  'enabled']
+    fields = ['ics_url', 'enabled']
 
 
 class AppCalendarDeleteView(AppDeleteView):

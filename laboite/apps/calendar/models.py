@@ -1,6 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
 from datetime import datetime
 
 from django.db import models
@@ -17,7 +15,11 @@ from boites.models import App, HOURS
 class AppCalendar(App):
     UPDATE_INTERVAL = 1 * HOURS
 
-    ics_url = models.CharField(_('URL du calendrier .ics'), help_text=_("Veuillez indiquer l'adresse de votre calendrier .ics"), max_length=256, default=None, null=True)
+    ics_url = models.CharField(_('URL du calendrier .ics'),
+                               help_text=_("Veuillez indiquer l'adresse de votre calendrier .ics"),
+                               max_length=256,
+                               default=None,
+                               null=True)
     dtstart = models.CharField(_('Heure du prochain rendez-vous'), max_length=5, default=None, null=True)
     summary = models.CharField(_('Intitulé du prochain rendez-vous'), max_length=256, default=None, null=True)
 
@@ -66,7 +68,7 @@ class AppCalendar(App):
                         'x': 0,
                         'y': 0,
                         'color': 1,
-    					'content': '0xfefe8292929282fe'
+                        'content': '0xfefe8292929282fe'
                     },
                     {
                         'type': 'text',
@@ -75,8 +77,8 @@ class AppCalendar(App):
                         'x': 7,
                         'y': 1,
                         'color': 2,
-    					'font': 1,
-    					'content': self.dtstart,
+                        'font': 1,
+                        'content': self.dtstart,
                     },
                     {
                         'type': 'text',
@@ -85,8 +87,8 @@ class AppCalendar(App):
                         'x': 0,
                         'y': 9,
                         'color': 1,
-    					'font': 1,
-    					'content': self.summary,
+                        'font': 1,
+                        'content': self.summary,
                     }
                 ]
             }
@@ -102,7 +104,7 @@ class AppCalendar(App):
                         'x': 12,
                         'y': 4,
                         'color': 2,
-    					'content': '0xffff8185a99181ff'
+                        'content': '0xffff8185a99181ff'
                     },
                 ]
             }

@@ -11,7 +11,9 @@ class AppBitmapAdmin(admin.ModelAdmin):
 
 admin.site.register(AppBitmap, AppBitmapAdmin)
 
+
 class BitmapAdmin(admin.ModelAdmin):
-    list_display = ('id', 'app_id', 'bitmap', )
+    list_display = ('id', 'app_id', 'bitmap',)
+
 
 admin.site.register(Bitmap, BitmapAdmin)

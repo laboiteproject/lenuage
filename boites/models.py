@@ -1,7 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
-
 from datetime import timedelta
 from io import BytesIO
 import logging
@@ -17,22 +14,19 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 import qrcode
 
-
 logger = logging.getLogger('laboite.apps')
-
 
 SECONDS = 1
 MINUTES = 60
 HOURS = 3600
 
 
-@python_2_unicode_compatible
 class Boite(models.Model):
-    name = models.CharField(_(u'Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32, default=_('Ma boîte'))
+    name = models.CharField(_('Nom'), help_text=_('Veuillez saisir un nom pour votre boîte'), max_length=32,
+                            default=_('Ma boîte'))
     user = models.ForeignKey(User, verbose_name=_('Utilisateur'), on_delete=models.CASCADE)
 
     SCREEN_CHOICES = (
@@ -41,18 +35,33 @@ class Boite(models.Model):
         (2, _('Écran bicolore 32×16')),
     )
 
-    screen = models.PositiveSmallIntegerField(_("Type d'écran"), help_text=_("Veuillez sélectionner l'écran qui compose votre boîte"), choices=SCREEN_CHOICES, default=1)
+    screen = models.PositiveSmallIntegerField(_("Type d'écran"),
+                                              help_text=_("Veuillez sélectionner l'écran qui compose votre boîte"),
+                                              choices=SCREEN_CHOICES, default=1)
 
     api_key = models.CharField(_("Clé d'API"), max_length=36, unique=True)
 
     qrcode = models.ImageField(_('QR code'), upload_to='boites')
 
-    sleep_time = models.TimeField(_("Début du mode veille"), help_text=_("Spécifiez une heure pour le début du mode veille (laissez vide si toujours allumée)"), null=True, default=None, blank=True)
-    wake_time = models.TimeField(_("Fin du mode veille"), help_text=_("Spécifiez une heure pour le fin du mode veille (laissez vide si toujours allumée)"), null=True, default=None, blank=True)
+    sleep_time = models.TimeField(
+        _("Début du mode veille"),
+        help_text=_("Spécifiez une heure pour le début du mode veille (laissez vide si toujours allumée)"),
+        null=True,
+        default=None,
+        blank=True
+    )
+    wake_time = models.TimeField(
+        _("Fin du mode veille"),
+        help_text=_("Spécifiez une heure pour le fin du mode veille (laissez vide si toujours allumée)"),
+        null=True,
+        default=None,
+        blank=True
+    )
 
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
     last_activity = models.DateTimeField(_('Dernière activité'), null=True)
-    last_connection = models.GenericIPAddressField(_('Dernière connexion'), protocol='both', unpack_ipv4=False, default=None, blank=True, null=True)
+    last_connection = models.GenericIPAddressField(_('Dernière connexion'), protocol='both', unpack_ipv4=False,
+                                                   default=None, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -120,7 +129,7 @@ class Boite(models.Model):
 
 
 class PushButton(models.Model):
-    api_key = models.SlugField(_(u"IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
+    api_key = models.SlugField(_("IFTTT clé d'API"), help_text=_("Veuillez saisir ici votre clé IFTTT"))
     boite = models.OneToOneField(Boite, verbose_name=_('Boîte'), on_delete=models.CASCADE)
 
     last_triggered = models.DateTimeField(_('Dernière activité'), null=True)
@@ -139,7 +148,8 @@ class App(models.Model):
 
     boite = models.ForeignKey(Boite, verbose_name=_('Boîte'), on_delete=models.CASCADE)
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
-    enabled = models.BooleanField(_('App activée ?'), help_text=_('Indique si cette app est activée sur votre boîte'), default=True)
+    enabled = models.BooleanField(_('App activée ?'), help_text=_('Indique si cette app est activée sur votre boîte'),
+                                  default=True)
     last_activity = models.DateTimeField(_('Dernière activité'), null=True)
 
     @classmethod
@@ -175,7 +185,7 @@ class App(models.Model):
             try:
                 self.update_data()
                 self.last_activity = timezone.now()
-            except:
+            except Exception:
                 logger.exception('App {} data retrieval failed'.format(self.get_label()))
                 self.last_activity = None
             self.save()
@@ -196,9 +206,23 @@ class Tile(models.Model):
     )
 
     boite = models.ForeignKey(Boite, on_delete=models.CASCADE)
-    brightness = models.PositiveSmallIntegerField(_("Luminosité de la tuile"), help_text=_("Veuillez saisir la luminosité souhaitée pour cette tuile"), default=15, validators=[MaxValueValidator(15)])
-    duration = models.PositiveSmallIntegerField(_("Durée d'affichage de la tuile"), help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en millisecondes)"), default=5000)
-    transition = models.PositiveSmallIntegerField(_('Transition'), help_text=_("Veuillez sélectionner la transition que vous souhaitez pour passer à la prochaine tuile"), choices=TRANSITION_CHOICES, default=0)
+    brightness = models.PositiveSmallIntegerField(
+        _("Luminosité de la tuile"),
+        help_text=_("Veuillez saisir la luminosité souhaitée pour cette tuile"),
+        default=15,
+        validators=[MaxValueValidator(15)]
+    )
+    duration = models.PositiveSmallIntegerField(
+        _("Durée d'affichage de la tuile"),
+        help_text=_("Veuillez saisir une durée durant laquelle la tuile sera affichée (en millisecondes)"),
+        default=5000
+    )
+    transition = models.PositiveSmallIntegerField(
+        _('Transition'),
+        help_text=_("Veuillez sélectionner la transition que vous souhaitez pour passer à la prochaine tuile"),
+        choices=TRANSITION_CHOICES,
+        default=0
+    )
     created_date = models.DateTimeField(_('Date de création'), auto_now_add=True)
 
     def __str__(self):
@@ -208,7 +232,7 @@ class Tile(models.Model):
         apps = TileApp.objects.filter(tile=self)
         items = []
         for app in apps:
-            items+=app.get_data()
+            items += app.get_data()
 
         tile = {
             'id': self.id,
@@ -252,8 +276,12 @@ class TileApp(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_("Type d'app"))
     object_id = models.PositiveIntegerField(verbose_name=_("Identifiant de l'app"))
     content_object = GenericForeignKey('content_type', 'object_id')
-    x = models.SmallIntegerField(_('Position x'), help_text=_("Veuillez indiquer la position en x de l'app sur la tuile (en pixels)"), default=0)
-    y = models.SmallIntegerField(_('Position y'), help_text=_("Veuillez indiquer la position en y de l'app sur la tuile (en pixels)"), default=0)
+    x = models.SmallIntegerField(_('Position x'),
+                                 help_text=_("Veuillez indiquer la position en x de l'app sur la tuile (en pixels)"),
+                                 default=0)
+    y = models.SmallIntegerField(_('Position y'),
+                                 help_text=_("Veuillez indiquer la position en y de l'app sur la tuile (en pixels)"),
+                                 default=0)
 
     def get_data(self):
         app = self.content_object.get_data()

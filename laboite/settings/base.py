@@ -120,27 +120,26 @@ ROOT_URLCONF = "laboite.urls"
 WSGI_APPLICATION = "laboite.wsgi.application"
 
 LABOITE_APPS = [
-    #"laboite.apps.alarm",
+    "laboite.apps.airquality",
     "laboite.apps.bikes",
+    "laboite.apps.bitmap",
     "laboite.apps.bus",
     "laboite.apps.calendar",
+    "laboite.apps.coffees",
+    "laboite.apps.cryptocurrency",
+    "laboite.apps.data",
     "laboite.apps.energy",
+    "laboite.apps.likes",
+    "laboite.apps.luftdaten",
     "laboite.apps.messages",
     "laboite.apps.metro",
     "laboite.apps.parcel",
+    "laboite.apps.parking",
     "laboite.apps.tasks",
     "laboite.apps.time",
     "laboite.apps.traffic",
     "laboite.apps.weather",
     "laboite.apps.wifi",
-    "laboite.apps.likes",
-    "laboite.apps.bitmap",
-    "laboite.apps.parking",
-    "laboite.apps.coffees",
-    "laboite.apps.cryptocurrency",
-    "laboite.apps.data",
-    "laboite.apps.airquality",
-    "laboite.apps.luftdaten",
 ]
 
 INSTALLED_APPS = [

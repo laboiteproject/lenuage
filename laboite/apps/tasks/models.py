@@ -1,6 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
@@ -25,8 +23,19 @@ def get_projects(asana_personal_access_token):
 class AppTasks(App):
     UPDATE_INTERVAL = 30 * MINUTES
 
-    asana_personal_access_token = models.CharField(_("Clé d'API Asana"), help_text=_("Veuillez indiquer votre clé d'API personnelle Asana (Personal Access Token)"), max_length=64, default=None, null=True)
-    asana_project_id = models.BigIntegerField(_('Identifiant projet Asana'), help_text=_("Veuillez indiquer l'identifiant du projet Asana dans lequel vous souhaitez travailler"), default=None, null=True)
+    asana_personal_access_token = models.CharField(
+        _("Clé d'API Asana"),
+        help_text=_("Veuillez indiquer votre clé d'API personnelle Asana (Personal Access Token)"),
+        max_length=64,
+        default=None,
+        null=True
+    )
+    asana_project_id = models.BigIntegerField(
+        _('Identifiant projet Asana'),
+        help_text=_("Veuillez indiquer l'identifiant du projet Asana dans lequel vous souhaitez travailler"),
+        default=None,
+        null=True
+    )
 
     # from https://asana.com/developers/api-reference/tasks
     name = models.CharField(_('Nom de la prochaine tâche'), max_length=128, default=None, null=True)
@@ -63,7 +72,7 @@ class AppTasks(App):
                         'x': 8,
                         'y': 0,
                         'color': 1,
-    					'content': '0xfffffdb993c7efff'
+                        'content': '0xfffffdb993c7efff'
                     },
                     {
                         'type': 'text',
@@ -72,8 +81,8 @@ class AppTasks(App):
                         'x': 17,
                         'y': 1,
                         'color': 3,
-    					'font': 1,
-    					'content': '%d' % self.tasks,
+                        'font': 1,
+                        'content': '%d' % self.tasks,
                     },
                     {
                         'type': 'text',
@@ -82,8 +91,8 @@ class AppTasks(App):
                         'x': 0,
                         'y': 9,
                         'color': 2,
-    					'font': 1,
-    					'content': self.name,
+                        'font': 1,
+                        'content': self.name,
                     }
                 ]
             }
@@ -99,8 +108,8 @@ class AppTasks(App):
                         'x': 12,
                         'y': 4,
                         'color': 2,
-    					'font': 1,
-    					'content': '0xfffffdb993c7efff'
+                        'font': 1,
+                        'content': '0xfffffdb993c7efff'
                     }
                 ]
             }

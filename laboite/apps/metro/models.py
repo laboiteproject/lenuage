@@ -1,7 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
-
 import requests
 from django.conf import settings
 from django.db import models

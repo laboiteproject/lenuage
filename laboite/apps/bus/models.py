@@ -1,8 +1,4 @@
 # coding: utf-8
-
-from __future__ import division
-from __future__ import unicode_literals
-
 import requests
 from django.conf import settings
 from django.db import models
@@ -16,7 +12,8 @@ from boites.models import App, MINUTES
 class AppBus(App):
     UPDATE_INTERVAL = 1 * MINUTES
 
-    stop = models.PositiveSmallIntegerField(_('Arrêt'), help_text=_("Veuillez saisir le nom de votre arrêt de bus"), default=None, null=True)
+    stop = models.PositiveSmallIntegerField(_('Arrêt'), help_text=_("Veuillez saisir le nom de votre arrêt de bus"),
+                                            default=None, null=True)
     route0 = models.CharField(_('Prochain bus'), max_length=4, default=None, null=True)
     departure0 = models.PositiveSmallIntegerField(_('Dans'), default=None, null=True)
 
@@ -71,7 +68,7 @@ class AppBus(App):
     def _get_data(self):
         if self.route1:
             content = "{}|{}' {}|{}'".format(self.route0, self.departure0,
-                                           self.route1, self.departure1)
+                                             self.route1, self.departure1)
         else:
             content = "{}|{}'".format(self.route0, self.departure0)
 
@@ -87,7 +84,7 @@ class AppBus(App):
                     'y': 0,
                     'color': 2,
                     'font': 1,
-                    'content':  content
+                    'content': content
                 }
             ]
         }

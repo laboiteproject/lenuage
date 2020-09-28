@@ -1,6 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.utils import formats, timezone
 from django.db import models
@@ -8,7 +6,6 @@ from django.db import models
 import pytz
 
 from boites.models import App, MINUTES
-
 
 TZ_CHOICES = [(tz, _(tz)) for tz in pytz.common_timezones]
 
@@ -18,7 +15,9 @@ class AppTime(App):
 
     time = models.CharField(_('Heure'), max_length=32, null=True, default=None)
     date = models.CharField(_('Date'), max_length=32, null=True, default=None)
-    tz = models.CharField(_('Fuseau horaire'), help_text=_('Veuillez saisir un fuseau horaire pour votre boîte'), max_length=32, default=_('Europe/Paris'), choices=TZ_CHOICES)
+    tz = models.CharField(_('Fuseau horaire'),
+                          help_text=_('Veuillez saisir un fuseau horaire pour votre boîte'),
+                          max_length=32, default=_('Europe/Paris'), choices=TZ_CHOICES)
 
     @property
     def timezone(self):
@@ -43,8 +42,8 @@ class AppTime(App):
                     'x': 4,
                     'y': 1,
                     'color': 2,
-					'font': 1,
-					'content': self.time,
+                    'font': 1,
+                    'content': self.time,
                 },
             ]
         }

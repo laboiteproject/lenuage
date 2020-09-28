@@ -1,7 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
-import json
 import logging
 
 from django.apps import apps
@@ -15,10 +12,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
 
-logger = logging.getLogger('laboite.apps')
-
 from .models import App, Boite, Tile, TileApp, PushButton
 from laboite.apps.time.models import AppTime
+
+logger = logging.getLogger('laboite.apps')
 
 
 # Boîtes
@@ -45,7 +42,7 @@ class BoiteListView(ListView):
                 content_type = ContentType.objects.get(app_label="laboite.apps.time", model="apptime")
                 tile_app = TileApp(tile=tile, object_id=app_time.id, content_type=content_type)
                 tile_app.save()
-                messages.success(self.request, _(u"Une app temps a été créée sur votre boîte !"))
+                messages.success(self.request, _("Une app temps a été créée sur votre boîte !"))
 
         return Boite.objects.filter(user=self.request.user).order_by("created_date")
 
@@ -56,8 +53,8 @@ def create_app_view(request, pk):
     apps_list = []
     for model in apps.get_models():
         if issubclass(model, App):
-            verbose_name =  model._meta.verbose_name.title()
-            apps_list.append({'verbose_name':verbose_name[16:], 'pk':'create', 'app_label': model._meta.app_label})
+            verbose_name = model._meta.verbose_name.title()
+            apps_list.append({'verbose_name': verbose_name[16:], 'pk': 'create', 'app_label': model._meta.app_label})
 
     return render(request, 'boites/boite_create_app.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
 
@@ -80,11 +77,11 @@ def apps_view(request, pk):
             app_instances = model.objects.filter(boite=boite)
             if app_instances:
                 for i, instance in enumerate(app_instances):
-                    verbose_name =  model._meta.verbose_name.title()
-                    app_label = model._meta.app_label
+                    verbose_name = model._meta.verbose_name.title()
                     if app_instances.count() > 1:
                         verbose_name += ' ' + str(i + 1)
-                    apps_list.append({'verbose_name':verbose_name[16:], 'pk':instance.pk, 'enabled':instance.enabled, 'app_label': model._meta.app_label, 'instance': instance})
+                    apps_list.append({'verbose_name': verbose_name[16:], 'pk': instance.pk, 'enabled': instance.enabled,
+                                      'app_label': model._meta.app_label, 'instance': instance})
 
     return render(request, 'boites/boite_apps.html', {'boite': boite, 'boite_id': boite.id, 'apps': apps_list})
 
@@ -119,12 +116,10 @@ class BoiteUpdateView(UpdateView):
         context['last_activity'] = Boite._meta.get_field('last_activity')
         context['last_connection'] = Boite._meta.get_field('last_connection')
 
-        tiles = Tile.objects.filter(boite= self.object).order_by('id')
+        tiles = Tile.objects.filter(boite=self.object).order_by('id')
 
         if self.request.GET.get('tile') or not tiles:
             current_tile, created = Tile.objects.get_or_create(boite=self.object, pk=self.request.GET.get('tile'))
-            if created and not tiles:
-                content_type = ContentType.objects.get(app_label="laboite.apps.time", model="apptime")
         else:
             current_tile = tiles.first()
 
@@ -156,7 +151,7 @@ class BoiteCreateView(SuccessMessageMixin, CreateView):
     model = Boite
     fields = ['name']
     template_name_suffix = '_create_form'
-    success_message = _(u"%(name)s a bien été créée !")
+    success_message = _("%(name)s a bien été créée !")
     success_url = reverse_lazy('boites:list')
 
     def form_valid(self, form):
@@ -188,6 +183,7 @@ class PushButtonUpdateView(UpdateView):
 
         return context
 
+
 # Apps
 
 
@@ -217,7 +213,7 @@ class JSONResponseMixin(object):
         return JsonResponse(self.get_data(context), **response_kwargs)
 
     def get_data(self, context):
-        return context.get(u'object').get_data()
+        return context.get('object').get_data()
 
 
 class AppUpdateView(UpdateView, JSONResponseMixin):
@@ -240,7 +236,7 @@ class AppUpdateView(UpdateView, JSONResponseMixin):
             return self.render_to_json_response(context)
         else:
             if self.request.user.is_authenticated:
-                boite = get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
+                get_object_or_404(Boite, pk=self.kwargs.get('boite_pk'), user=self.request.user)
                 return super(AppUpdateView, self).render_to_response(context)
             else:
                 redirect('/account/login/?next=%s' % self.request.path)
@@ -266,51 +262,65 @@ class TileUpdateView(UpdateView):
     template_name = 'tiles/tile_form.html'
     fields = ['transition', 'duration', 'brightness']
 
+    def _get_apps(self):
+        apps_list = []
+        models = [model for model in apps.get_models() if issubclass(model, App)]
+        for model in models:
+            app_instances = model.objects.filter(boite=self.object.boite, enabled=True)
+            if app_instances:
+                for i, instance in enumerate(app_instances):
+                    verbose_name = model._meta.verbose_name.title()
+                    if app_instances.count() > 1:
+                        verbose_name += ' ' + str(i + 1)
+                    apps_list.append({
+                        'verbose_name': verbose_name[16:],
+                        'pk': instance.pk,
+                        'app_label': model._meta.app_label,
+                        'data': instance.get_data()
+                    })
+        return apps_list
+
+    def _get_tile_apps(self):
+        apps_list = []
+        tile_apps = TileApp.objects.filter(tile=self.object)
+        for app in tile_apps:
+            try:
+                pk = app.pk
+                verbose_name = app.content_object._meta.verbose_name.title()
+                apps_list.append({
+                    'verbose_name': verbose_name[16:],
+                    'pk': pk,
+                    'app_label': app.content_object._meta.app_label,
+                    'data': app.content_object.get_data()
+                })
+            except Exception:
+                logger.exception('Tile app {} does not exist anymore'.format(app))
+                app.delete()
+        return apps_list
+
     def get_context_data(self, **kwargs):
         context = super(TileUpdateView, self).get_context_data(**kwargs)
         context['boite'] = self.object.boite
         context['boite_id'] = self.object.boite.id
 
         if self.request.GET.get('app'):
-            #TODO : fix this MultipleObjectsReturned exception
+            # TODO : fix this MultipleObjectsReturned exception
             if self.request.GET.get('app') == "laboite.apps.bitmap":
                 content_type = ContentType.objects.get(app_label="laboite.apps.bitmap", model="appbitmap")
             else:
                 content_type = ContentType.objects.get(app_label=self.request.GET.get('app'))
-            tile_app = TileApp(tile= self.object, object_id= self.request.GET.get('pk'), content_type=content_type)
+            tile_app = TileApp(tile=self.object, object_id=self.request.GET.get('pk'), content_type=content_type)
             if issubclass(tile_app.content_object.__class__, App):
                 tile_app.save()
 
-        apps_list = []
-        for model in apps.get_models():
-            if issubclass(model, App):
-                app_instances = model.objects.filter(boite=self.object.boite, enabled=True)
-                if app_instances:
-                    for i, instance in enumerate(app_instances):
-                        verbose_name =  model._meta.verbose_name.title()
-                        app_label = model._meta.app_label
-                        if app_instances.count() > 1:
-                            verbose_name += ' ' + str(i + 1)
-                        apps_list.append({'verbose_name':verbose_name[16:], 'pk':instance.pk, 'app_label': model._meta.app_label, 'data': instance.get_data()})
-
-        context['apps'] = apps_list
-
-        apps_list = []
-        tile_apps = TileApp.objects.filter(tile=self.object)
-        for app in tile_apps:
-            try:
-                pk = app.pk
-                verbose_name =  app.content_object._meta.verbose_name.title()
-                apps_list.append({'verbose_name':verbose_name[16:], 'pk':pk, 'app_label': app.content_object._meta.app_label, 'data': app.content_object.get_data()})
-            except:
-                logger.exception('Tile app {} does not exist anymore'.format(app))
-                app.delete()
-        context['tile_apps'] = apps_list
+        context['apps'] = self._get_apps()
+        context['tile_apps'] = self._get_tile_apps()
 
         return context
 
     def get_success_url(self):
-        return reverse_lazy('boites:tile', kwargs={'boite_pk': self.kwargs.get('boite_pk'), 'pk': self.kwargs.get('pk')})
+        return reverse_lazy('boites:tile',
+                            kwargs={'boite_pk': self.kwargs.get('boite_pk'), 'pk': self.kwargs.get('pk')})
 
 
 class TileDeleteView(DeleteView):
@@ -348,7 +358,7 @@ def tileapp_view(request, boite_pk, pk):
             app.y = y
             app.save()
 
-    return redirect('boites:tile', boite_pk= boite_pk, pk=pk)
+    return redirect('boites:tile', boite_pk=boite_pk, pk=pk)
 
 
 def create_tile_view(request, boite_pk, pk):
@@ -356,7 +366,7 @@ def create_tile_view(request, boite_pk, pk):
     tile = Tile(boite=boite)
     tile.save()
 
-    return redirect('boites:tile', boite_pk= boite_pk, pk=tile.pk)
+    return redirect('boites:tile', boite_pk=boite_pk, pk=tile.pk)
 
 
 class TileAppDeleteView(DeleteView):

@@ -1,7 +1,4 @@
 # coding: utf-8
-
-from __future__ import unicode_literals
-
 import facebook
 from django.conf import settings
 from django.db import models
@@ -28,7 +25,7 @@ class AppLikes(App):
                     'x': 0,
                     'y': 0,
                     'color': 2,
-					'content': '0xfec2c2ce8686cececefe'
+                    'content': '0xfec2c2ce8686cececefe'
                 },
                 {
                     'type': 'text',
@@ -37,8 +34,8 @@ class AppLikes(App):
                     'x': 8,
                     'y': 2,
                     'color': 2,
-					'font': 1,
-					'content': '%s' % self.likes,
+                    'font': 1,
+                    'content': str(self.likes),
                 },
             ]
         }

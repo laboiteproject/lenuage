@@ -62,4 +62,4 @@ def trigger_pushbutton_json_view(request, api_key):
 
     r = requests.get(url, params={'value1': boite.name.lower()})
 
-    return CORSJsonResponse({'status_code':r.status_code})
+    return CORSJsonResponse({'status_code': r.status_code})

@@ -1,7 +1,4 @@
 # coding: utf-8
-from __future__ import division
-from __future__ import unicode_literals
-
 import requests
 from django.conf import settings
 from django.db import models
@@ -23,7 +20,7 @@ class AppTraffic(App):
     UPDATE_INTERVAL = 15 * MINUTES
 
     mode = models.CharField(_('Mode de transport'), choices=MODES, max_length=32, null=True, default='driving')
-    start = models.CharField(_('Point de départ'), max_length=1024,  null=True, default=None)
+    start = models.CharField(_('Point de départ'), max_length=1024, null=True, default=None)
     dest = models.CharField(_('Destination'), max_length=1024, null=True, default=None)
     trajectory_name = models.CharField(_('Itinéraire'), max_length=128, null=True, default=None)
     trip_duration = models.PositiveSmallIntegerField(_('Durée'), null=True, default=None)
