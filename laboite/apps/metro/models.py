@@ -1,8 +1,6 @@
-# coding: utf-8
 import requests
 from django.conf import settings
 from django.db import models
-from django.utils.six import text_type
 from django.utils.translation import ugettext as _
 
 from boites.models import App, MINUTES
@@ -36,7 +34,7 @@ class AppMetro(App):
         self.save()
 
     def _get_data(self):
-        recovery_time = "{}'".format(text_type(self.recovery_time)) \
+        recovery_time = "{}'".format(str(self.recovery_time)) \
             if self.failure else 'OK'
         return {
             'width': 32,

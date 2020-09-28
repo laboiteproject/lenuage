@@ -1,8 +1,6 @@
-# coding: utf-8
 import requests
 from django.conf import settings
 from django.db import models
-from django.utils.six import text_type
 from django.utils.translation import ugettext_lazy as _
 
 from boites.exceptions import ExternalDataError
@@ -62,7 +60,7 @@ class AppTraffic(App):
                 },
                 {
                     'type': 'text',
-                    'width': len(text_type(self.trip_duration)) * 5 + 1,
+                    'width': len(str(self.trip_duration)) * 5 + 1,
                     'height': 8,
                     'x': 14,
                     'y': 1,
@@ -72,7 +70,7 @@ class AppTraffic(App):
                 },
                 {
                     'type': 'text',
-                    'width': len(text_type(self.trajectory_name)) * 5,
+                    'width': len(str(self.trajectory_name)) * 5,
                     'height': 8,
                     'x': 0,
                     'y': 9,

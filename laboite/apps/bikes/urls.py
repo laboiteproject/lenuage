@@ -1,14 +1,15 @@
-from django.conf.urls import url
+from django.urls import path
 from django.contrib.auth.decorators import login_required
 
 from .views import StationAutoComplete, AppBikesCreateView, AppBikesUpdateView, AppBikesDeleteView
 
+app_name = "laboite"
 
 urlpatterns = [
-    url(r'^station-autocomplete/$',
-        login_required(StationAutoComplete.as_view()),
-        name='station-autocomplete'),
-    url(r"^create/$", login_required(AppBikesCreateView.as_view()), name="create"),
-    url(r"^(?P<pk>\d+)/$", login_required(AppBikesUpdateView.as_view()), name="update"),
-    url(r"^(?P<pk>\d+)/delete/$", login_required(AppBikesDeleteView.as_view()), name="delete"),
+    path("station-autocomplete/",
+         login_required(StationAutoComplete.as_view()),
+         name='station-autocomplete'),
+    path("create/", login_required(AppBikesCreateView.as_view()), name="create"),
+    path("<int:pk>/", login_required(AppBikesUpdateView.as_view()), name="update"),
+    path("<int:pk>/delete/", login_required(AppBikesDeleteView.as_view()), name="delete"),
 ]

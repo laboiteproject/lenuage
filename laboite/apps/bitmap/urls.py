@@ -1,11 +1,12 @@
-from django.conf.urls import url
+from django.urls import path
 from django.contrib.auth.decorators import login_required
 
 from .views import AppBitmapCreateView, AppBitmapUpdateView, AppBitmapDeleteView
 
+app_name = "laboite"
 
 urlpatterns = [
-    url(r"^create/$", login_required(AppBitmapCreateView.as_view()), name="create"),
-    url(r"^(?P<pk>\d+)/$", login_required(AppBitmapUpdateView.as_view()), name="update"),
-    url(r"^(?P<pk>\d+)/delete/$", login_required(AppBitmapDeleteView.as_view()), name="delete"),
+    path("create/", login_required(AppBitmapCreateView.as_view()), name="create"),
+    path("<int:pk>/", login_required(AppBitmapUpdateView.as_view()), name="update"),
+    path("<int:pk>/delete/", login_required(AppBitmapDeleteView.as_view()), name="delete"),
 ]
