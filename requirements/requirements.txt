@@ -16,3 +16,4 @@ weboob==1.5
 facebook-sdk==2.0.0
 jsonpath_ng==1.4.3
 Pygments==2.2.0
+psycopg2==2.8.6
