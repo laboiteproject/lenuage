@@ -12,10 +12,15 @@ def get_projects(asana_personal_access_token):
     client = asana.Client.access_token(asana_personal_access_token)
     workspaces = client.workspaces.find_all()
     results = []
-    for workspace in workspaces:
-        projects = client.projects.find_all({'workspace': workspace['id']})
-        for project in projects:
-            results.append({'id': project['id'], 'name': project['name']})
+
+    try:
+        for workspace in workspaces:
+            projects = client.projects.find_all({'workspace': workspace['gid']})
+            for project in projects:
+                results.append({'id': project['gid'], 'name': project['name']})
+    except Exception as e:
+        pass
+
     results.sort(key=lambda proj: proj['name'])
     return results
 
@@ -50,12 +55,15 @@ class AppTasks(App):
         uncompleted_tasks = 0
         self.name = None
 
-        for task in tasks:
-            if task['completed'] is False and task['assignee'] is not None:
-                if task['assignee']['id'] == me['id']:
-                    uncompleted_tasks += 1
-                    if uncompleted_tasks == 1:
-                        self.name = str(unidecode.unidecode(task['name']))
+        try:
+            for task in tasks:
+                if task['completed'] is False and task['assignee'] is not None:
+                    if task['assignee']['gid'] == me.get('gid'):
+                        uncompleted_tasks += 1
+                        if uncompleted_tasks == 1:
+                            self.name = str(unidecode.unidecode(task['name']))
+        except Exception as e:
+            pass
         self.tasks = uncompleted_tasks
         self.save()
 
