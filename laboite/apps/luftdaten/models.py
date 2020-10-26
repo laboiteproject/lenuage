@@ -9,8 +9,8 @@ import requests
 
 
 class AppLuftdaten(App):
-    sensor = models.CharField(_('Identifiant du capteur Luftdaten'),
-                              help_text=_("Veuillez saisir l'identifiant de votre capteur luftdaten"), max_length=32,
+    sensor = models.CharField(_('Identifiant du capteur Sensor.Community'),
+                              help_text=_("Veuillez saisir l'identifiant de votre capteur Sensor.Community"), max_length=32,
                               default=_('11034'), null=False, blank=False)
 
     AQI_CHOICES = (
@@ -28,27 +28,18 @@ class AppLuftdaten(App):
             'data': [
                 {
                     'type': 'bitmap',
-                    'width': 10,
-                    'height': 8,
+                    'width': 8,
+                    'height': 10,
                     'x': 0,
                     'y': 0,
                     'color': 1,
-                    'content': '0x081422419455417f',
-                },
-                {
-                    'type': 'bitmap',
-                    'width': 2,
-                    'height': 2,
-                    'x': 8,
-                    'y': 12,
-                    'color': 1,
-                    'content': '0x800',
+                    'content': '0x6010e202fc00f0081000',
                 },
                 {
                     'type': 'text',
                     'width': 10,
                     'height': 8,
-                    'x': 10,
+                    'x': 8,
                     'y': 1,
                     'color': 2,
                     'font': 1,
@@ -75,5 +66,5 @@ class AppLuftdaten(App):
         self.save()
 
     class Meta:
-        verbose_name = _('Configuration : luftdaten')
-        verbose_name_plural = _('Configurations : luftdaten')
+        verbose_name = _('Configuration : sensor.community')
+        verbose_name_plural = _('Configurations : sensor.community')

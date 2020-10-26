@@ -5,4 +5,4 @@ from django.utils.translation import ugettext_lazy as _
 
 class AppLuftdatenConfig(AppConfig):
     name = label = 'laboite.apps.luftdaten'
-    verbose_name = _("App : Luftdaten")
+    verbose_name = _("App : Sensor.Community")

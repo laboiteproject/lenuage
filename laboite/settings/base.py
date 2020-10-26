@@ -250,7 +250,7 @@ OWM_APIKEY = ''
 
 # Airquality
 AIRBZH_URL = 'http://data.airbreizh.asso.fr/geoserver/airbreizh_ind_bretagne/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=airbreizh_ind_bretagne:airbreizh_ind_prevision_bretagne&outputFormat=application%2Fjson'
-LUFTDATEN_URL = 'https://api.luftdaten.info/v1/sensor/'
+LUFTDATEN_URL = 'https://data.sensor.community/airrohr/v1/sensor/'
 
 # IFTT
 IFTTT_API_BASE_URL = 'https://maker.ifttt.com/trigger/'
