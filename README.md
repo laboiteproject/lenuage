@@ -1,7 +1,7 @@
 [![Build Status](https://api.travis-ci.org/laboiteproject/lenuage.svg?branch=master)](https://travis-ci.org/laboiteproject/lenuage)
 
 # laboîte
-Django web app of the laboîte project http://laboite.cc/help
+Django web app of the laboîte project https://github.com/laboiteproject/laboite-maker/wiki
 
 ## Getting Started
 
