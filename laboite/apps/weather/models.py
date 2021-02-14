@@ -19,7 +19,7 @@ class AppWeather(App):
     UPDATE_INTERVAL = 30 * MINUTES
     city_name = models.CharField(_('Ville'), help_text=_('Veuillez saisir la ville où se trouve votre boîte'),
                                  max_length=64, default=_('Paris'))
-    temperature_now = models.PositiveSmallIntegerField(_('Température actuelle'), null=True)
+    temperature_now = models.SmallIntegerField(_('Température actuelle'), null=True)
     humidity_now = models.PositiveSmallIntegerField(_('Humidité actuelle'), null=True)
     icon_now = models.PositiveSmallIntegerField(_('Icône'), choices=ICON_CHOICES, default=1)
 
